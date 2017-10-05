@@ -32,5 +32,5 @@ literal 	\".*\"
 "float" 	{return TFLOAT}
 "string"	{return TSTRING}
 \n			{return TFIM;}
-{int}		{yylval=atof(yytext); return TINT;} 
-{float}		{yylval=atoi(yytext); return TFLOAT;} 
+{int}		{yylval=atoi(yytext); return TINT;} 
+{float}		{yylval=atof(yytext); return TFLOAT;} 
