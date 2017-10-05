@@ -9,26 +9,165 @@
 %token TID TLITERAL
 
 %%
-ExpressaoAritmetica
+
+Programa 
+	: ListaFuncoes BlocoPrincipal
+	| BlocoPrincipal
+	;
+ListaFuncoes 
+	: ListaFuncoes Funcao 
+	| Funcao
+	;
+Funcao 
+        : TipoRetorno TID '('DeclParametros')' BlocoPrincipal
+        | TipoRetorno TID '('')' BlocoPrincipal 
+        ;
+TipoRetorno 
+	: Tipo
+	| TVOID
+	;
+
+DeclParametros 
+	: DeclParametros ',' Parametro
+	| Parametro
+	;
+
+Parametro
+	: Tipo TID
+	;
+
+BlocoPrincipal 
+	: '{'Declaracoes ListaCmd'}'
+	| '{'ListaCmd'}'
+	;
+
+Declaracoes 
+	: Declaracoes Declaracao
+	| Declaracao
+	;
+
+Declaracao 
+	: Tipo ListaId';'
+	;
+
+Tipo
+	: TINT
+	| TSTRING
+	| TFLOAT
+	;
+
+ListaId
+	: ListaId ',' TID
+	| TID
+	;
+
+Bloco 
+	: '{'ListaCmd'}'
+	;
+
+ListaCmd 	
+	: ListaCmd Comando 
+	| Comando
+	;
+Comando 				
+	: CmdSe
+	| CmdEnquanto
+	| CmdAtrib
+	| CmdEscrita
+	| CmdLeitura
+	| ChamadaProc
+	| Retorno
+	;
+
+Retorno 				
+	: TRETURN ExpressaoAritmetica';'
+	| TRETURN literal';'
+	;
+					
+CmdSe
+	: TIF '('ExpressaoLogica')' Bloco
+	| TIF '('ExpressaoLogica>')' Bloco TELSE Bloco
+	;
+				
+CmdEquanto 
+	: TWHILE '('ExpressaoLogica')' Bloco
+	;
+
+CmdAtrib
+	: TID '=' ExpressaoAritmetica';'
+	| TID '=' TLITERAL ';'
+	;
+			
+CmdEscrita 
+	: TPRINT '('ExpressaoAritmetica')'';'
+	| TPRINT '(' TLITERAL ')'';'
+	;	
+			
+CmdLeitura
+	: TREAD '('id')'';'
+	;
+
+ChamadaProc
+	: ChamaFunção';' 
+	;
+
+ChamadaFuncao			
+	: TID '('ListaParametros')'
+	| TID '('')'
+	;
+
+ListaParametros
+	: ListaParametros',' ExpressaoAritmetica
+	| ListaParametros',' TLITERAL
+	| ExpressaoAritmetica
+	| TLITERAL
+	;				
+
+ExpressaoRelacional	
+	: ExpressaoAritmetica '<' ExpressaoAritmetica
+	| ExpressaoAritmetica '>' ExpressaoAritmetica
+	| ExpressaoAritmetica TMEIG ExpressaoAritmetica
+	| ExpressaoAritmetica TMAIG ExpressaoAritmetica
+	| ExpressaoAritmetica TEQ ExpressaoAritmetica
+	| ExpressaoAritmetica TDIF ExpressaoAritmetica
+	;
+
+ExpressaoLogica		
+	: ExpressaoLogica TAND ArgumentoLogico
+	| ExpressaoLogica TOR ArgumentoLogico
+	| ArgumentoLogico
+	;
+
+ArgumentoLogico		
+	: '('ExpressaoLogica')'
+	| '-' ArgumentoLogico
+	| ExpressaoRelacional
+  	;
+
+ExpressaoAritmetica	
 	: ExpressaoAritmetica '+' TermoAritmetico
 	| ExpressaoAritmetica '-' TermoAritmetico
 	| TermoAritmetico
 	;
 
-TermoAritmetico
+<TermoAritmetico>		
 	: TermoAritmetico '*' FatorAritmetico
 	| TermoAritmetico '/' FatorAritmetico
 	| FatorAritmetico
 	;
 
-FatorAritmetico
-	: '(' ExpressaoAritmetica ')'
+<FatorAritmetico>		
+	: '('ExpressaoAritmetica')'
 	| '-' FatorAritmetico
+	| ChamadaFuncao
 	| TINT
 	| TFLOAT
 	| TID
 	;
+
+	
 %%
+
 #include "lex.yy.c"
 
 int yyerror (char *str)
