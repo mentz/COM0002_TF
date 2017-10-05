@@ -1,0 +1,100 @@
+<Programa> 				:= <ListaFuncoes> <BlocoPrincipal>
+						| <BlocoPrincipal>
+
+<ListaFuncoes>			:= <ListaFuncoes> <Função>
+						| <Funcao>
+
+<Funcao> 				:= <TipoRetorno> id (<DeclParametros>) <BlocoPrincipal>
+						| <TipoRetorno> id ( ) <BlocoPrincipal>
+
+<TipoRetorno>			:= <Tipo>
+						| void
+
+<DeclParametros>		:= <DeclParametros>, <Parametro>
+						| <Parametro>
+
+<Parametro>				:= <Tipo> id
+
+<BlocoPrincipal>		:= {<Declaracoes> <ListaCmd>}
+						| {<ListaCmd>}
+
+<Declaracoes> 			:= <Declaracoes> <Declaracao>
+						| <Declaração>
+
+<Declaracao>  			:= <Tipo> <ListaId>;
+
+<Tipo> 					:= int
+						| string
+						| float
+					
+<ListaId> 				:= <ListaId>, id
+						| id
+
+<Bloco> 				:= {<ListaCmd>}
+
+<ListaCmd> 				:= <ListaCmd> <Comando> 
+						| <Comando>
+
+<Comando> 				:= <CmdSe>
+						| <CmdEnquanto>
+						| <CmdAtrib>
+						| <CmdEscrita>
+						| <CmdLeitura>
+						| <ChamadaProc>
+						| <Retorno>
+					
+<Retorno> 				:= return <ExpressaoAritmetica>;
+						| return literal;
+					
+<CmdSe>					:= if (<ExpressaoLogica>) <Bloco>
+						| if (<ExpressaoLogica>) <Bloco> else <Bloco>
+					
+<CmdEquanto> 			:= while (<ExpressaoLogica>) <Bloco>
+
+<CmdAtrib> 				:= id = <ExpressaoAritmetica>;
+						| id = literal;
+					
+<CmdEscrita> 			:= print(<ExpressaoAritmetica>);
+						| print (literal);
+					
+<CmdLeitura>			:= read (id);
+
+<ChamadaProc>			:= <ChamaFunção>; 
+
+<ChamadaFuncao>			:= id (<ListaParametros>)
+						| id ()
+
+<ListaParametros>		:= <ListaParametros>, <ExpressaoAritmetica>
+						| <ListaParametros>, literal
+						| <ExpressaoAritmetica>
+						| literal
+					
+<ExpressaoRelacional>	:= <ExpressaoAritmetica> < <ExpressaoAritmetica>
+						| <ExpressaoAritmetica> > <ExpressaoAritmetica>
+						| <ExpressaoAritmetica> <= <ExpressaoAritmetica>
+						| <ExpressaoAritmetica> >= <ExpressaoAritmetica>
+						| <ExpressaoAritmetica> == <ExpressaoAritmetica>
+						| <ExpressaoAritmetica> != <ExpressaoAritmetica>
+
+<ExpressaoLogica>		:= <ExpressaoLogica> && <ArgumentoLogico>
+						| <ExpressaoLogica> || <ArgumentoLogico>
+						| <ArgumentoLogico>
+
+<ArgumentoLogico>		:= (<ExpressaoLogica>)
+						| - <ArgumentoLogico>
+						| <ExpressaoRelacional>
+
+<ExpressaoAritmetica>	:= <ExpressaoAritmetica> + <TermoAritmetico>
+						| <ExpressaoAritmetica> - <TermoAritmetico>
+						| <TermoAritmetico>
+
+<TermoAritmetico>		:= <TermoAritmetico> * <FatorAritmetico>
+						| <TermoAritmetico> / <FatorAritmetico>
+						| <FatorAritmetico>
+
+<FatorAritmetico>		:= (<ExpressaoAritmetica>)
+						| - <FatorAritmetico>
+						| <ChamadaFuncao>
+						| int
+						| float
+						| id
