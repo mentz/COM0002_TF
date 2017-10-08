@@ -14,6 +14,7 @@ literal 	\".*\"
 "float" 	{return TFLOAT;}
 "print"		{return TPRINT;}
 "read"		{return TREAD;}
+"return"	{return TRETURN;}
 "string"	{return TSTRING;}
 "void"		{return TVOID;}
 "while"		{return TWHILE;}

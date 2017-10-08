@@ -59,7 +59,7 @@
 					
 <CmdLeitura>			:= read (id);
 
-<ChamadaProc>			:= <ChamaFunção>; 
+<ChamadaProc>			:= <ChamadaFuncao>; 
 
 <ChamadaFuncao>			:= id (<ListaParametros>)
 						| id ()

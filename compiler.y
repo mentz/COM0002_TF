@@ -4,7 +4,7 @@
 #define YYSTYPE double
 %}
 
-%token TIF TINT TELSE TFLOAT TPRINT TREAD TSTRING TVOID TWHILE
+%token TIF TINT TELSE TFLOAT TPRINT TREAD TRETURN TSTRING TVOID TWHILE
 %token TMEIG TMAIG TEQ TDIF TAND TOR
 %token TID TLITERAL
 
@@ -14,14 +14,17 @@ Programa
 	: ListaFuncoes BlocoPrincipal
 	| BlocoPrincipal
 	;
+
 ListaFuncoes 
 	: ListaFuncoes Funcao 
 	| Funcao
 	;
+
 Funcao 
-        : TipoRetorno TID '('DeclParametros')' BlocoPrincipal
-        | TipoRetorno TID '('')' BlocoPrincipal 
-        ;
+	: TipoRetorno TID '('DeclParametros')' BlocoPrincipal
+	| TipoRetorno TID '('')' BlocoPrincipal 
+	;
+
 TipoRetorno 
 	: Tipo
 	| TVOID
@@ -81,15 +84,15 @@ Comando
 
 Retorno 				
 	: TRETURN ExpressaoAritmetica';'
-	| TRETURN literal';'
+	| TRETURN TLITERAL';'
 	;
 					
 CmdSe
 	: TIF '('ExpressaoLogica')' Bloco
-	| TIF '('ExpressaoLogica>')' Bloco TELSE Bloco
+	| TIF '('ExpressaoLogica')' Bloco TELSE Bloco
 	;
 				
-CmdEquanto 
+CmdEnquanto 
 	: TWHILE '('ExpressaoLogica')' Bloco
 	;
 
@@ -104,11 +107,11 @@ CmdEscrita
 	;	
 			
 CmdLeitura
-	: TREAD '('id')'';'
+	: TREAD '('TID')'';'
 	;
 
 ChamadaProc
-	: ChamaFunção';' 
+	: ChamadaFuncao';' 
 	;
 
 ChamadaFuncao			
@@ -150,13 +153,13 @@ ExpressaoAritmetica
 	| TermoAritmetico
 	;
 
-<TermoAritmetico>		
+TermoAritmetico
 	: TermoAritmetico '*' FatorAritmetico
 	| TermoAritmetico '/' FatorAritmetico
 	| FatorAritmetico
 	;
 
-<FatorAritmetico>		
+FatorAritmetico
 	: '('ExpressaoAritmetica')'
 	| '-' FatorAritmetico
 	| ChamadaFuncao
@@ -164,7 +167,6 @@ ExpressaoAritmetica
 	| TFLOAT
 	| TID
 	;
-
 	
 %%
 
