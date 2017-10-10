@@ -6,6 +6,7 @@ int 		{digito}+
 float 		{digito}+(\.{digito}*(E[+-]?{digito}+)?)?
 id 			(\_|{letra})(\_|{letra}|{digito})*
 literal 	\".*\"
+newline     \n
 
 %%
 "if"		{return TIF;}
@@ -45,4 +46,5 @@ literal 	\".*\"
 {int}		{yylval=atoi(yytext); return TINT;} 
 {float}		{yylval=atof(yytext); return TFLOAT;} 
 {literal}	{return TLITERAL;}
+{newline}	{linha++;}
 {ws}		{}

@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define YYSTYPE double
+int linha = 1;
 %}
 
 %token TIF TINT TELSE TFLOAT TPRINT TREAD TRETURN TSTRING TVOID TWHILE
@@ -174,7 +175,7 @@ FatorAritmetico
 
 int yyerror (char *str)
 {
-	printf("%s - antes %s\n", str, yytext);
+	printf("Linha %d: %s - antes %s\n", linha, str, yytext);
 	
 } 		 
 
