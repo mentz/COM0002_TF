@@ -16,6 +16,7 @@ int main(int argc, char * argv[])
 		perror("Erro de execução: Verifique o arquivo.\nErro: ");
 		return 1;
 	}
+	
 	yyparse();
 	return 0;
 }

@@ -143,7 +143,7 @@ ExpressaoLogica
 
 ArgumentoLogico		
 	: '('ExpressaoLogica')'
-	| '-' ArgumentoLogico
+	| '!' ArgumentoLogico
 	| ExpressaoRelacional
   	;
 

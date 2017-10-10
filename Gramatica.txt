@@ -81,7 +81,7 @@
 						| <ArgumentoLogico>
 
 <ArgumentoLogico>		:= (<ExpressaoLogica>)
-						| - <ArgumentoLogico>
+						| ! <ArgumentoLogico>
 						| <ExpressaoRelacional>
 
 <ExpressaoAritmetica>	:= <ExpressaoAritmetica> + <TermoAritmetico>

@@ -1,7 +1,4 @@
-Estado 93 conflitos: 10 de redução/redução
-
-
-Gramática
+Grammar
 
     0 $accept: Programa $end
 
@@ -88,7 +85,7 @@ Gramática
    57                | ArgumentoLogico
 
    58 ArgumentoLogico: '(' ExpressaoLogica ')'
-   59                | '-' ArgumentoLogico
+   59                | '!' ArgumentoLogico
    60                | ExpressaoRelacional
 
    61 ExpressaoAritmetica: ExpressaoAritmetica '+' TermoAritmetico
@@ -107,15 +104,16 @@ Gramática
    72                | TID
 
 
-Terminais, com as regras onde eles aparecem
+Terminals, with rules where they appear
 
 $end (0) 0
+'!' (33) 59
 '(' (40) 5 6 34 35 36 39 40 41 43 44 58 67
 ')' (41) 5 6 34 35 36 39 40 41 43 44 58 67
 '*' (42) 64
 '+' (43) 61
 ',' (44) 9 20 45 46
-'-' (45) 59 62 68
+'-' (45) 62 68
 '/' (47) 65
 ';' (59) 16 32 33 37 38 39 40 41 42
 '<' (60) 49
@@ -144,770 +142,773 @@ TID (274) 5 6 11 20 21 37 38 41 43 44 72
 TLITERAL (275) 33 38 40 46 48
 
 
-Não terminais com as regras onde eles aparecem
+Nonterminals, with rules where they appear
 
-$accept (34)
-    à esquerda: 0
-Programa (35)
-    à esquerda: 1 2, à direita: 0
-ListaFuncoes (36)
-    à esquerda: 3 4, à direita: 1 3
-Funcao (37)
-    à esquerda: 5 6, à direita: 3 4
-TipoRetorno (38)
-    à esquerda: 7 8, à direita: 5 6
-DeclParametros (39)
-    à esquerda: 9 10, à direita: 5 9
-Parametro (40)
-    à esquerda: 11, à direita: 9 10
-BlocoPrincipal (41)
-    à esquerda: 12 13, à direita: 1 2 5 6
-Declaracoes (42)
-    à esquerda: 14 15, à direita: 12 14
-Declaracao (43)
-    à esquerda: 16, à direita: 14 15
-Tipo (44)
-    à esquerda: 17 18 19, à direita: 7 11 16
-ListaId (45)
-    à esquerda: 20 21, à direita: 16 20
-Bloco (46)
-    à esquerda: 22, à direita: 34 35 36
-ListaCmd (47)
-    à esquerda: 23 24, à direita: 12 13 22 23
-Comando (48)
-    à esquerda: 25 26 27 28 29 30 31, à direita: 23 24
-Retorno (49)
-    à esquerda: 32 33, à direita: 31
-CmdSe (50)
-    à esquerda: 34 35, à direita: 25
-CmdEnquanto (51)
-    à esquerda: 36, à direita: 26
-CmdAtrib (52)
-    à esquerda: 37 38, à direita: 27
-CmdEscrita (53)
-    à esquerda: 39 40, à direita: 28
-CmdLeitura (54)
-    à esquerda: 41, à direita: 29
-ChamadaProc (55)
-    à esquerda: 42, à direita: 30
-ChamadaFuncao (56)
-    à esquerda: 43 44, à direita: 42 69
-ListaParametros (57)
-    à esquerda: 45 46 47 48, à direita: 43 45 46
-ExpressaoRelacional (58)
-    à esquerda: 49 50 51 52 53 54, à direita: 60
-ExpressaoLogica (59)
-    à esquerda: 55 56 57, à direita: 34 35 36 55 56 58
-ArgumentoLogico (60)
-    à esquerda: 58 59 60, à direita: 55 56 57 59
-ExpressaoAritmetica (61)
-    à esquerda: 61 62 63, à direita: 32 37 39 45 47 49 50 51 52 53
-    54 61 62 67
-TermoAritmetico (62)
-    à esquerda: 64 65 66, à direita: 61 62 63 64 65
-FatorAritmetico (63)
-    à esquerda: 67 68 69 70 71 72, à direita: 64 65 66 68
+$accept (35)
+    on left: 0
+Programa (36)
+    on left: 1 2, on right: 0
+ListaFuncoes (37)
+    on left: 3 4, on right: 1 3
+Funcao (38)
+    on left: 5 6, on right: 3 4
+TipoRetorno (39)
+    on left: 7 8, on right: 5 6
+DeclParametros (40)
+    on left: 9 10, on right: 5 9
+Parametro (41)
+    on left: 11, on right: 9 10
+BlocoPrincipal (42)
+    on left: 12 13, on right: 1 2 5 6
+Declaracoes (43)
+    on left: 14 15, on right: 12 14
+Declaracao (44)
+    on left: 16, on right: 14 15
+Tipo (45)
+    on left: 17 18 19, on right: 7 11 16
+ListaId (46)
+    on left: 20 21, on right: 16 20
+Bloco (47)
+    on left: 22, on right: 34 35 36
+ListaCmd (48)
+    on left: 23 24, on right: 12 13 22 23
+Comando (49)
+    on left: 25 26 27 28 29 30 31, on right: 23 24
+Retorno (50)
+    on left: 32 33, on right: 31
+CmdSe (51)
+    on left: 34 35, on right: 25
+CmdEnquanto (52)
+    on left: 36, on right: 26
+CmdAtrib (53)
+    on left: 37 38, on right: 27
+CmdEscrita (54)
+    on left: 39 40, on right: 28
+CmdLeitura (55)
+    on left: 41, on right: 29
+ChamadaProc (56)
+    on left: 42, on right: 30
+ChamadaFuncao (57)
+    on left: 43 44, on right: 42 69
+ListaParametros (58)
+    on left: 45 46 47 48, on right: 43 45 46
+ExpressaoRelacional (59)
+    on left: 49 50 51 52 53 54, on right: 60
+ExpressaoLogica (60)
+    on left: 55 56 57, on right: 34 35 36 55 56 58
+ArgumentoLogico (61)
+    on left: 58 59 60, on right: 55 56 57 59
+ExpressaoAritmetica (62)
+    on left: 61 62 63, on right: 32 37 39 45 47 49 50 51 52 53 54 61
+    62 67
+TermoAritmetico (63)
+    on left: 64 65 66, on right: 61 62 63 64 65
+FatorAritmetico (64)
+    on left: 67 68 69 70 71 72, on right: 64 65 66 68
 
 
-Estado 0
+State 0
 
     0 $accept: . Programa $end
 
-    TINT     deslocar, e ir ao estado 1
-    TFLOAT   deslocar, e ir ao estado 2
-    TSTRING  deslocar, e ir ao estado 3
-    TVOID    deslocar, e ir ao estado 4
-    '{'      deslocar, e ir ao estado 5
+    TINT     shift, and go to state 1
+    TFLOAT   shift, and go to state 2
+    TSTRING  shift, and go to state 3
+    TVOID    shift, and go to state 4
+    '{'      shift, and go to state 5
 
-    Programa        ir ao estado 6
-    ListaFuncoes    ir ao estado 7
-    Funcao          ir ao estado 8
-    TipoRetorno     ir ao estado 9
-    BlocoPrincipal  ir ao estado 10
-    Tipo            ir ao estado 11
+    Programa        go to state 6
+    ListaFuncoes    go to state 7
+    Funcao          go to state 8
+    TipoRetorno     go to state 9
+    BlocoPrincipal  go to state 10
+    Tipo            go to state 11
 
 
-Estado 1
+State 1
 
    17 Tipo: TINT .
 
-    $padrão  reduzir usando a regra 17 (Tipo)
+    $default  reduce using rule 17 (Tipo)
 
 
-Estado 2
+State 2
 
    19 Tipo: TFLOAT .
 
-    $padrão  reduzir usando a regra 19 (Tipo)
+    $default  reduce using rule 19 (Tipo)
 
 
-Estado 3
+State 3
 
    18 Tipo: TSTRING .
 
-    $padrão  reduzir usando a regra 18 (Tipo)
+    $default  reduce using rule 18 (Tipo)
 
 
-Estado 4
+State 4
 
     8 TipoRetorno: TVOID .
 
-    $padrão  reduzir usando a regra 8 (TipoRetorno)
+    $default  reduce using rule 8 (TipoRetorno)
 
 
-Estado 5
+State 5
 
    12 BlocoPrincipal: '{' . Declaracoes ListaCmd '}'
    13               | '{' . ListaCmd '}'
 
-    TIF      deslocar, e ir ao estado 12
-    TINT     deslocar, e ir ao estado 1
-    TFLOAT   deslocar, e ir ao estado 2
-    TPRINT   deslocar, e ir ao estado 13
-    TREAD    deslocar, e ir ao estado 14
-    TRETURN  deslocar, e ir ao estado 15
-    TSTRING  deslocar, e ir ao estado 3
-    TWHILE   deslocar, e ir ao estado 16
-    TID      deslocar, e ir ao estado 17
+    TIF      shift, and go to state 12
+    TINT     shift, and go to state 1
+    TFLOAT   shift, and go to state 2
+    TPRINT   shift, and go to state 13
+    TREAD    shift, and go to state 14
+    TRETURN  shift, and go to state 15
+    TSTRING  shift, and go to state 3
+    TWHILE   shift, and go to state 16
+    TID      shift, and go to state 17
 
-    Declaracoes    ir ao estado 18
-    Declaracao     ir ao estado 19
-    Tipo           ir ao estado 20
-    ListaCmd       ir ao estado 21
-    Comando        ir ao estado 22
-    Retorno        ir ao estado 23
-    CmdSe          ir ao estado 24
-    CmdEnquanto    ir ao estado 25
-    CmdAtrib       ir ao estado 26
-    CmdEscrita     ir ao estado 27
-    CmdLeitura     ir ao estado 28
-    ChamadaProc    ir ao estado 29
-    ChamadaFuncao  ir ao estado 30
+    Declaracoes    go to state 18
+    Declaracao     go to state 19
+    Tipo           go to state 20
+    ListaCmd       go to state 21
+    Comando        go to state 22
+    Retorno        go to state 23
+    CmdSe          go to state 24
+    CmdEnquanto    go to state 25
+    CmdAtrib       go to state 26
+    CmdEscrita     go to state 27
+    CmdLeitura     go to state 28
+    ChamadaProc    go to state 29
+    ChamadaFuncao  go to state 30
 
 
-Estado 6
+State 6
 
     0 $accept: Programa . $end
 
-    $end  deslocar, e ir ao estado 31
+    $end  shift, and go to state 31
 
 
-Estado 7
+State 7
 
     1 Programa: ListaFuncoes . BlocoPrincipal
     3 ListaFuncoes: ListaFuncoes . Funcao
 
-    TINT     deslocar, e ir ao estado 1
-    TFLOAT   deslocar, e ir ao estado 2
-    TSTRING  deslocar, e ir ao estado 3
-    TVOID    deslocar, e ir ao estado 4
-    '{'      deslocar, e ir ao estado 5
+    TINT     shift, and go to state 1
+    TFLOAT   shift, and go to state 2
+    TSTRING  shift, and go to state 3
+    TVOID    shift, and go to state 4
+    '{'      shift, and go to state 5
 
-    Funcao          ir ao estado 32
-    TipoRetorno     ir ao estado 9
-    BlocoPrincipal  ir ao estado 33
-    Tipo            ir ao estado 11
+    Funcao          go to state 32
+    TipoRetorno     go to state 9
+    BlocoPrincipal  go to state 33
+    Tipo            go to state 11
 
 
-Estado 8
+State 8
 
     4 ListaFuncoes: Funcao .
 
-    $padrão  reduzir usando a regra 4 (ListaFuncoes)
+    $default  reduce using rule 4 (ListaFuncoes)
 
 
-Estado 9
+State 9
 
     5 Funcao: TipoRetorno . TID '(' DeclParametros ')' BlocoPrincipal
     6       | TipoRetorno . TID '(' ')' BlocoPrincipal
 
-    TID  deslocar, e ir ao estado 34
+    TID  shift, and go to state 34
 
 
-Estado 10
+State 10
 
     2 Programa: BlocoPrincipal .
 
-    $padrão  reduzir usando a regra 2 (Programa)
+    $default  reduce using rule 2 (Programa)
 
 
-Estado 11
+State 11
 
     7 TipoRetorno: Tipo .
 
-    $padrão  reduzir usando a regra 7 (TipoRetorno)
+    $default  reduce using rule 7 (TipoRetorno)
 
 
-Estado 12
+State 12
 
    34 CmdSe: TIF . '(' ExpressaoLogica ')' Bloco
    35      | TIF . '(' ExpressaoLogica ')' Bloco TELSE Bloco
 
-    '('  deslocar, e ir ao estado 35
+    '('  shift, and go to state 35
 
 
-Estado 13
+State 13
 
    39 CmdEscrita: TPRINT . '(' ExpressaoAritmetica ')' ';'
    40           | TPRINT . '(' TLITERAL ')' ';'
 
-    '('  deslocar, e ir ao estado 36
+    '('  shift, and go to state 36
 
 
-Estado 14
+State 14
 
    41 CmdLeitura: TREAD . '(' TID ')' ';'
 
-    '('  deslocar, e ir ao estado 37
+    '('  shift, and go to state 37
 
 
-Estado 15
+State 15
 
    32 Retorno: TRETURN . ExpressaoAritmetica ';'
    33        | TRETURN . TLITERAL ';'
 
-    TINT      deslocar, e ir ao estado 38
-    TFLOAT    deslocar, e ir ao estado 39
-    TID       deslocar, e ir ao estado 40
-    TLITERAL  deslocar, e ir ao estado 41
-    '('       deslocar, e ir ao estado 42
-    '-'       deslocar, e ir ao estado 43
+    TINT      shift, and go to state 38
+    TFLOAT    shift, and go to state 39
+    TID       shift, and go to state 40
+    TLITERAL  shift, and go to state 41
+    '('       shift, and go to state 42
+    '-'       shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoAritmetica  ir ao estado 45
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ExpressaoAritmetica  go to state 45
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 16
+State 16
 
    36 CmdEnquanto: TWHILE . '(' ExpressaoLogica ')' Bloco
 
-    '('  deslocar, e ir ao estado 48
+    '('  shift, and go to state 48
 
 
-Estado 17
+State 17
 
    37 CmdAtrib: TID . '=' ExpressaoAritmetica ';'
    38         | TID . '=' TLITERAL ';'
    43 ChamadaFuncao: TID . '(' ListaParametros ')'
    44              | TID . '(' ')'
 
-    '('  deslocar, e ir ao estado 49
-    '='  deslocar, e ir ao estado 50
+    '('  shift, and go to state 49
+    '='  shift, and go to state 50
 
 
-Estado 18
+State 18
 
    12 BlocoPrincipal: '{' Declaracoes . ListaCmd '}'
    14 Declaracoes: Declaracoes . Declaracao
 
-    TIF      deslocar, e ir ao estado 12
-    TINT     deslocar, e ir ao estado 1
-    TFLOAT   deslocar, e ir ao estado 2
-    TPRINT   deslocar, e ir ao estado 13
-    TREAD    deslocar, e ir ao estado 14
-    TRETURN  deslocar, e ir ao estado 15
-    TSTRING  deslocar, e ir ao estado 3
-    TWHILE   deslocar, e ir ao estado 16
-    TID      deslocar, e ir ao estado 17
+    TIF      shift, and go to state 12
+    TINT     shift, and go to state 1
+    TFLOAT   shift, and go to state 2
+    TPRINT   shift, and go to state 13
+    TREAD    shift, and go to state 14
+    TRETURN  shift, and go to state 15
+    TSTRING  shift, and go to state 3
+    TWHILE   shift, and go to state 16
+    TID      shift, and go to state 17
 
-    Declaracao     ir ao estado 51
-    Tipo           ir ao estado 20
-    ListaCmd       ir ao estado 52
-    Comando        ir ao estado 22
-    Retorno        ir ao estado 23
-    CmdSe          ir ao estado 24
-    CmdEnquanto    ir ao estado 25
-    CmdAtrib       ir ao estado 26
-    CmdEscrita     ir ao estado 27
-    CmdLeitura     ir ao estado 28
-    ChamadaProc    ir ao estado 29
-    ChamadaFuncao  ir ao estado 30
+    Declaracao     go to state 51
+    Tipo           go to state 20
+    ListaCmd       go to state 52
+    Comando        go to state 22
+    Retorno        go to state 23
+    CmdSe          go to state 24
+    CmdEnquanto    go to state 25
+    CmdAtrib       go to state 26
+    CmdEscrita     go to state 27
+    CmdLeitura     go to state 28
+    ChamadaProc    go to state 29
+    ChamadaFuncao  go to state 30
 
 
-Estado 19
+State 19
 
    15 Declaracoes: Declaracao .
 
-    $padrão  reduzir usando a regra 15 (Declaracoes)
+    $default  reduce using rule 15 (Declaracoes)
 
 
-Estado 20
+State 20
 
    16 Declaracao: Tipo . ListaId ';'
 
-    TID  deslocar, e ir ao estado 53
+    TID  shift, and go to state 53
 
-    ListaId  ir ao estado 54
+    ListaId  go to state 54
 
 
-Estado 21
+State 21
 
    13 BlocoPrincipal: '{' ListaCmd . '}'
    23 ListaCmd: ListaCmd . Comando
 
-    TIF      deslocar, e ir ao estado 12
-    TPRINT   deslocar, e ir ao estado 13
-    TREAD    deslocar, e ir ao estado 14
-    TRETURN  deslocar, e ir ao estado 15
-    TWHILE   deslocar, e ir ao estado 16
-    TID      deslocar, e ir ao estado 17
-    '}'      deslocar, e ir ao estado 55
+    TIF      shift, and go to state 12
+    TPRINT   shift, and go to state 13
+    TREAD    shift, and go to state 14
+    TRETURN  shift, and go to state 15
+    TWHILE   shift, and go to state 16
+    TID      shift, and go to state 17
+    '}'      shift, and go to state 55
 
-    Comando        ir ao estado 56
-    Retorno        ir ao estado 23
-    CmdSe          ir ao estado 24
-    CmdEnquanto    ir ao estado 25
-    CmdAtrib       ir ao estado 26
-    CmdEscrita     ir ao estado 27
-    CmdLeitura     ir ao estado 28
-    ChamadaProc    ir ao estado 29
-    ChamadaFuncao  ir ao estado 30
+    Comando        go to state 56
+    Retorno        go to state 23
+    CmdSe          go to state 24
+    CmdEnquanto    go to state 25
+    CmdAtrib       go to state 26
+    CmdEscrita     go to state 27
+    CmdLeitura     go to state 28
+    ChamadaProc    go to state 29
+    ChamadaFuncao  go to state 30
 
 
-Estado 22
+State 22
 
    24 ListaCmd: Comando .
 
-    $padrão  reduzir usando a regra 24 (ListaCmd)
+    $default  reduce using rule 24 (ListaCmd)
 
 
-Estado 23
+State 23
 
    31 Comando: Retorno .
 
-    $padrão  reduzir usando a regra 31 (Comando)
+    $default  reduce using rule 31 (Comando)
 
 
-Estado 24
+State 24
 
    25 Comando: CmdSe .
 
-    $padrão  reduzir usando a regra 25 (Comando)
+    $default  reduce using rule 25 (Comando)
 
 
-Estado 25
+State 25
 
    26 Comando: CmdEnquanto .
 
-    $padrão  reduzir usando a regra 26 (Comando)
+    $default  reduce using rule 26 (Comando)
 
 
-Estado 26
+State 26
 
    27 Comando: CmdAtrib .
 
-    $padrão  reduzir usando a regra 27 (Comando)
+    $default  reduce using rule 27 (Comando)
 
 
-Estado 27
+State 27
 
    28 Comando: CmdEscrita .
 
-    $padrão  reduzir usando a regra 28 (Comando)
+    $default  reduce using rule 28 (Comando)
 
 
-Estado 28
+State 28
 
    29 Comando: CmdLeitura .
 
-    $padrão  reduzir usando a regra 29 (Comando)
+    $default  reduce using rule 29 (Comando)
 
 
-Estado 29
+State 29
 
    30 Comando: ChamadaProc .
 
-    $padrão  reduzir usando a regra 30 (Comando)
+    $default  reduce using rule 30 (Comando)
 
 
-Estado 30
+State 30
 
    42 ChamadaProc: ChamadaFuncao . ';'
 
-    ';'  deslocar, e ir ao estado 57
+    ';'  shift, and go to state 57
 
 
-Estado 31
+State 31
 
     0 $accept: Programa $end .
 
-    $padrão  aceitar
+    $default  accept
 
 
-Estado 32
+State 32
 
     3 ListaFuncoes: ListaFuncoes Funcao .
 
-    $padrão  reduzir usando a regra 3 (ListaFuncoes)
+    $default  reduce using rule 3 (ListaFuncoes)
 
 
-Estado 33
+State 33
 
     1 Programa: ListaFuncoes BlocoPrincipal .
 
-    $padrão  reduzir usando a regra 1 (Programa)
+    $default  reduce using rule 1 (Programa)
 
 
-Estado 34
+State 34
 
     5 Funcao: TipoRetorno TID . '(' DeclParametros ')' BlocoPrincipal
     6       | TipoRetorno TID . '(' ')' BlocoPrincipal
 
-    '('  deslocar, e ir ao estado 58
+    '('  shift, and go to state 58
 
 
-Estado 35
+State 35
 
    34 CmdSe: TIF '(' . ExpressaoLogica ')' Bloco
    35      | TIF '(' . ExpressaoLogica ')' Bloco TELSE Bloco
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 59
-    '-'     deslocar, e ir ao estado 60
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 59
+    '!'     shift, and go to state 60
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoRelacional  ir ao estado 61
-    ExpressaoLogica      ir ao estado 62
-    ArgumentoLogico      ir ao estado 63
-    ExpressaoAritmetica  ir ao estado 64
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ExpressaoRelacional  go to state 61
+    ExpressaoLogica      go to state 62
+    ArgumentoLogico      go to state 63
+    ExpressaoAritmetica  go to state 64
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 36
+State 36
 
    39 CmdEscrita: TPRINT '(' . ExpressaoAritmetica ')' ';'
    40           | TPRINT '(' . TLITERAL ')' ';'
 
-    TINT      deslocar, e ir ao estado 38
-    TFLOAT    deslocar, e ir ao estado 39
-    TID       deslocar, e ir ao estado 40
-    TLITERAL  deslocar, e ir ao estado 65
-    '('       deslocar, e ir ao estado 42
-    '-'       deslocar, e ir ao estado 43
+    TINT      shift, and go to state 38
+    TFLOAT    shift, and go to state 39
+    TID       shift, and go to state 40
+    TLITERAL  shift, and go to state 65
+    '('       shift, and go to state 42
+    '-'       shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoAritmetica  ir ao estado 66
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ExpressaoAritmetica  go to state 66
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 37
+State 37
 
    41 CmdLeitura: TREAD '(' . TID ')' ';'
 
-    TID  deslocar, e ir ao estado 67
+    TID  shift, and go to state 67
 
 
-Estado 38
+State 38
 
    70 FatorAritmetico: TINT .
 
-    $padrão  reduzir usando a regra 70 (FatorAritmetico)
+    $default  reduce using rule 70 (FatorAritmetico)
 
 
-Estado 39
+State 39
 
    71 FatorAritmetico: TFLOAT .
 
-    $padrão  reduzir usando a regra 71 (FatorAritmetico)
+    $default  reduce using rule 71 (FatorAritmetico)
 
 
-Estado 40
+State 40
 
    43 ChamadaFuncao: TID . '(' ListaParametros ')'
    44              | TID . '(' ')'
    72 FatorAritmetico: TID .
 
-    '('  deslocar, e ir ao estado 49
+    '('  shift, and go to state 49
 
-    $padrão  reduzir usando a regra 72 (FatorAritmetico)
+    $default  reduce using rule 72 (FatorAritmetico)
 
 
-Estado 41
+State 41
 
    33 Retorno: TRETURN TLITERAL . ';'
 
-    ';'  deslocar, e ir ao estado 68
+    ';'  shift, and go to state 68
 
 
-Estado 42
+State 42
 
    67 FatorAritmetico: '(' . ExpressaoAritmetica ')'
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 42
-    '-'     deslocar, e ir ao estado 43
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 42
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoAritmetica  ir ao estado 69
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ExpressaoAritmetica  go to state 69
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 43
+State 43
 
    68 FatorAritmetico: '-' . FatorAritmetico
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 42
-    '-'     deslocar, e ir ao estado 43
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 42
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao    ir ao estado 44
-    FatorAritmetico  ir ao estado 70
+    ChamadaFuncao    go to state 44
+    FatorAritmetico  go to state 70
 
 
-Estado 44
+State 44
 
    69 FatorAritmetico: ChamadaFuncao .
 
-    $padrão  reduzir usando a regra 69 (FatorAritmetico)
+    $default  reduce using rule 69 (FatorAritmetico)
 
 
-Estado 45
+State 45
 
    32 Retorno: TRETURN ExpressaoAritmetica . ';'
    61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
    62                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    ';'  deslocar, e ir ao estado 71
-    '-'  deslocar, e ir ao estado 72
-    '+'  deslocar, e ir ao estado 73
+    ';'  shift, and go to state 71
+    '+'  shift, and go to state 72
+    '-'  shift, and go to state 73
 
 
-Estado 46
+State 46
 
    63 ExpressaoAritmetica: TermoAritmetico .
    64 TermoAritmetico: TermoAritmetico . '*' FatorAritmetico
    65                | TermoAritmetico . '/' FatorAritmetico
 
-    '*'  deslocar, e ir ao estado 74
-    '/'  deslocar, e ir ao estado 75
+    '*'  shift, and go to state 74
+    '/'  shift, and go to state 75
 
-    $padrão  reduzir usando a regra 63 (ExpressaoAritmetica)
+    $default  reduce using rule 63 (ExpressaoAritmetica)
 
 
-Estado 47
+State 47
 
    66 TermoAritmetico: FatorAritmetico .
 
-    $padrão  reduzir usando a regra 66 (TermoAritmetico)
+    $default  reduce using rule 66 (TermoAritmetico)
 
 
-Estado 48
+State 48
 
    36 CmdEnquanto: TWHILE '(' . ExpressaoLogica ')' Bloco
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 59
-    '-'     deslocar, e ir ao estado 60
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 59
+    '!'     shift, and go to state 60
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoRelacional  ir ao estado 61
-    ExpressaoLogica      ir ao estado 76
-    ArgumentoLogico      ir ao estado 63
-    ExpressaoAritmetica  ir ao estado 64
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ExpressaoRelacional  go to state 61
+    ExpressaoLogica      go to state 76
+    ArgumentoLogico      go to state 63
+    ExpressaoAritmetica  go to state 64
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 49
+State 49
 
    43 ChamadaFuncao: TID '(' . ListaParametros ')'
    44              | TID '(' . ')'
 
-    TINT      deslocar, e ir ao estado 38
-    TFLOAT    deslocar, e ir ao estado 39
-    TID       deslocar, e ir ao estado 40
-    TLITERAL  deslocar, e ir ao estado 77
-    '('       deslocar, e ir ao estado 42
-    ')'       deslocar, e ir ao estado 78
-    '-'       deslocar, e ir ao estado 43
+    TINT      shift, and go to state 38
+    TFLOAT    shift, and go to state 39
+    TID       shift, and go to state 40
+    TLITERAL  shift, and go to state 77
+    '('       shift, and go to state 42
+    ')'       shift, and go to state 78
+    '-'       shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ListaParametros      ir ao estado 79
-    ExpressaoAritmetica  ir ao estado 80
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ListaParametros      go to state 79
+    ExpressaoAritmetica  go to state 80
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 50
+State 50
 
    37 CmdAtrib: TID '=' . ExpressaoAritmetica ';'
    38         | TID '=' . TLITERAL ';'
 
-    TINT      deslocar, e ir ao estado 38
-    TFLOAT    deslocar, e ir ao estado 39
-    TID       deslocar, e ir ao estado 40
-    TLITERAL  deslocar, e ir ao estado 81
-    '('       deslocar, e ir ao estado 42
-    '-'       deslocar, e ir ao estado 43
+    TINT      shift, and go to state 38
+    TFLOAT    shift, and go to state 39
+    TID       shift, and go to state 40
+    TLITERAL  shift, and go to state 81
+    '('       shift, and go to state 42
+    '-'       shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoAritmetica  ir ao estado 82
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ExpressaoAritmetica  go to state 82
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 51
+State 51
 
    14 Declaracoes: Declaracoes Declaracao .
 
-    $padrão  reduzir usando a regra 14 (Declaracoes)
+    $default  reduce using rule 14 (Declaracoes)
 
 
-Estado 52
+State 52
 
    12 BlocoPrincipal: '{' Declaracoes ListaCmd . '}'
    23 ListaCmd: ListaCmd . Comando
 
-    TIF      deslocar, e ir ao estado 12
-    TPRINT   deslocar, e ir ao estado 13
-    TREAD    deslocar, e ir ao estado 14
-    TRETURN  deslocar, e ir ao estado 15
-    TWHILE   deslocar, e ir ao estado 16
-    TID      deslocar, e ir ao estado 17
-    '}'      deslocar, e ir ao estado 83
+    TIF      shift, and go to state 12
+    TPRINT   shift, and go to state 13
+    TREAD    shift, and go to state 14
+    TRETURN  shift, and go to state 15
+    TWHILE   shift, and go to state 16
+    TID      shift, and go to state 17
+    '}'      shift, and go to state 83
 
-    Comando        ir ao estado 56
-    Retorno        ir ao estado 23
-    CmdSe          ir ao estado 24
-    CmdEnquanto    ir ao estado 25
-    CmdAtrib       ir ao estado 26
-    CmdEscrita     ir ao estado 27
-    CmdLeitura     ir ao estado 28
-    ChamadaProc    ir ao estado 29
-    ChamadaFuncao  ir ao estado 30
+    Comando        go to state 56
+    Retorno        go to state 23
+    CmdSe          go to state 24
+    CmdEnquanto    go to state 25
+    CmdAtrib       go to state 26
+    CmdEscrita     go to state 27
+    CmdLeitura     go to state 28
+    ChamadaProc    go to state 29
+    ChamadaFuncao  go to state 30
 
 
-Estado 53
+State 53
 
    21 ListaId: TID .
 
-    $padrão  reduzir usando a regra 21 (ListaId)
+    $default  reduce using rule 21 (ListaId)
 
 
-Estado 54
+State 54
 
    16 Declaracao: Tipo ListaId . ';'
    20 ListaId: ListaId . ',' TID
 
-    ','  deslocar, e ir ao estado 84
-    ';'  deslocar, e ir ao estado 85
+    ','  shift, and go to state 84
+    ';'  shift, and go to state 85
 
 
-Estado 55
+State 55
 
    13 BlocoPrincipal: '{' ListaCmd '}' .
 
-    $padrão  reduzir usando a regra 13 (BlocoPrincipal)
+    $default  reduce using rule 13 (BlocoPrincipal)
 
 
-Estado 56
+State 56
 
    23 ListaCmd: ListaCmd Comando .
 
-    $padrão  reduzir usando a regra 23 (ListaCmd)
+    $default  reduce using rule 23 (ListaCmd)
 
 
-Estado 57
+State 57
 
    42 ChamadaProc: ChamadaFuncao ';' .
 
-    $padrão  reduzir usando a regra 42 (ChamadaProc)
+    $default  reduce using rule 42 (ChamadaProc)
 
 
-Estado 58
+State 58
 
     5 Funcao: TipoRetorno TID '(' . DeclParametros ')' BlocoPrincipal
     6       | TipoRetorno TID '(' . ')' BlocoPrincipal
 
-    TINT     deslocar, e ir ao estado 1
-    TFLOAT   deslocar, e ir ao estado 2
-    TSTRING  deslocar, e ir ao estado 3
-    ')'      deslocar, e ir ao estado 86
+    TINT     shift, and go to state 1
+    TFLOAT   shift, and go to state 2
+    TSTRING  shift, and go to state 3
+    ')'      shift, and go to state 86
 
-    DeclParametros  ir ao estado 87
-    Parametro       ir ao estado 88
-    Tipo            ir ao estado 89
+    DeclParametros  go to state 87
+    Parametro       go to state 88
+    Tipo            go to state 89
 
 
-Estado 59
+State 59
 
    58 ArgumentoLogico: '(' . ExpressaoLogica ')'
    67 FatorAritmetico: '(' . ExpressaoAritmetica ')'
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 59
-    '-'     deslocar, e ir ao estado 60
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 59
+    '!'     shift, and go to state 60
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoRelacional  ir ao estado 61
-    ExpressaoLogica      ir ao estado 90
-    ArgumentoLogico      ir ao estado 63
-    ExpressaoAritmetica  ir ao estado 91
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
-
-
-Estado 60
-
-   59 ArgumentoLogico: '-' . ArgumentoLogico
-   68 FatorAritmetico: '-' . FatorAritmetico
-
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 59
-    '-'     deslocar, e ir ao estado 60
-
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoRelacional  ir ao estado 61
-    ArgumentoLogico      ir ao estado 92
-    ExpressaoAritmetica  ir ao estado 64
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 93
+    ChamadaFuncao        go to state 44
+    ExpressaoRelacional  go to state 61
+    ExpressaoLogica      go to state 90
+    ArgumentoLogico      go to state 63
+    ExpressaoAritmetica  go to state 91
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 61
+State 60
+
+   59 ArgumentoLogico: '!' . ArgumentoLogico
+
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 59
+    '!'     shift, and go to state 60
+    '-'     shift, and go to state 43
+
+    ChamadaFuncao        go to state 44
+    ExpressaoRelacional  go to state 61
+    ArgumentoLogico      go to state 92
+    ExpressaoAritmetica  go to state 64
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
+
+
+State 61
 
    60 ArgumentoLogico: ExpressaoRelacional .
 
-    $padrão  reduzir usando a regra 60 (ArgumentoLogico)
+    $default  reduce using rule 60 (ArgumentoLogico)
 
 
-Estado 62
+State 62
 
    34 CmdSe: TIF '(' ExpressaoLogica . ')' Bloco
    35      | TIF '(' ExpressaoLogica . ')' Bloco TELSE Bloco
    55 ExpressaoLogica: ExpressaoLogica . TAND ArgumentoLogico
    56                | ExpressaoLogica . TOR ArgumentoLogico
 
-    TAND  deslocar, e ir ao estado 94
-    TOR   deslocar, e ir ao estado 95
-    ')'   deslocar, e ir ao estado 96
+    TAND  shift, and go to state 93
+    TOR   shift, and go to state 94
+    ')'   shift, and go to state 95
 
 
-Estado 63
+State 63
 
    57 ExpressaoLogica: ArgumentoLogico .
 
-    $padrão  reduzir usando a regra 57 (ExpressaoLogica)
+    $default  reduce using rule 57 (ExpressaoLogica)
 
 
-Estado 64
+State 64
 
    49 ExpressaoRelacional: ExpressaoAritmetica . '<' ExpressaoAritmetica
    50                    | ExpressaoAritmetica . '>' ExpressaoAritmetica
@@ -918,261 +919,261 @@ Estado 64
    61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
    62                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    TMEIG  deslocar, e ir ao estado 97
-    TMAIG  deslocar, e ir ao estado 98
-    TEQ    deslocar, e ir ao estado 99
-    TDIF   deslocar, e ir ao estado 100
-    '<'    deslocar, e ir ao estado 101
-    '>'    deslocar, e ir ao estado 102
-    '-'    deslocar, e ir ao estado 72
-    '+'    deslocar, e ir ao estado 73
+    TMEIG  shift, and go to state 96
+    TMAIG  shift, and go to state 97
+    TEQ    shift, and go to state 98
+    TDIF   shift, and go to state 99
+    '<'    shift, and go to state 100
+    '>'    shift, and go to state 101
+    '+'    shift, and go to state 72
+    '-'    shift, and go to state 73
 
 
-Estado 65
+State 65
 
    40 CmdEscrita: TPRINT '(' TLITERAL . ')' ';'
 
-    ')'  deslocar, e ir ao estado 103
+    ')'  shift, and go to state 102
 
 
-Estado 66
+State 66
 
    39 CmdEscrita: TPRINT '(' ExpressaoAritmetica . ')' ';'
    61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
    62                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    ')'  deslocar, e ir ao estado 104
-    '-'  deslocar, e ir ao estado 72
-    '+'  deslocar, e ir ao estado 73
+    ')'  shift, and go to state 103
+    '+'  shift, and go to state 72
+    '-'  shift, and go to state 73
 
 
-Estado 67
+State 67
 
    41 CmdLeitura: TREAD '(' TID . ')' ';'
 
-    ')'  deslocar, e ir ao estado 105
+    ')'  shift, and go to state 104
 
 
-Estado 68
+State 68
 
    33 Retorno: TRETURN TLITERAL ';' .
 
-    $padrão  reduzir usando a regra 33 (Retorno)
+    $default  reduce using rule 33 (Retorno)
 
 
-Estado 69
+State 69
 
    61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
    62                    | ExpressaoAritmetica . '-' TermoAritmetico
    67 FatorAritmetico: '(' ExpressaoAritmetica . ')'
 
-    ')'  deslocar, e ir ao estado 106
-    '-'  deslocar, e ir ao estado 72
-    '+'  deslocar, e ir ao estado 73
+    ')'  shift, and go to state 105
+    '+'  shift, and go to state 72
+    '-'  shift, and go to state 73
 
 
-Estado 70
+State 70
 
    68 FatorAritmetico: '-' FatorAritmetico .
 
-    $padrão  reduzir usando a regra 68 (FatorAritmetico)
+    $default  reduce using rule 68 (FatorAritmetico)
 
 
-Estado 71
+State 71
 
    32 Retorno: TRETURN ExpressaoAritmetica ';' .
 
-    $padrão  reduzir usando a regra 32 (Retorno)
+    $default  reduce using rule 32 (Retorno)
 
 
-Estado 72
-
-   62 ExpressaoAritmetica: ExpressaoAritmetica '-' . TermoAritmetico
-
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 42
-    '-'     deslocar, e ir ao estado 43
-
-    ChamadaFuncao    ir ao estado 44
-    TermoAritmetico  ir ao estado 107
-    FatorAritmetico  ir ao estado 47
-
-
-Estado 73
+State 72
 
    61 ExpressaoAritmetica: ExpressaoAritmetica '+' . TermoAritmetico
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 42
-    '-'     deslocar, e ir ao estado 43
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 42
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao    ir ao estado 44
-    TermoAritmetico  ir ao estado 108
-    FatorAritmetico  ir ao estado 47
+    ChamadaFuncao    go to state 44
+    TermoAritmetico  go to state 106
+    FatorAritmetico  go to state 47
 
 
-Estado 74
+State 73
+
+   62 ExpressaoAritmetica: ExpressaoAritmetica '-' . TermoAritmetico
+
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 42
+    '-'     shift, and go to state 43
+
+    ChamadaFuncao    go to state 44
+    TermoAritmetico  go to state 107
+    FatorAritmetico  go to state 47
+
+
+State 74
 
    64 TermoAritmetico: TermoAritmetico '*' . FatorAritmetico
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 42
-    '-'     deslocar, e ir ao estado 43
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 42
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao    ir ao estado 44
-    FatorAritmetico  ir ao estado 109
+    ChamadaFuncao    go to state 44
+    FatorAritmetico  go to state 108
 
 
-Estado 75
+State 75
 
    65 TermoAritmetico: TermoAritmetico '/' . FatorAritmetico
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 42
-    '-'     deslocar, e ir ao estado 43
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 42
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao    ir ao estado 44
-    FatorAritmetico  ir ao estado 110
+    ChamadaFuncao    go to state 44
+    FatorAritmetico  go to state 109
 
 
-Estado 76
+State 76
 
    36 CmdEnquanto: TWHILE '(' ExpressaoLogica . ')' Bloco
    55 ExpressaoLogica: ExpressaoLogica . TAND ArgumentoLogico
    56                | ExpressaoLogica . TOR ArgumentoLogico
 
-    TAND  deslocar, e ir ao estado 94
-    TOR   deslocar, e ir ao estado 95
-    ')'   deslocar, e ir ao estado 111
+    TAND  shift, and go to state 93
+    TOR   shift, and go to state 94
+    ')'   shift, and go to state 110
 
 
-Estado 77
+State 77
 
    48 ListaParametros: TLITERAL .
 
-    $padrão  reduzir usando a regra 48 (ListaParametros)
+    $default  reduce using rule 48 (ListaParametros)
 
 
-Estado 78
+State 78
 
    44 ChamadaFuncao: TID '(' ')' .
 
-    $padrão  reduzir usando a regra 44 (ChamadaFuncao)
+    $default  reduce using rule 44 (ChamadaFuncao)
 
 
-Estado 79
+State 79
 
    43 ChamadaFuncao: TID '(' ListaParametros . ')'
    45 ListaParametros: ListaParametros . ',' ExpressaoAritmetica
    46                | ListaParametros . ',' TLITERAL
 
-    ')'  deslocar, e ir ao estado 112
-    ','  deslocar, e ir ao estado 113
+    ')'  shift, and go to state 111
+    ','  shift, and go to state 112
 
 
-Estado 80
+State 80
 
    47 ListaParametros: ExpressaoAritmetica .
    61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
    62                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    '-'  deslocar, e ir ao estado 72
-    '+'  deslocar, e ir ao estado 73
+    '+'  shift, and go to state 72
+    '-'  shift, and go to state 73
 
-    $padrão  reduzir usando a regra 47 (ListaParametros)
+    $default  reduce using rule 47 (ListaParametros)
 
 
-Estado 81
+State 81
 
    38 CmdAtrib: TID '=' TLITERAL . ';'
 
-    ';'  deslocar, e ir ao estado 114
+    ';'  shift, and go to state 113
 
 
-Estado 82
+State 82
 
    37 CmdAtrib: TID '=' ExpressaoAritmetica . ';'
    61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
    62                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    ';'  deslocar, e ir ao estado 115
-    '-'  deslocar, e ir ao estado 72
-    '+'  deslocar, e ir ao estado 73
+    ';'  shift, and go to state 114
+    '+'  shift, and go to state 72
+    '-'  shift, and go to state 73
 
 
-Estado 83
+State 83
 
    12 BlocoPrincipal: '{' Declaracoes ListaCmd '}' .
 
-    $padrão  reduzir usando a regra 12 (BlocoPrincipal)
+    $default  reduce using rule 12 (BlocoPrincipal)
 
 
-Estado 84
+State 84
 
    20 ListaId: ListaId ',' . TID
 
-    TID  deslocar, e ir ao estado 116
+    TID  shift, and go to state 115
 
 
-Estado 85
+State 85
 
    16 Declaracao: Tipo ListaId ';' .
 
-    $padrão  reduzir usando a regra 16 (Declaracao)
+    $default  reduce using rule 16 (Declaracao)
 
 
-Estado 86
+State 86
 
     6 Funcao: TipoRetorno TID '(' ')' . BlocoPrincipal
 
-    '{'  deslocar, e ir ao estado 5
+    '{'  shift, and go to state 5
 
-    BlocoPrincipal  ir ao estado 117
+    BlocoPrincipal  go to state 116
 
 
-Estado 87
+State 87
 
     5 Funcao: TipoRetorno TID '(' DeclParametros . ')' BlocoPrincipal
     9 DeclParametros: DeclParametros . ',' Parametro
 
-    ')'  deslocar, e ir ao estado 118
-    ','  deslocar, e ir ao estado 119
+    ')'  shift, and go to state 117
+    ','  shift, and go to state 118
 
 
-Estado 88
+State 88
 
    10 DeclParametros: Parametro .
 
-    $padrão  reduzir usando a regra 10 (DeclParametros)
+    $default  reduce using rule 10 (DeclParametros)
 
 
-Estado 89
+State 89
 
    11 Parametro: Tipo . TID
 
-    TID  deslocar, e ir ao estado 120
+    TID  shift, and go to state 119
 
 
-Estado 90
+State 90
 
    55 ExpressaoLogica: ExpressaoLogica . TAND ArgumentoLogico
    56                | ExpressaoLogica . TOR ArgumentoLogico
    58 ArgumentoLogico: '(' ExpressaoLogica . ')'
 
-    TAND  deslocar, e ir ao estado 94
-    TOR   deslocar, e ir ao estado 95
-    ')'   deslocar, e ir ao estado 121
+    TAND  shift, and go to state 93
+    TOR   shift, and go to state 94
+    ')'   shift, and go to state 120
 
 
-Estado 91
+State 91
 
    49 ExpressaoRelacional: ExpressaoAritmetica . '<' ExpressaoAritmetica
    50                    | ExpressaoAritmetica . '>' ExpressaoAritmetica
@@ -1184,580 +1185,553 @@ Estado 91
    62                    | ExpressaoAritmetica . '-' TermoAritmetico
    67 FatorAritmetico: '(' ExpressaoAritmetica . ')'
 
-    TMEIG  deslocar, e ir ao estado 97
-    TMAIG  deslocar, e ir ao estado 98
-    TEQ    deslocar, e ir ao estado 99
-    TDIF   deslocar, e ir ao estado 100
-    ')'    deslocar, e ir ao estado 106
-    '<'    deslocar, e ir ao estado 101
-    '>'    deslocar, e ir ao estado 102
-    '-'    deslocar, e ir ao estado 72
-    '+'    deslocar, e ir ao estado 73
+    TMEIG  shift, and go to state 96
+    TMAIG  shift, and go to state 97
+    TEQ    shift, and go to state 98
+    TDIF   shift, and go to state 99
+    ')'    shift, and go to state 105
+    '<'    shift, and go to state 100
+    '>'    shift, and go to state 101
+    '+'    shift, and go to state 72
+    '-'    shift, and go to state 73
 
 
-Estado 92
+State 92
 
-   59 ArgumentoLogico: '-' ArgumentoLogico .
+   59 ArgumentoLogico: '!' ArgumentoLogico .
 
-    $padrão  reduzir usando a regra 59 (ArgumentoLogico)
-
-
-Estado 93
-
-   66 TermoAritmetico: FatorAritmetico .
-   68 FatorAritmetico: '-' FatorAritmetico .
-
-    TMEIG     reduzir usando a regra 66 (TermoAritmetico)
-    TMEIG     [reduzir usando a regra 68 (FatorAritmetico)]
-    TMAIG     reduzir usando a regra 66 (TermoAritmetico)
-    TMAIG     [reduzir usando a regra 68 (FatorAritmetico)]
-    TEQ       reduzir usando a regra 66 (TermoAritmetico)
-    TEQ       [reduzir usando a regra 68 (FatorAritmetico)]
-    TDIF      reduzir usando a regra 66 (TermoAritmetico)
-    TDIF      [reduzir usando a regra 68 (FatorAritmetico)]
-    ')'       reduzir usando a regra 68 (FatorAritmetico)
-    '<'       reduzir usando a regra 66 (TermoAritmetico)
-    '<'       [reduzir usando a regra 68 (FatorAritmetico)]
-    '>'       reduzir usando a regra 66 (TermoAritmetico)
-    '>'       [reduzir usando a regra 68 (FatorAritmetico)]
-    '-'       reduzir usando a regra 66 (TermoAritmetico)
-    '-'       [reduzir usando a regra 68 (FatorAritmetico)]
-    '+'       reduzir usando a regra 66 (TermoAritmetico)
-    '+'       [reduzir usando a regra 68 (FatorAritmetico)]
-    '*'       reduzir usando a regra 66 (TermoAritmetico)
-    '*'       [reduzir usando a regra 68 (FatorAritmetico)]
-    '/'       reduzir usando a regra 66 (TermoAritmetico)
-    '/'       [reduzir usando a regra 68 (FatorAritmetico)]
-    $padrão  reduzir usando a regra 66 (TermoAritmetico)
+    $default  reduce using rule 59 (ArgumentoLogico)
 
 
-Estado 94
+State 93
 
    55 ExpressaoLogica: ExpressaoLogica TAND . ArgumentoLogico
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 59
-    '-'     deslocar, e ir ao estado 60
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 59
+    '!'     shift, and go to state 60
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoRelacional  ir ao estado 61
-    ArgumentoLogico      ir ao estado 122
-    ExpressaoAritmetica  ir ao estado 64
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ExpressaoRelacional  go to state 61
+    ArgumentoLogico      go to state 121
+    ExpressaoAritmetica  go to state 64
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 95
+State 94
 
    56 ExpressaoLogica: ExpressaoLogica TOR . ArgumentoLogico
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 59
-    '-'     deslocar, e ir ao estado 60
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 59
+    '!'     shift, and go to state 60
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoRelacional  ir ao estado 61
-    ArgumentoLogico      ir ao estado 123
-    ExpressaoAritmetica  ir ao estado 64
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ExpressaoRelacional  go to state 61
+    ArgumentoLogico      go to state 122
+    ExpressaoAritmetica  go to state 64
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 96
+State 95
 
    34 CmdSe: TIF '(' ExpressaoLogica ')' . Bloco
    35      | TIF '(' ExpressaoLogica ')' . Bloco TELSE Bloco
 
-    '{'  deslocar, e ir ao estado 124
+    '{'  shift, and go to state 123
 
-    Bloco  ir ao estado 125
+    Bloco  go to state 124
 
 
-Estado 97
+State 96
 
    51 ExpressaoRelacional: ExpressaoAritmetica TMEIG . ExpressaoAritmetica
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 42
-    '-'     deslocar, e ir ao estado 43
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 42
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoAritmetica  ir ao estado 126
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ExpressaoAritmetica  go to state 125
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 98
+State 97
 
    52 ExpressaoRelacional: ExpressaoAritmetica TMAIG . ExpressaoAritmetica
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 42
-    '-'     deslocar, e ir ao estado 43
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 42
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoAritmetica  ir ao estado 127
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ExpressaoAritmetica  go to state 126
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 99
+State 98
 
    53 ExpressaoRelacional: ExpressaoAritmetica TEQ . ExpressaoAritmetica
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 42
-    '-'     deslocar, e ir ao estado 43
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 42
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoAritmetica  ir ao estado 128
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ExpressaoAritmetica  go to state 127
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 100
+State 99
 
    54 ExpressaoRelacional: ExpressaoAritmetica TDIF . ExpressaoAritmetica
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 42
-    '-'     deslocar, e ir ao estado 43
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 42
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoAritmetica  ir ao estado 129
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ExpressaoAritmetica  go to state 128
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 101
+State 100
 
    49 ExpressaoRelacional: ExpressaoAritmetica '<' . ExpressaoAritmetica
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 42
-    '-'     deslocar, e ir ao estado 43
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 42
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoAritmetica  ir ao estado 130
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ExpressaoAritmetica  go to state 129
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 102
+State 101
 
    50 ExpressaoRelacional: ExpressaoAritmetica '>' . ExpressaoAritmetica
 
-    TINT    deslocar, e ir ao estado 38
-    TFLOAT  deslocar, e ir ao estado 39
-    TID     deslocar, e ir ao estado 40
-    '('     deslocar, e ir ao estado 42
-    '-'     deslocar, e ir ao estado 43
+    TINT    shift, and go to state 38
+    TFLOAT  shift, and go to state 39
+    TID     shift, and go to state 40
+    '('     shift, and go to state 42
+    '-'     shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoAritmetica  ir ao estado 131
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ExpressaoAritmetica  go to state 130
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 103
+State 102
 
    40 CmdEscrita: TPRINT '(' TLITERAL ')' . ';'
 
-    ';'  deslocar, e ir ao estado 132
+    ';'  shift, and go to state 131
 
 
-Estado 104
+State 103
 
    39 CmdEscrita: TPRINT '(' ExpressaoAritmetica ')' . ';'
 
-    ';'  deslocar, e ir ao estado 133
+    ';'  shift, and go to state 132
 
 
-Estado 105
+State 104
 
    41 CmdLeitura: TREAD '(' TID ')' . ';'
 
-    ';'  deslocar, e ir ao estado 134
+    ';'  shift, and go to state 133
 
 
-Estado 106
+State 105
 
    67 FatorAritmetico: '(' ExpressaoAritmetica ')' .
 
-    $padrão  reduzir usando a regra 67 (FatorAritmetico)
+    $default  reduce using rule 67 (FatorAritmetico)
 
 
-Estado 107
-
-   62 ExpressaoAritmetica: ExpressaoAritmetica '-' TermoAritmetico .
-   64 TermoAritmetico: TermoAritmetico . '*' FatorAritmetico
-   65                | TermoAritmetico . '/' FatorAritmetico
-
-    '*'  deslocar, e ir ao estado 74
-    '/'  deslocar, e ir ao estado 75
-
-    $padrão  reduzir usando a regra 62 (ExpressaoAritmetica)
-
-
-Estado 108
+State 106
 
    61 ExpressaoAritmetica: ExpressaoAritmetica '+' TermoAritmetico .
    64 TermoAritmetico: TermoAritmetico . '*' FatorAritmetico
    65                | TermoAritmetico . '/' FatorAritmetico
 
-    '*'  deslocar, e ir ao estado 74
-    '/'  deslocar, e ir ao estado 75
+    '*'  shift, and go to state 74
+    '/'  shift, and go to state 75
 
-    $padrão  reduzir usando a regra 61 (ExpressaoAritmetica)
+    $default  reduce using rule 61 (ExpressaoAritmetica)
 
 
-Estado 109
+State 107
+
+   62 ExpressaoAritmetica: ExpressaoAritmetica '-' TermoAritmetico .
+   64 TermoAritmetico: TermoAritmetico . '*' FatorAritmetico
+   65                | TermoAritmetico . '/' FatorAritmetico
+
+    '*'  shift, and go to state 74
+    '/'  shift, and go to state 75
+
+    $default  reduce using rule 62 (ExpressaoAritmetica)
+
+
+State 108
 
    64 TermoAritmetico: TermoAritmetico '*' FatorAritmetico .
 
-    $padrão  reduzir usando a regra 64 (TermoAritmetico)
+    $default  reduce using rule 64 (TermoAritmetico)
 
 
-Estado 110
+State 109
 
    65 TermoAritmetico: TermoAritmetico '/' FatorAritmetico .
 
-    $padrão  reduzir usando a regra 65 (TermoAritmetico)
+    $default  reduce using rule 65 (TermoAritmetico)
 
 
-Estado 111
+State 110
 
    36 CmdEnquanto: TWHILE '(' ExpressaoLogica ')' . Bloco
 
-    '{'  deslocar, e ir ao estado 124
+    '{'  shift, and go to state 123
 
-    Bloco  ir ao estado 135
+    Bloco  go to state 134
 
 
-Estado 112
+State 111
 
    43 ChamadaFuncao: TID '(' ListaParametros ')' .
 
-    $padrão  reduzir usando a regra 43 (ChamadaFuncao)
+    $default  reduce using rule 43 (ChamadaFuncao)
 
 
-Estado 113
+State 112
 
    45 ListaParametros: ListaParametros ',' . ExpressaoAritmetica
    46                | ListaParametros ',' . TLITERAL
 
-    TINT      deslocar, e ir ao estado 38
-    TFLOAT    deslocar, e ir ao estado 39
-    TID       deslocar, e ir ao estado 40
-    TLITERAL  deslocar, e ir ao estado 136
-    '('       deslocar, e ir ao estado 42
-    '-'       deslocar, e ir ao estado 43
+    TINT      shift, and go to state 38
+    TFLOAT    shift, and go to state 39
+    TID       shift, and go to state 40
+    TLITERAL  shift, and go to state 135
+    '('       shift, and go to state 42
+    '-'       shift, and go to state 43
 
-    ChamadaFuncao        ir ao estado 44
-    ExpressaoAritmetica  ir ao estado 137
-    TermoAritmetico      ir ao estado 46
-    FatorAritmetico      ir ao estado 47
+    ChamadaFuncao        go to state 44
+    ExpressaoAritmetica  go to state 136
+    TermoAritmetico      go to state 46
+    FatorAritmetico      go to state 47
 
 
-Estado 114
+State 113
 
    38 CmdAtrib: TID '=' TLITERAL ';' .
 
-    $padrão  reduzir usando a regra 38 (CmdAtrib)
+    $default  reduce using rule 38 (CmdAtrib)
 
 
-Estado 115
+State 114
 
    37 CmdAtrib: TID '=' ExpressaoAritmetica ';' .
 
-    $padrão  reduzir usando a regra 37 (CmdAtrib)
+    $default  reduce using rule 37 (CmdAtrib)
 
 
-Estado 116
+State 115
 
    20 ListaId: ListaId ',' TID .
 
-    $padrão  reduzir usando a regra 20 (ListaId)
+    $default  reduce using rule 20 (ListaId)
 
 
-Estado 117
+State 116
 
     6 Funcao: TipoRetorno TID '(' ')' BlocoPrincipal .
 
-    $padrão  reduzir usando a regra 6 (Funcao)
+    $default  reduce using rule 6 (Funcao)
 
 
-Estado 118
+State 117
 
     5 Funcao: TipoRetorno TID '(' DeclParametros ')' . BlocoPrincipal
 
-    '{'  deslocar, e ir ao estado 5
+    '{'  shift, and go to state 5
 
-    BlocoPrincipal  ir ao estado 138
+    BlocoPrincipal  go to state 137
 
 
-Estado 119
+State 118
 
     9 DeclParametros: DeclParametros ',' . Parametro
 
-    TINT     deslocar, e ir ao estado 1
-    TFLOAT   deslocar, e ir ao estado 2
-    TSTRING  deslocar, e ir ao estado 3
+    TINT     shift, and go to state 1
+    TFLOAT   shift, and go to state 2
+    TSTRING  shift, and go to state 3
 
-    Parametro  ir ao estado 139
-    Tipo       ir ao estado 89
+    Parametro  go to state 138
+    Tipo       go to state 89
 
 
-Estado 120
+State 119
 
    11 Parametro: Tipo TID .
 
-    $padrão  reduzir usando a regra 11 (Parametro)
+    $default  reduce using rule 11 (Parametro)
 
 
-Estado 121
+State 120
 
    58 ArgumentoLogico: '(' ExpressaoLogica ')' .
 
-    $padrão  reduzir usando a regra 58 (ArgumentoLogico)
+    $default  reduce using rule 58 (ArgumentoLogico)
 
 
-Estado 122
+State 121
 
    55 ExpressaoLogica: ExpressaoLogica TAND ArgumentoLogico .
 
-    $padrão  reduzir usando a regra 55 (ExpressaoLogica)
+    $default  reduce using rule 55 (ExpressaoLogica)
 
 
-Estado 123
+State 122
 
    56 ExpressaoLogica: ExpressaoLogica TOR ArgumentoLogico .
 
-    $padrão  reduzir usando a regra 56 (ExpressaoLogica)
+    $default  reduce using rule 56 (ExpressaoLogica)
 
 
-Estado 124
+State 123
 
    22 Bloco: '{' . ListaCmd '}'
 
-    TIF      deslocar, e ir ao estado 12
-    TPRINT   deslocar, e ir ao estado 13
-    TREAD    deslocar, e ir ao estado 14
-    TRETURN  deslocar, e ir ao estado 15
-    TWHILE   deslocar, e ir ao estado 16
-    TID      deslocar, e ir ao estado 17
+    TIF      shift, and go to state 12
+    TPRINT   shift, and go to state 13
+    TREAD    shift, and go to state 14
+    TRETURN  shift, and go to state 15
+    TWHILE   shift, and go to state 16
+    TID      shift, and go to state 17
 
-    ListaCmd       ir ao estado 140
-    Comando        ir ao estado 22
-    Retorno        ir ao estado 23
-    CmdSe          ir ao estado 24
-    CmdEnquanto    ir ao estado 25
-    CmdAtrib       ir ao estado 26
-    CmdEscrita     ir ao estado 27
-    CmdLeitura     ir ao estado 28
-    ChamadaProc    ir ao estado 29
-    ChamadaFuncao  ir ao estado 30
+    ListaCmd       go to state 139
+    Comando        go to state 22
+    Retorno        go to state 23
+    CmdSe          go to state 24
+    CmdEnquanto    go to state 25
+    CmdAtrib       go to state 26
+    CmdEscrita     go to state 27
+    CmdLeitura     go to state 28
+    ChamadaProc    go to state 29
+    ChamadaFuncao  go to state 30
 
 
-Estado 125
+State 124
 
    34 CmdSe: TIF '(' ExpressaoLogica ')' Bloco .
    35      | TIF '(' ExpressaoLogica ')' Bloco . TELSE Bloco
 
-    TELSE  deslocar, e ir ao estado 141
+    TELSE  shift, and go to state 140
 
-    $padrão  reduzir usando a regra 34 (CmdSe)
+    $default  reduce using rule 34 (CmdSe)
 
 
-Estado 126
+State 125
 
    51 ExpressaoRelacional: ExpressaoAritmetica TMEIG ExpressaoAritmetica .
    61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
    62                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    '-'  deslocar, e ir ao estado 72
-    '+'  deslocar, e ir ao estado 73
+    '+'  shift, and go to state 72
+    '-'  shift, and go to state 73
 
-    $padrão  reduzir usando a regra 51 (ExpressaoRelacional)
+    $default  reduce using rule 51 (ExpressaoRelacional)
 
 
-Estado 127
+State 126
 
    52 ExpressaoRelacional: ExpressaoAritmetica TMAIG ExpressaoAritmetica .
    61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
    62                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    '-'  deslocar, e ir ao estado 72
-    '+'  deslocar, e ir ao estado 73
+    '+'  shift, and go to state 72
+    '-'  shift, and go to state 73
 
-    $padrão  reduzir usando a regra 52 (ExpressaoRelacional)
+    $default  reduce using rule 52 (ExpressaoRelacional)
 
 
-Estado 128
+State 127
 
    53 ExpressaoRelacional: ExpressaoAritmetica TEQ ExpressaoAritmetica .
    61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
    62                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    '-'  deslocar, e ir ao estado 72
-    '+'  deslocar, e ir ao estado 73
+    '+'  shift, and go to state 72
+    '-'  shift, and go to state 73
 
-    $padrão  reduzir usando a regra 53 (ExpressaoRelacional)
+    $default  reduce using rule 53 (ExpressaoRelacional)
 
 
-Estado 129
+State 128
 
    54 ExpressaoRelacional: ExpressaoAritmetica TDIF ExpressaoAritmetica .
    61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
    62                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    '-'  deslocar, e ir ao estado 72
-    '+'  deslocar, e ir ao estado 73
+    '+'  shift, and go to state 72
+    '-'  shift, and go to state 73
 
-    $padrão  reduzir usando a regra 54 (ExpressaoRelacional)
+    $default  reduce using rule 54 (ExpressaoRelacional)
 
 
-Estado 130
+State 129
 
    49 ExpressaoRelacional: ExpressaoAritmetica '<' ExpressaoAritmetica .
    61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
    62                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    '-'  deslocar, e ir ao estado 72
-    '+'  deslocar, e ir ao estado 73
+    '+'  shift, and go to state 72
+    '-'  shift, and go to state 73
 
-    $padrão  reduzir usando a regra 49 (ExpressaoRelacional)
+    $default  reduce using rule 49 (ExpressaoRelacional)
 
 
-Estado 131
+State 130
 
    50 ExpressaoRelacional: ExpressaoAritmetica '>' ExpressaoAritmetica .
    61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
    62                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    '-'  deslocar, e ir ao estado 72
-    '+'  deslocar, e ir ao estado 73
+    '+'  shift, and go to state 72
+    '-'  shift, and go to state 73
 
-    $padrão  reduzir usando a regra 50 (ExpressaoRelacional)
+    $default  reduce using rule 50 (ExpressaoRelacional)
 
 
-Estado 132
+State 131
 
    40 CmdEscrita: TPRINT '(' TLITERAL ')' ';' .
 
-    $padrão  reduzir usando a regra 40 (CmdEscrita)
+    $default  reduce using rule 40 (CmdEscrita)
 
 
-Estado 133
+State 132
 
    39 CmdEscrita: TPRINT '(' ExpressaoAritmetica ')' ';' .
 
-    $padrão  reduzir usando a regra 39 (CmdEscrita)
+    $default  reduce using rule 39 (CmdEscrita)
 
 
-Estado 134
+State 133
 
    41 CmdLeitura: TREAD '(' TID ')' ';' .
 
-    $padrão  reduzir usando a regra 41 (CmdLeitura)
+    $default  reduce using rule 41 (CmdLeitura)
 
 
-Estado 135
+State 134
 
    36 CmdEnquanto: TWHILE '(' ExpressaoLogica ')' Bloco .
 
-    $padrão  reduzir usando a regra 36 (CmdEnquanto)
+    $default  reduce using rule 36 (CmdEnquanto)
 
 
-Estado 136
+State 135
 
    46 ListaParametros: ListaParametros ',' TLITERAL .
 
-    $padrão  reduzir usando a regra 46 (ListaParametros)
+    $default  reduce using rule 46 (ListaParametros)
 
 
-Estado 137
+State 136
 
    45 ListaParametros: ListaParametros ',' ExpressaoAritmetica .
    61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
    62                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    '-'  deslocar, e ir ao estado 72
-    '+'  deslocar, e ir ao estado 73
+    '+'  shift, and go to state 72
+    '-'  shift, and go to state 73
 
-    $padrão  reduzir usando a regra 45 (ListaParametros)
+    $default  reduce using rule 45 (ListaParametros)
 
 
-Estado 138
+State 137
 
     5 Funcao: TipoRetorno TID '(' DeclParametros ')' BlocoPrincipal .
 
-    $padrão  reduzir usando a regra 5 (Funcao)
+    $default  reduce using rule 5 (Funcao)
 
 
-Estado 139
+State 138
 
     9 DeclParametros: DeclParametros ',' Parametro .
 
-    $padrão  reduzir usando a regra 9 (DeclParametros)
+    $default  reduce using rule 9 (DeclParametros)
 
 
-Estado 140
+State 139
 
    22 Bloco: '{' ListaCmd . '}'
    23 ListaCmd: ListaCmd . Comando
 
-    TIF      deslocar, e ir ao estado 12
-    TPRINT   deslocar, e ir ao estado 13
-    TREAD    deslocar, e ir ao estado 14
-    TRETURN  deslocar, e ir ao estado 15
-    TWHILE   deslocar, e ir ao estado 16
-    TID      deslocar, e ir ao estado 17
-    '}'      deslocar, e ir ao estado 142
+    TIF      shift, and go to state 12
+    TPRINT   shift, and go to state 13
+    TREAD    shift, and go to state 14
+    TRETURN  shift, and go to state 15
+    TWHILE   shift, and go to state 16
+    TID      shift, and go to state 17
+    '}'      shift, and go to state 141
 
-    Comando        ir ao estado 56
-    Retorno        ir ao estado 23
-    CmdSe          ir ao estado 24
-    CmdEnquanto    ir ao estado 25
-    CmdAtrib       ir ao estado 26
-    CmdEscrita     ir ao estado 27
-    CmdLeitura     ir ao estado 28
-    ChamadaProc    ir ao estado 29
-    ChamadaFuncao  ir ao estado 30
+    Comando        go to state 56
+    Retorno        go to state 23
+    CmdSe          go to state 24
+    CmdEnquanto    go to state 25
+    CmdAtrib       go to state 26
+    CmdEscrita     go to state 27
+    CmdLeitura     go to state 28
+    ChamadaProc    go to state 29
+    ChamadaFuncao  go to state 30
 
 
-Estado 141
+State 140
 
    35 CmdSe: TIF '(' ExpressaoLogica ')' Bloco TELSE . Bloco
 
-    '{'  deslocar, e ir ao estado 124
+    '{'  shift, and go to state 123
 
-    Bloco  ir ao estado 143
+    Bloco  go to state 142
 
 
-Estado 142
+State 141
 
    22 Bloco: '{' ListaCmd '}' .
 
-    $padrão  reduzir usando a regra 22 (Bloco)
+    $default  reduce using rule 22 (Bloco)
 
 
-Estado 143
+State 142
 
    35 CmdSe: TIF '(' ExpressaoLogica ')' Bloco TELSE Bloco .
 
-    $padrão  reduzir usando a regra 35 (CmdSe)
+    $default  reduce using rule 35 (CmdSe)
