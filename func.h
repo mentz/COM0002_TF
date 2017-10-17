@@ -2,6 +2,7 @@
 
 struct ListaId
 {
+	char id[MAX_ID_LEN];
 	struct ListaId *prox;
 };
 
@@ -20,3 +21,9 @@ struct TabSim
 	int tipo;
 	struct TabSim *esq, *dir;
 };
+
+struct ListaId criarLista(char id[MAX_ID_LEN]);
+
+void insLista(struct ListaId lista, char id[MAX_ID_LEN]);
+
+void insTabSim(int tipo, struct ListaId lista);

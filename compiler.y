@@ -149,20 +149,20 @@ ArgumentoLogico
   	;
 
 ExpressaoAritmetica	
-	: ExpressaoAritmetica '+' TermoAritmetico {$$ = $1 + $3;}
-	| ExpressaoAritmetica '-' TermoAritmetico {$$ = $1 - $3;}
+	: ExpressaoAritmetica '+' TermoAritmetico
+	| ExpressaoAritmetica '-' TermoAritmetico
 	| TermoAritmetico
 	;
 
 TermoAritmetico
-	: TermoAritmetico '*' FatorAritmetico {$$ = $1 * $3;}
-	| TermoAritmetico '/' FatorAritmetico {$$ = $1 / $3;}
+	: TermoAritmetico '*' FatorAritmetico
+	| TermoAritmetico '/' FatorAritmetico
 	| FatorAritmetico
 	;
 
 FatorAritmetico
-	: '('ExpressaoAritmetica')' {$$ = $2;}
-	| '-' FatorAritmetico {$$ = - $2;}
+	: '('ExpressaoAritmetica')'
+	| '-' FatorAritmetico
 	| ChamadaFuncao
 	| TINT
 	| TFLOAT
