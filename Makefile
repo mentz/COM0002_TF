@@ -1,4 +1,4 @@
-IN = main.c compiler.c
+IN = main.c func.c compiler.c
 L_IN = compiler.l
 S_IN = compiler.y
 OUT = compiler

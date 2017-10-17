@@ -42,9 +42,9 @@ newline     \n
 "&&" 		{return TAND;}
 "||"		{return TOR;}
 
-{id}		{return TID;}
-{int}		{yylval=atoi(yytext); return TINT;} 
-{float}		{yylval=atof(yytext); return TFLOAT;} 
+{id}		{strncpy(yylval.id, yytext, MAX_ID_LEN - 1); return TID;}
+{int}		{yylval=atoi(yytext); return TINT;}
+{float}		{yylval=atof(yytext); return TFLOAT;}
 {literal}	{return TLITERAL;}
 {newline}	{linha++;}
 {ws}		{}

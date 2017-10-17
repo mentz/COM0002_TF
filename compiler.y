@@ -1,8 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-#define YYSTYPE double
-int linha = 1;
+#define YYSTYPE struct Atributo
 %}
 
 %token TIF TINT TELSE TFLOAT TPRINT TREAD TRETURN TSTRING TVOID TWHILE
@@ -51,18 +50,18 @@ Declaracoes
 	;
 
 Declaracao 
-	: Tipo ListaId';'
+	: Tipo ListaId';' {insTabSim($1.tipo, $2.listaId);}
 	;
 
 Tipo
-	: TINT
-	| TSTRING
-	| TFLOAT
+	: TINT {$$.tipo = T_INT;}
+	| TSTRING {$$.tipo = T_STR;}
+	| TFLOAT {$$.tipo = T_FLT;}
 	;
 
 ListaId
-	: ListaId ',' TID
-	| TID
+	: ListaId ',' TID {$$.listaId = insLista($1, $3.id);}
+	| TID {$$.listaId = criarLista($1.id);}
 	;
 
 Bloco 
@@ -73,6 +72,7 @@ ListaCmd
 	: ListaCmd Comando 
 	| Comando
 	;
+
 Comando 				
 	: CmdSe
 	| CmdEnquanto
@@ -149,20 +149,20 @@ ArgumentoLogico
   	;
 
 ExpressaoAritmetica	
-	: ExpressaoAritmetica '+' TermoAritmetico
-	| ExpressaoAritmetica '-' TermoAritmetico
+	: ExpressaoAritmetica '+' TermoAritmetico {$$ = $1 + $3;}
+	| ExpressaoAritmetica '-' TermoAritmetico {$$ = $1 - $3;}
 	| TermoAritmetico
 	;
 
 TermoAritmetico
-	: TermoAritmetico '*' FatorAritmetico
-	| TermoAritmetico '/' FatorAritmetico
+	: TermoAritmetico '*' FatorAritmetico {$$ = $1 * $3;}
+	| TermoAritmetico '/' FatorAritmetico {$$ = $1 / $3;}
 	| FatorAritmetico
 	;
 
 FatorAritmetico
-	: '('ExpressaoAritmetica')'
-	| '-' FatorAritmetico
+	: '('ExpressaoAritmetica')' {$$ = $2;}
+	| '-' FatorAritmetico {$$ = - $2;}
 	| ChamadaFuncao
 	| TINT
 	| TFLOAT
@@ -176,7 +176,6 @@ FatorAritmetico
 int yyerror (char *str)
 {
 	printf("Linha %d: %s - antes %s\n", linha, str, yytext);
-	
 } 		 
 
 int yywrap()

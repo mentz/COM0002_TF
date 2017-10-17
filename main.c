@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 extern FILE *yyin;
+extern int linha = 1;
 
 int main(int argc, char * argv[])
 {
@@ -18,6 +19,8 @@ int main(int argc, char * argv[])
 	}
 	
 	yyparse();
+
+	// IMPRIMIR TABELA DE SÍMBOLOS AQUI.
+
 	return 0;
 }
-

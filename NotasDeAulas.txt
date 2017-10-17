@@ -1,0 +1,33 @@
+Aula 17.10:
+
+Ações Semânticas
+D -> T L;
+T -> i {T.tipo = T_INT;}
+	|s {T.tipo = T_STR;}
+	|f {T.tipo = T_FLT;}
+
+L -> L, id
+	|id
+
+O reconhecimento de ID faz a inserção de identificadores
+na Tabela de Símbolos (guarda id, tipo e posição na memória).
+
+A Tabela de Símbolos pode ser implementada como árvore binária (fácil)
+ou como uma tabela Hash (ideal, bem rápida).
+
+Tabela de Símbolos como árvore binária:
+
+struct TabSim
+{
+	char id[11];
+	int tipo;
+	struct TabSim *esq, *dir;
+}
+
+
+Exemplo de derivação:
+
+D -> T L; -> T L, id; -> T L, id, id; -> T id, id, id; -> i id, id, id;
+
+Implementar toda a parte de declaração de variáveis e inserção 
+na tabela de símbolos até dia 31/10.
