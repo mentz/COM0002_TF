@@ -3,7 +3,7 @@
 extern struct Simbolo *tabSim;
 
 // CRIA LISTA DE ID AQUI
-struct ListaId* criarLista(char id[MAX_ID_LEN])
+struct ListaId* criarLista(char *id)
 {
 	struct ListaId *ret;
 	ret = malloc(sizeof(struct ListaId));
@@ -20,7 +20,7 @@ struct ListaId* criarLista(char id[MAX_ID_LEN])
 }
 
 // INSERE NA LISTA DE ID AQUI
-struct ListaId* insLista(struct Atributo *atr, char id[MAX_ID_LEN])
+struct ListaId* insLista(struct Atributo *atr, char *id)
 {
 	struct ListaId *aux = atr->listaId, *novo = NULL;
 

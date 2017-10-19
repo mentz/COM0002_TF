@@ -31,3 +31,5 @@ D -> T L; -> T L, id; -> T L, id, id; -> T id, id, id; -> i id, id, id;
 
 Implementar toda a parte de declaração de variáveis e inserção 
 na tabela de símbolos até dia 31/10.
+
+Está implementado.

@@ -19,5 +19,5 @@
 		}
 	}
 	print("\nRes=");
-	print("a");
+	print(a");
 }

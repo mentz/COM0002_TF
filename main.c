@@ -22,6 +22,8 @@ int main(int argc, char * argv[])
 
 	yyparse();
 
+	fclose(yyin);
+
 	// IMPRIMIR TABELA DE SÍMBOLOS AQUI.
 	printf("Símbolo    | Tipo\n");
 	printf("-----------------\n");

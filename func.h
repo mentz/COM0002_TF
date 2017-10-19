@@ -26,9 +26,9 @@ struct Simbolo
 	struct Simbolo *esq, *dir;
 };
 
-struct ListaId* criarLista(char id[MAX_ID_LEN]);
+struct ListaId* criarLista(char *id);
 
-struct ListaId* insLista(struct Atributo *atr, char id[MAX_ID_LEN]);
+struct ListaId* insLista(struct Atributo *atr, char *id);
 
 void insTabSim(int tipo, struct ListaId *lista);
 

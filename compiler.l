@@ -48,3 +48,5 @@ newline     \n
 {literal}	{return TLITERAL;}
 {newline}	{linha++;}
 {ws}		{}
+
+.			{printf("Aqui, você deixou isso cair: %s (linha %d)\n", yytext, linha);}
