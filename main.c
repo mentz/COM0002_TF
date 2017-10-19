@@ -1,7 +1,10 @@
 #include <stdio.h>
+#include "func.h"
 
 extern FILE *yyin;
 extern int linha = 1;
+
+struct Simbolo *tabSim = NULL;
 
 int main(int argc, char * argv[])
 {
@@ -17,10 +20,11 @@ int main(int argc, char * argv[])
 		perror("Erro de execução: Verifique o arquivo.\nErro: ");
 		return 1;
 	}
-	
+
 	yyparse();
 
 	// IMPRIMIR TABELA DE SÍMBOLOS AQUI.
+	printTabSim();
 
 	return 0;
 }
