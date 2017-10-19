@@ -2,7 +2,6 @@
 #include "func.h"
 
 extern FILE *yyin;
-extern int linha = 1;
 
 struct Simbolo *tabSim = NULL;
 
@@ -24,7 +23,9 @@ int main(int argc, char * argv[])
 	yyparse();
 
 	// IMPRIMIR TABELA DE SÍMBOLOS AQUI.
-	printTabSim();
+	printf("Símbolo    | Tipo\n");
+	printf("-----------------\n");
+	printTabSim(tabSim);
 
 	return 0;
 }

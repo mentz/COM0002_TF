@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include "func.h"
 #define YYSTYPE struct Atributo
+
+int linha = 1;
+extern struct Simbolo *tabsim;
+
 %}
 
 %token TIF TINT TELSE TFLOAT TPRINT TREAD TRETURN TSTRING TVOID TWHILE
@@ -11,27 +15,27 @@
 
 %%
 
-Programa 
+Programa
 	: ListaFuncoes BlocoPrincipal
 	| BlocoPrincipal
 	;
 
-ListaFuncoes 
-	: ListaFuncoes Funcao 
+ListaFuncoes
+	: ListaFuncoes Funcao
 	| Funcao
 	;
 
-Funcao 
+Funcao
 	: TipoRetorno TID '('DeclParametros')' BlocoPrincipal
-	| TipoRetorno TID '('')' BlocoPrincipal 
+	| TipoRetorno TID '('')' BlocoPrincipal
 	;
 
-TipoRetorno 
+TipoRetorno
 	: Tipo
 	| TVOID
 	;
 
-DeclParametros 
+DeclParametros
 	: DeclParametros ',' Parametro
 	| Parametro
 	;
@@ -40,17 +44,17 @@ Parametro
 	: Tipo TID
 	;
 
-BlocoPrincipal 
+BlocoPrincipal
 	: '{'Declaracoes ListaCmd'}'
 	| '{'ListaCmd'}'
 	;
 
-Declaracoes 
+Declaracoes
 	: Declaracoes Declaracao
 	| Declaracao
 	;
 
-Declaracao 
+Declaracao
 	: Tipo ListaId';' {insTabSim($1.tipo, $2.listaId);}
 	;
 
@@ -61,20 +65,20 @@ Tipo
 	;
 
 ListaId
-	: ListaId ',' TID {$$.listaId = insLista($1, $3.id);}
+	: ListaId ',' TID {$$.listaId = insLista(&$1, $3.id);}
 	| TID {$$.listaId = criarLista($1.id);}
 	;
 
-Bloco 
+Bloco
 	: '{'ListaCmd'}'
 	;
 
-ListaCmd 	
-	: ListaCmd Comando 
+ListaCmd
+	: ListaCmd Comando
 	| Comando
 	;
 
-Comando 				
+Comando
 	: CmdSe
 	| CmdEnquanto
 	| CmdAtrib
@@ -84,17 +88,17 @@ Comando
 	| Retorno
 	;
 
-Retorno 				
+Retorno
 	: TRETURN ExpressaoAritmetica';'
 	| TRETURN TLITERAL';'
 	;
-					
+
 CmdSe
 	: TIF '('ExpressaoLogica')' Bloco
 	| TIF '('ExpressaoLogica')' Bloco TELSE Bloco
 	;
-				
-CmdEnquanto 
+
+CmdEnquanto
 	: TWHILE '('ExpressaoLogica')' Bloco
 	;
 
@@ -102,21 +106,21 @@ CmdAtrib
 	: TID '=' ExpressaoAritmetica';'
 	| TID '=' TLITERAL ';'
 	;
-			
-CmdEscrita 
+
+CmdEscrita
 	: TPRINT '('ExpressaoAritmetica')'';'
 	| TPRINT '(' TLITERAL ')'';'
-	;	
-			
+	;
+
 CmdLeitura
 	: TREAD '('TID')'';'
 	;
 
 ChamadaProc
-	: ChamadaFuncao';' 
+	: ChamadaFuncao';'
 	;
 
-ChamadaFuncao			
+ChamadaFuncao
 	: TID '('ListaParametros')'
 	| TID '('')'
 	;
@@ -126,9 +130,9 @@ ListaParametros
 	| ListaParametros',' TLITERAL
 	| ExpressaoAritmetica
 	| TLITERAL
-	;				
+	;
 
-ExpressaoRelacional	
+ExpressaoRelacional
 	: ExpressaoAritmetica '<' ExpressaoAritmetica
 	| ExpressaoAritmetica '>' ExpressaoAritmetica
 	| ExpressaoAritmetica TMEIG ExpressaoAritmetica
@@ -137,19 +141,19 @@ ExpressaoRelacional
 	| ExpressaoAritmetica TDIF ExpressaoAritmetica
 	;
 
-ExpressaoLogica		
+ExpressaoLogica
 	: ExpressaoLogica TAND ArgumentoLogico
 	| ExpressaoLogica TOR ArgumentoLogico
 	| ArgumentoLogico
 	;
 
-ArgumentoLogico		
+ArgumentoLogico
 	: '('ExpressaoLogica')'
 	| '!' ArgumentoLogico
 	| ExpressaoRelacional
   	;
 
-ExpressaoAritmetica	
+ExpressaoAritmetica
 	: ExpressaoAritmetica '+' TermoAritmetico
 	| ExpressaoAritmetica '-' TermoAritmetico
 	| TermoAritmetico
@@ -169,7 +173,7 @@ FatorAritmetico
 	| TFLOAT
 	| TID
 	;
-	
+
 %%
 
 #include "lex.yy.c"
@@ -177,7 +181,7 @@ FatorAritmetico
 int yyerror (char *str)
 {
 	printf("Linha %d: %s - antes %s\n", linha, str, yytext);
-} 		 
+}
 
 int yywrap()
 {

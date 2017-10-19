@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MAX_ID_LEN 11
+
+enum {T_INT, T_STR, T_FLT};
 
 struct ListaId
 {
@@ -12,11 +15,9 @@ struct ListaId
 struct Atributo
 {
 	int tipo;
-	struct ListaId listaId;
+	struct ListaId *listaId;
 	char id[MAX_ID_LEN];
 };
-
-enum {T_INT, T_STR, T_FLT};
 
 struct Simbolo
 {
@@ -25,10 +26,12 @@ struct Simbolo
 	struct Simbolo *esq, *dir;
 };
 
-struct ListaId criarLista(char id[MAX_ID_LEN]);
+struct ListaId* criarLista(char id[MAX_ID_LEN]);
 
-void insLista(struct ListaId lista, char id[MAX_ID_LEN]);
+struct ListaId* insLista(struct Atributo *atr, char id[MAX_ID_LEN]);
 
-void insTabSim(struct Atributo atributos);
+void insTabSim(int tipo, struct ListaId *lista);
 
-void printTabSim();
+void freeLista(struct ListaId *lista);
+
+void printTabSim(struct Simbolo *tabSim);

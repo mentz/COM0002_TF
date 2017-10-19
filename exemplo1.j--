@@ -1,6 +1,8 @@
 {
 	int a, b;
-	
+	float d, f, g, h, i;
+	string huehufehues;
+
 	print("Valor de A:");
 	read(a);
 	print("Valor de B:");
@@ -19,4 +21,3 @@
 	print("\nRes=");
 	print("a");
 }
-	
