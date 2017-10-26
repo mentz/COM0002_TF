@@ -103,7 +103,7 @@ CmdEnquanto
 	;
 
 CmdAtrib
-	: TID '=' ExpressaoAritmetica';'
+	: TID '=' ExpressaoAritmetica';' {imprimePosOrdem($3.ptr);}
 	| TID '=' TLITERAL ';'
 	;
 
