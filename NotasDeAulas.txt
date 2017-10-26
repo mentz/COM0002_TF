@@ -68,3 +68,4 @@ F
 Adicionar "long ptr;" em struct Atributo.
 
 Fazer função que imprime cada expressão em notação pós-fixada.
+Apresentar até dia 07/11.
