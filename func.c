@@ -149,3 +149,57 @@ void printTabSim(struct Simbolo *tabSim)
 		printf("%-10s | %s\n", tabSim->id, tipo);
 	}
 }
+
+
+// Impressão pós-ordem
+void imprimePosOrdem(struct AST * raiz)
+{
+	imprimePosOrdem(raiz, 0);
+}
+
+void imprimePosOrdem(struct AST * raiz, int profundidade)
+{
+	switch (raiz->cod)
+	{
+		case ADD:
+			imprimePosOrdem(raiz->ptr1, profundidade+1);
+			imprimePosOrdem(raiz->ptr2, profundidade+1);
+			printf("+");
+			break;
+
+		case SUB:
+			imprimePosOrdem(raiz->ptr1, profundidade+1);
+			imprimePosOrdem(raiz->ptr2, profundidade+1);
+			printf("-");
+			break;
+
+		case MUL:
+			imprimePosOrdem(raiz->ptr1, profundidade+1);
+			imprimePosOrdem(raiz->ptr2, profundidade+1);
+			printf("*");
+			break;
+
+		case DIV:
+			imprimePosOrdem(raiz->ptr1, profundidade+1);
+			imprimePosOrdem(raiz->ptr2, profundidade+1);
+			printf("/");
+			break;
+
+		case CINT:
+			printf("%d", raiz->constInt);
+			break;
+
+		case CFLT:
+			printf("%f", raiz->constFloat);
+			break;
+
+		case VAR:
+			printf("%s", raiz->id->id);
+			break;
+
+		default:
+			break;
+	}
+	if (profundidade == 0)
+		printf("\n");
+}

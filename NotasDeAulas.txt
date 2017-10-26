@@ -29,7 +29,42 @@ Exemplo de derivação:
 
 D -> T L; -> T L, id; -> T L, id, id; -> T id, id, id; -> i id, id, id;
 
-Implementar toda a parte de declaração de variáveis e inserção 
+Implementar toda a parte de declaração de variáveis e inserção
 na tabela de símbolos até dia 31/10.
 
 Está implementado.
+
+
+Aula 26/10:
+
+Árvores Sintáticas Abstratas
+
+struct AST
+{
+	int cod; // MUL, DIV, ADD, SUB, CONSTINT, CONSTFLOAT, VAR (define ou enum)
+	struct Simbolo *id;
+	struct AST *ptr1, *ptr2;
+	int constInt;
+	float constFloat;
+}
+
+Exemplo:
+
+E
+	: E '+' T {$$.ptr = criarNo('+', $1.ptr, $3.ptr);}
+ 	| T {$$.ptr = $1.ptr;}
+	;
+
+T
+	: T '*' F {$$.ptr = criarNo('*', $1.ptr, $3.ptr);}
+	| F {$$.ptr = $1.ptr;}
+	;
+
+F
+	: '(' E ')' {$$.ptr = $2.ptr;}
+	| TCONST {$$.ptr = criarFolha($1.lexval);}
+	;
+
+Adicionar "long ptr;" em struct Atributo.
+
+Fazer função que imprime cada expressão em notação pós-fixada.
