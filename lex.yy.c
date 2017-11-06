@@ -928,12 +928,12 @@ YY_RULE_SETUP
 case 32:
 YY_RULE_SETUP
 #line 46 "compiler.l"
-{return TINT;}
+{yylval.ival = atoi(yytext); return TINT;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 47 "compiler.l"
-{return TFLOAT;}
+{yylval.fval = atof(yytext); return TFLOAT;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
@@ -953,12 +953,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 51 "compiler.l"
+#line 52 "compiler.l"
 {printf("Aqui, você deixou isso cair: %s (linha %d)\n", yytext, linha);}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 52 "compiler.l"
+#line 53 "compiler.l"
 ECHO;
 	YY_BREAK
 #line 964 "lex.yy.c"
@@ -1966,4 +1966,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 52 "compiler.l"
+#line 53 "compiler.l"

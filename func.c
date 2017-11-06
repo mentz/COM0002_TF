@@ -85,7 +85,7 @@ void insTabSim(int tipo, struct ListaId *lista)
 		novoSimbolo = malloc(sizeof(struct Simbolo));
 		if (!novoSimbolo)
 		{
-			perror("Erro em insTabSim, malloc novoSimbolo: ");
+			perror("Erro: [insTabSim] - malloc novoSimbolo: ");
 			exit(EXIT_FAILURE);
 		}
 
@@ -152,54 +152,126 @@ void printTabSim(struct Simbolo *tabSim)
 
 
 // Impressão pós-ordem
-void imprimePosOrdem(struct AST * raiz)
-{
-	imprimePosOrdem(raiz, 0);
-}
-
 void imprimePosOrdem(struct AST * raiz, int profundidade)
 {
 	switch (raiz->cod)
 	{
 		case ADD:
-			imprimePosOrdem(raiz->ptr1, profundidade+1);
-			imprimePosOrdem(raiz->ptr2, profundidade+1);
-			printf("+");
+			imprimePosOrdem(raiz->esq, profundidade+1);
+			imprimePosOrdem(raiz->dir, profundidade+1);
+			printf("+ ");
 			break;
 
 		case SUB:
-			imprimePosOrdem(raiz->ptr1, profundidade+1);
-			imprimePosOrdem(raiz->ptr2, profundidade+1);
-			printf("-");
+			imprimePosOrdem(raiz->esq, profundidade+1);
+			imprimePosOrdem(raiz->dir, profundidade+1);
+			printf("- ");
 			break;
 
 		case MUL:
-			imprimePosOrdem(raiz->ptr1, profundidade+1);
-			imprimePosOrdem(raiz->ptr2, profundidade+1);
-			printf("*");
+			imprimePosOrdem(raiz->esq, profundidade+1);
+			imprimePosOrdem(raiz->dir, profundidade+1);
+			printf("* ");
 			break;
 
 		case DIV:
-			imprimePosOrdem(raiz->ptr1, profundidade+1);
-			imprimePosOrdem(raiz->ptr2, profundidade+1);
-			printf("/");
+			imprimePosOrdem(raiz->esq, profundidade+1);
+			imprimePosOrdem(raiz->dir, profundidade+1);
+			printf("/ ");
 			break;
 
-		case CINT:
-			printf("%d", raiz->constInt);
+		case CONSTINT:
+			printf("%d ", raiz->constInt);
 			break;
 
-		case CFLT:
-			printf("%f", raiz->constFloat);
+		case CONSTFLOAT:
+			printf("%f ", raiz->constFloat);
 			break;
 
 		case VAR:
-			printf("%s", raiz->id->id);
+			printf("%s ", raiz->id);
+			break;
+
+		case FUNCAO:
+			printf("%s() ", raiz->id);
+			break;
+
+		case NEG:
+			printf("-");
+			imprimePosOrdem(raiz->esq, profundidade+1);
 			break;
 
 		default:
 			break;
 	}
+
+	free(raiz);
+	raiz = NULL;
+
 	if (profundidade == 0)
 		printf("\n");
+}
+
+// FAZER ISSO v
+struct AST * criarFolhaID(int tipo, char *nome)
+{
+	struct AST * folha = malloc(sizeof(struct AST));
+	if (folha == NULL)
+	{
+		perror("Erro: [criarFolhaID] - malloc(struct AST): ");
+		exit(EXIT_FAILURE);
+	}
+
+	folha->cod		= tipo;
+	strncpy(folha->id, nome, MAX_ID_LEN);
+
+	return folha;
+}
+
+// FAZER ISSO v
+struct AST * criarFolhaInt(int tipo, int value)
+{
+	struct AST * folha = malloc(sizeof(struct AST));
+	if (folha == NULL)
+	{
+		perror("Erro: [criarFolhaInt] - malloc(struct AST): ");
+		exit(EXIT_FAILURE);
+	}
+
+	folha->cod 		= tipo;
+	folha->constInt = value;
+
+	return folha;
+}
+
+// FAZER ISSO v
+struct AST * criarFolhaFloat(int tipo, float value)
+{
+	struct AST * folha = malloc(sizeof(struct AST));
+	if (folha == NULL)
+	{
+		perror("Erro: [criarFolhaFloat] - malloc(struct AST): ");
+		exit(EXIT_FAILURE);
+	}
+
+	folha->cod 		  = tipo;
+	folha->constFloat = value;
+
+	return folha;
+}
+
+struct AST * criarNoAST(int tipo, struct AST * esq, struct AST * dir)
+{
+	struct AST * no = malloc(sizeof(struct AST));
+	if (no == NULL)
+	{
+		perror("Erro: [criarNoAST] - malloc(struct AST): ");
+		exit(EXIT_FAILURE);
+	}
+
+	no->cod = tipo;
+	no->esq = esq;
+	no->dir = dir;
+
+	return no;
 }

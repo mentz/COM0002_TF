@@ -65,7 +65,7 @@ F
 	| TCONST {$$.ptr = criarFolha($1.lexval);}
 	;
 
-Adicionar "long ptr;" em struct Atributo.
+Adicionar "struct AST * ptr;" em struct Atributo.
 
 Fazer função que imprime cada expressão em notação pós-fixada.
 Apresentar até dia 07/11.

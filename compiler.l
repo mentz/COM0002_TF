@@ -43,8 +43,8 @@ newline     \n
 "||"		{return TOR;}
 
 {id}		{strncpy(yylval.id, yytext, MAX_ID_LEN - 1); return TID;}
-{int}		{return TINT;}
-{float}		{return TFLOAT;}
+{int}		{yylval.ival = atoi(yytext); return TINT;}
+{float}		{yylval.fval = atof(yytext); return TFLOAT;}
 {literal}	{return TLITERAL;}
 {newline}	{linha++;}
 {ws}		{}

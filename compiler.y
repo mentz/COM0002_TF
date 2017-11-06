@@ -103,7 +103,7 @@ CmdEnquanto
 	;
 
 CmdAtrib
-	: TID '=' ExpressaoAritmetica';' {imprimePosOrdem($3.ptr);}
+	: TID '=' ExpressaoAritmetica';' {imprimePosOrdem($3.ptr, 0);}
 	| TID '=' TLITERAL ';'
 	;
 
@@ -154,24 +154,24 @@ ArgumentoLogico
   	;
 
 ExpressaoAritmetica
-	: ExpressaoAritmetica '+' TermoAritmetico
-	| ExpressaoAritmetica '-' TermoAritmetico
-	| TermoAritmetico
+	: ExpressaoAritmetica '+' TermoAritmetico 	{$$.ptr = criarNoAST(ADD, $1.ptr, $3.ptr);}
+	| ExpressaoAritmetica '-' TermoAritmetico 	{$$.ptr = criarNoAST(SUB, $1.ptr, $3.ptr);}
+	| TermoAritmetico 							{$$.ptr = $1.ptr;}
 	;
 
 TermoAritmetico
-	: TermoAritmetico '*' FatorAritmetico
-	| TermoAritmetico '/' FatorAritmetico
-	| FatorAritmetico
+	: TermoAritmetico '*' FatorAritmetico 	{$$.ptr = criarNoAST(MUL, $1.ptr, $3.ptr);}
+	| TermoAritmetico '/' FatorAritmetico 	{$$.ptr = criarNoAST(DIV, $1.ptr, $3.ptr);}
+	| FatorAritmetico 						{$$.ptr = $1.ptr;}
 	;
 
 FatorAritmetico
-	: '('ExpressaoAritmetica')'
-	| '-' FatorAritmetico
-	| ChamadaFuncao
-	| TINT
-	| TFLOAT
-	| TID
+	: '('ExpressaoAritmetica')' {$$.ptr = $2.ptr;}
+	| '-' FatorAritmetico 		{$$.ptr = criarNoAST(NEG, $2.ptr, NULL);}
+	| ChamadaFuncao 			{$$.ptr = criarFolhaID(FUNCAO, $1.id);}
+	| TINT 						{$$.ptr = criarFolhaInt(CONSTINT, $1.ival);}
+	| TFLOAT 					{$$.ptr = criarFolhaFloat(CONSTFLOAT, $1.fval);}
+	| TID 						{$$.ptr = criarFolhaID(VAR, $1.id);}
 	;
 
 %%

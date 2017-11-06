@@ -1363,8 +1363,86 @@ yyreduce:
 #line 1364 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
+  case 38:
+#line 106 "compiler.y" /* yacc.c:1646  */
+    {imprimePosOrdem((yyvsp[-1]).ptr, 0);}
+#line 1370 "compiler.tab.c" /* yacc.c:1646  */
+    break;
 
-#line 1368 "compiler.tab.c" /* yacc.c:1646  */
+  case 62:
+#line 157 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = criarNoAST(ADD, (yyvsp[-2]).ptr, (yyvsp[0]).ptr);}
+#line 1376 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 63:
+#line 158 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = criarNoAST(SUB, (yyvsp[-2]).ptr, (yyvsp[0]).ptr);}
+#line 1382 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 64:
+#line 159 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = (yyvsp[0]).ptr;}
+#line 1388 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 65:
+#line 163 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = criarNoAST(MUL, (yyvsp[-2]).ptr, (yyvsp[0]).ptr);}
+#line 1394 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 66:
+#line 164 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = criarNoAST(DIV, (yyvsp[-2]).ptr, (yyvsp[0]).ptr);}
+#line 1400 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 67:
+#line 165 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = (yyvsp[0]).ptr;}
+#line 1406 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 68:
+#line 169 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = (yyvsp[-1]).ptr;}
+#line 1412 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 69:
+#line 170 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = criarNoAST(NEG, (yyvsp[0]).ptr, NULL);}
+#line 1418 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 70:
+#line 171 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = criarFolhaID(FUNCAO, (yyvsp[0]).id);}
+#line 1424 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 71:
+#line 172 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = criarFolhaInt(CONSTINT, (yyvsp[0]).ival);}
+#line 1430 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 72:
+#line 173 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = criarFolhaFloat(CONSTFLOAT, (yyvsp[0]).fval);}
+#line 1436 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 73:
+#line 174 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = criarFolhaID(VAR, (yyvsp[0]).id);}
+#line 1442 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+
+#line 1446 "compiler.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
