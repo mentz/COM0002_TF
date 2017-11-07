@@ -103,7 +103,7 @@ CmdEnquanto
 	;
 
 CmdAtrib
-	: TID '=' ExpressaoAritmetica';' {imprimePosOrdem($3.ptr); putchar('\n');}
+	: TID '=' ExpressaoAritmetica';' {printf("%s = ", $1.id); imprimePosOrdem($3.ptr); putchar('\n');}
 	| TID '=' TLITERAL ';'
 	;
 

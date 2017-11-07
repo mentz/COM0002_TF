@@ -1365,7 +1365,7 @@ yyreduce:
 
   case 38:
 #line 106 "compiler.y" /* yacc.c:1646  */
-    {imprimePosOrdem((yyvsp[-1]).ptr); putchar('\n');}
+    {printf("%s = ", (yyvsp[-3]).id); imprimePosOrdem((yyvsp[-1]).ptr); putchar('\n');}
 #line 1370 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
