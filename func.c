@@ -152,31 +152,31 @@ void printTabSim(struct Simbolo *tabSim)
 
 
 // Impressão pós-ordem
-void imprimePosOrdem(struct AST * raiz, int profundidade)
+void imprimePosOrdem(struct AST * raiz)
 {
 	switch (raiz->cod)
 	{
 		case ADD:
-			imprimePosOrdem(raiz->esq, profundidade+1);
-			imprimePosOrdem(raiz->dir, profundidade+1);
+			imprimePosOrdem(raiz->esq);
+			imprimePosOrdem(raiz->dir);
 			printf("+ ");
 			break;
 
 		case SUB:
-			imprimePosOrdem(raiz->esq, profundidade+1);
-			imprimePosOrdem(raiz->dir, profundidade+1);
+			imprimePosOrdem(raiz->esq);
+			imprimePosOrdem(raiz->dir);
 			printf("- ");
 			break;
 
 		case MUL:
-			imprimePosOrdem(raiz->esq, profundidade+1);
-			imprimePosOrdem(raiz->dir, profundidade+1);
+			imprimePosOrdem(raiz->esq);
+			imprimePosOrdem(raiz->dir);
 			printf("* ");
 			break;
 
 		case DIV:
-			imprimePosOrdem(raiz->esq, profundidade+1);
-			imprimePosOrdem(raiz->dir, profundidade+1);
+			imprimePosOrdem(raiz->esq);
+			imprimePosOrdem(raiz->dir);
 			printf("/ ");
 			break;
 
@@ -197,7 +197,7 @@ void imprimePosOrdem(struct AST * raiz, int profundidade)
 			break;
 
 		case NEG:
-			imprimePosOrdem(raiz->esq, profundidade+1);
+			imprimePosOrdem(raiz->esq);
 			printf("(neg) ");
 			break;
 
@@ -207,9 +207,6 @@ void imprimePosOrdem(struct AST * raiz, int profundidade)
 
 	free(raiz);
 	raiz = NULL;
-
-	if (profundidade == 0)
-		printf("\n");
 }
 
 // FAZER ISSO v
