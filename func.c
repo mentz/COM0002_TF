@@ -197,8 +197,8 @@ void imprimePosOrdem(struct AST * raiz, int profundidade)
 			break;
 
 		case NEG:
-			printf("-");
 			imprimePosOrdem(raiz->esq, profundidade+1);
+			printf("(neg) ");
 			break;
 
 		default:
