@@ -1384,7 +1384,7 @@ yyreduce:
 
   case 38:
 #line 106 "compiler.y" /* yacc.c:1646  */
-    {imprimePosOrdem((yyvsp[-1]).ptr, 0);}
+    {imprimePosOrdem((yyvsp[-1]).ptr); putchar('\n');}
 #line 1389 "y.tab.c" /* yacc.c:1646  */
     break;
 

@@ -52,7 +52,7 @@ void freeLista(struct ListaId *lista);
 
 void printTabSim(struct Simbolo *tabSim);
 
-void imprimePosOrdem(struct AST *raiz, int profundidade);
+void imprimePosOrdem(struct AST *raiz);
 struct AST * criarFolhaID(int tipo, char *nome);
 struct AST * criarFolhaInt(int tipo, int value);
 struct AST * criarFolhaFloat(int tipo, float value);
