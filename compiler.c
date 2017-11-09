@@ -466,8 +466,8 @@ static const yytype_uint8 yyrline[] =
       86,    87,    88,    92,    93,    97,    98,   102,   106,   110,
      114,   115,   119,   123,   127,   128,   132,   133,   134,   135,
      139,   140,   141,   142,   143,   144,   148,   149,   150,   154,
-     155,   156,   160,   161,   162,   166,   167,   168,   172,   173,
-     174,   175,   176,   177
+     155,   156,   160,   175,   190,   194,   209,   224,   228,   229,
+     230,   231,   232,   233
 };
 #endif
 
@@ -1393,78 +1393,143 @@ yyreduce:
 
   case 62:
 #line 160 "compiler.y" /* yacc.c:1646  */
-    {(yyval).ptr = criarNoAST(ADD, (yyvsp[-2]).ptr, (yyvsp[0]).ptr);}
-#line 1398 "y.tab.c" /* yacc.c:1646  */
+    {if ((yyvsp[-2]).tipo == CONSTINT && (yyvsp[0]).tipo == CONSTFLOAT) {
+													 (yyval).ptr = criarNoAST(MUL, i2fAST((yyvsp[-2]).ptr), (yyvsp[0]).ptr);
+													 (yyval).tipo = CONSTFLOAT;
+													 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+												 }
+												 else
+												 if ((yyvsp[-2]).tipo == CONSTFLOAT && (yyvsp[0]).tipo == CONSTINT) {
+												 	 (yyval).ptr = criarNoAST(MUL, (yyvsp[-2]).ptr, i2fAST((yyvsp[0]).ptr));
+												 	 (yyval).tipo = CONSTFLOAT;
+												 	 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+												 }
+												 else {
+												 	 (yyval).ptr = criarNoAST(MUL, (yyvsp[-2]).ptr, (yyvsp[0]).ptr);
+												 	 (yyval).tipo = (yyvsp[-2]).tipo;
+												 }}
+#line 1412 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 161 "compiler.y" /* yacc.c:1646  */
-    {(yyval).ptr = criarNoAST(SUB, (yyvsp[-2]).ptr, (yyvsp[0]).ptr);}
-#line 1404 "y.tab.c" /* yacc.c:1646  */
+#line 175 "compiler.y" /* yacc.c:1646  */
+    {if ((yyvsp[-2]).tipo == CONSTINT && (yyvsp[0]).tipo == CONSTFLOAT) {
+													 (yyval).ptr = criarNoAST(MUL, i2fAST((yyvsp[-2]).ptr), (yyvsp[0]).ptr);
+													 (yyval).tipo = CONSTFLOAT;
+													 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+												 }
+												 else
+												 if ((yyvsp[-2]).tipo == CONSTFLOAT && (yyvsp[0]).tipo == CONSTINT) {
+												 	 (yyval).ptr = criarNoAST(MUL, (yyvsp[-2]).ptr, i2fAST((yyvsp[0]).ptr));
+												 	 (yyval).tipo = CONSTFLOAT;
+												 	 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+												 }
+												 else {
+												 	 (yyval).ptr = criarNoAST(MUL, (yyvsp[-2]).ptr, (yyvsp[0]).ptr);
+												 	 (yyval).tipo = (yyvsp[-2]).tipo;
+												 }}
+#line 1432 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 162 "compiler.y" /* yacc.c:1646  */
+#line 190 "compiler.y" /* yacc.c:1646  */
     {(yyval).ptr = (yyvsp[0]).ptr;}
-#line 1410 "y.tab.c" /* yacc.c:1646  */
+#line 1438 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 166 "compiler.y" /* yacc.c:1646  */
-    {(yyval).ptr = criarNoAST(MUL, (yyvsp[-2]).ptr, (yyvsp[0]).ptr);}
-#line 1416 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 66:
-#line 167 "compiler.y" /* yacc.c:1646  */
-    {(yyval).ptr = criarNoAST(DIV, (yyvsp[-2]).ptr, (yyvsp[0]).ptr);}
-#line 1422 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 67:
-#line 168 "compiler.y" /* yacc.c:1646  */
-    {(yyval).ptr = (yyvsp[0]).ptr;}
-#line 1428 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 68:
-#line 172 "compiler.y" /* yacc.c:1646  */
-    {(yyval).ptr = (yyvsp[-1]).ptr;}
-#line 1434 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 69:
-#line 173 "compiler.y" /* yacc.c:1646  */
-    {(yyval).ptr = criarNoAST(NEG, (yyvsp[0]).ptr, NULL);}
-#line 1440 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 70:
-#line 174 "compiler.y" /* yacc.c:1646  */
-    {(yyval).ptr = criarFolhaID(FUNCAO, (yyvsp[0]).id);}
-#line 1446 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 71:
-#line 175 "compiler.y" /* yacc.c:1646  */
-    {(yyval).ptr = criarFolhaInt(CONSTINT, (yyvsp[0]).ival);}
-#line 1452 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 72:
-#line 176 "compiler.y" /* yacc.c:1646  */
-    {(yyval).ptr = criarFolhaFloat(CONSTFLOAT, (yyvsp[0]).fval);}
+#line 194 "compiler.y" /* yacc.c:1646  */
+    {if ((yyvsp[-2]).tipo == CONSTINT && (yyvsp[0]).tipo == CONSTFLOAT) {
+												 (yyval).ptr = criarNoAST(MUL, i2fAST((yyvsp[-2]).ptr), (yyvsp[0]).ptr);
+												 (yyval).tipo = CONSTFLOAT;
+												 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+											 }
+											 else
+											 if ((yyvsp[-2]).tipo == CONSTFLOAT && (yyvsp[0]).tipo == CONSTINT) {
+												 (yyval).ptr = criarNoAST(MUL, (yyvsp[-2]).ptr, i2fAST((yyvsp[0]).ptr));
+												 (yyval).tipo = CONSTFLOAT;
+												 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+											 }
+											 else {
+												 (yyval).ptr = criarNoAST(MUL, (yyvsp[-2]).ptr, (yyvsp[0]).ptr);
+												 (yyval).tipo = (yyvsp[-2]).tipo;
+											 }}
 #line 1458 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 66:
+#line 209 "compiler.y" /* yacc.c:1646  */
+    {if ((yyvsp[-2]).tipo == CONSTINT && (yyvsp[0]).tipo == CONSTFLOAT) {
+												 (yyval).ptr = criarNoAST(DIV, i2fAST((yyvsp[-2]).ptr), (yyvsp[0]).ptr);
+												 (yyval).tipo = CONSTFLOAT;
+												 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+											 }
+											 else
+											 if ((yyvsp[-2]).tipo == CONSTFLOAT && (yyvsp[0]).tipo == CONSTINT) {
+												 (yyval).ptr = criarNoAST(DIV, (yyvsp[-2]).ptr, i2fAST((yyvsp[0]).ptr));
+												 (yyval).tipo = CONSTFLOAT;
+												 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+											 }
+											 else {
+												 (yyval).ptr = criarNoAST(DIV, (yyvsp[-2]).ptr, (yyvsp[0]).ptr);
+												 (yyval).tipo = (yyvsp[-2]).tipo;
+											 }}
+#line 1478 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 67:
+#line 224 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = (yyvsp[0]).ptr; (yyval).tipo = (yyvsp[0]).tipo;}
+#line 1484 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 68:
+#line 228 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = (yyvsp[-1]).ptr; (yyval).tipo = (yyvsp[-1]).tipo;}
+#line 1490 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 69:
+#line 229 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = criarNoAST(NEG, (yyvsp[0]).ptr, NULL); (yyval).tipo = (yyvsp[0]).tipo;}
+#line 1496 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 70:
+#line 230 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = criarFolhaID(FUNCAO, (yyvsp[0]).id);}
+#line 1502 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 71:
+#line 231 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = criarFolhaInt(CONSTINT, (yyvsp[0]).ival); (yyval).tipo = T_INT;}
+#line 1508 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 72:
+#line 232 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = criarFolhaFloat(CONSTFLOAT, (yyvsp[0]).fval); (yyval).tipo = T_FLT;}
+#line 1514 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 73:
-#line 177 "compiler.y" /* yacc.c:1646  */
-    {(yyval).ptr = criarFolhaID(VAR, (yyvsp[0]).id);}
-#line 1464 "y.tab.c" /* yacc.c:1646  */
+#line 233 "compiler.y" /* yacc.c:1646  */
+    {(yyval).ptr = criarFolhaID(VAR, (yyvsp[0]).id);
+								 (yyval).tipo = consultaTipo((yyvsp[0]).id);
+								 if ((yyval).tipo == T_STR) {
+									 printf("Erro: Aritmética com string não permitida\n");
+									 exit(EXIT_FAILURE);
+								 } else if ((yyval).tipo == NAOEXISTE)
+								 {
+									 printf("Erro: Variável inexistente '%s'\n", (yyval).id);
+									 exit(EXIT_FAILURE);
+								 }}
+#line 1529 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1468 "y.tab.c" /* yacc.c:1646  */
+#line 1533 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1692,7 +1757,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 180 "compiler.y" /* yacc.c:1906  */
+#line 245 "compiler.y" /* yacc.c:1906  */
 
 
 #include "lex.yy.c"
