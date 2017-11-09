@@ -5,7 +5,7 @@
 #define MAX_ID_LEN 11
 
 enum {T_INT, T_STR, T_FLT};
-enum {MUL, DIV, ADD, SUB, CONSTINT, CONSTFLOAT, VAR, FUNCAO, NEG};
+enum {MUL, DIV, ADD, SUB, CONSTINT, CONSTFLOAT, VAR, FUNCAO, ATRIB, NEG};
 
 struct ListaId
 {

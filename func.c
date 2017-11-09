@@ -159,46 +159,56 @@ void imprimePosOrdem(struct AST * raiz)
 		case ADD:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
-			printf("+ ");
+			printf("iadd");
 			break;
 
 		case SUB:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
-			printf("- ");
+			printf("isub");
 			break;
 
 		case MUL:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
-			printf("* ");
+			printf("imul");
 			break;
 
 		case DIV:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
-			printf("/ ");
+			printf("idiv");
 			break;
 
 		case CONSTINT:
-			printf("%d ", raiz->constInt);
+			if (raiz->constInt == -1) printf("iconst_m1");
+			else if (raiz->constInt > -1 && raiz->constInt <= 5) printf("iconst_%d", raiz->constInt);
+			else if (raiz->constInt > -128 && raiz->constInt < 128) printf("bipush %d", raiz->constInt);
+			else printf("not-implemented (constint > 128)");
 			break;
 
 		case CONSTFLOAT:
-			printf("%f ", raiz->constFloat);
+			//printf("%f ", raiz->constFloat);
+			printf("not-implemented (constfloat)");
 			break;
 
 		case VAR:
-			printf("%s ", raiz->id);
+			printf("iload <%s>", raiz->id);
 			break;
 
 		case FUNCAO:
-			printf("%s() ", raiz->id);
+			printf("not-implemented (funcao)", raiz->id);
+			break;
+
+		case ATRIB:
+			//imprimePosOrdem(raiz->esq);
+			imprimePosOrdem(raiz->dir);
+			printf("istore <%s>", raiz->esq->id);
 			break;
 
 		case NEG:
 			imprimePosOrdem(raiz->esq);
-			printf("(neg) ");
+			printf("ineg");
 			break;
 
 		default:
@@ -207,6 +217,7 @@ void imprimePosOrdem(struct AST * raiz)
 
 	free(raiz);
 	raiz = NULL;
+	printf("\n");
 }
 
 // FAZER ISSO v

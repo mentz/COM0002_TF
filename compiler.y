@@ -103,7 +103,10 @@ CmdEnquanto
 	;
 
 CmdAtrib
-	: TID '=' ExpressaoAritmetica';' {printf("%s = ", $1.id); imprimePosOrdem($3.ptr); putchar('\n');}
+	: TID '=' ExpressaoAritmetica';' {$1.ptr = criarFolhaID(VAR, $1.id);
+									  $$.ptr = criarNoAST(ATRIB, $1.ptr, $3.ptr);
+									  imprimePosOrdem($$.ptr);
+									  printf("\n");}
 	| TID '=' TLITERAL ';'
 	;
 
