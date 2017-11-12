@@ -4,6 +4,7 @@
 extern FILE *yyin;
 
 struct Simbolo *tabSim = NULL;
+int frameNumber = 1;
 
 int main(int argc, char * argv[])
 {

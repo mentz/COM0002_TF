@@ -1,6 +1,7 @@
 #include "func.h"
 
 extern struct Simbolo *tabSim;
+extern int frameNumber;
 
 // CRIA LISTA DE ID AQUI
 struct ListaId* criarLista(char *id)
@@ -41,19 +42,6 @@ struct ListaId* insLista(struct Atributo *atr, char *id)
 void insTabSim(int tipo, struct ListaId *lista)
 {
 	struct Simbolo *noTabSim = tabSim, *novoSimbolo = NULL;
-
-	// Criar primeiro raiz da árvore
-	/*
-	if (noTabSim == NULL)
-	{
-		noTabSim = malloc(sizeof(struct Simbolo));
-		if (!noTabSim)
-		{
-			perror("Erro em insTabSim, malloc tabSim: ");
-			exit(EXIT_FAILURE);
-		}
-	}*/
-	// FIM
 
 	int direcao = -1;
 	struct ListaId *lista_aux = lista, *lista_aux2 = NULL;
@@ -100,6 +88,7 @@ void insTabSim(int tipo, struct ListaId *lista)
 		}
 		else
 		{
+			novoSimbolo->frame = frameNumber++;
 			if (direcao == 0)
 			{
 				noTabSim->esq = novoSimbolo;
@@ -114,6 +103,24 @@ void insTabSim(int tipo, struct ListaId *lista)
 	}
 
 	freeLista(lista);
+}
+
+int consultaTipo(char *id)
+{
+	struct Simbolo * aux = tabSim;
+	// Encontrar tipo da variável na tabela de símbolos.
+	while (aux != NULL)
+	{
+		if (strcmp(id, aux->id) < 0)
+		{
+			aux = aux->esq;
+			continue;
+		} else if (strcmp(id, aux->id) > 0)
+		{
+			aux = aux->dir;
+			continue;
+		}
+	}
 }
 
 void freeLista(struct ListaId *lista)
@@ -146,7 +153,7 @@ void printTabSim(struct Simbolo *tabSim)
 			default: strcpy(tipo, "nimplementado"); break;
 		}
 
-		printf("%-10s | %s\n", tabSim->id, tipo);
+		printf("%-10s | %d | %s\n", tabSim->id, tabSim->frame, tipo);
 	}
 }
 
@@ -159,37 +166,40 @@ void imprimePosOrdem(struct AST * raiz)
 		case ADD:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
-			printf("iadd");
+			if (raiz->cod == CONSTINT) printf("iadd");
+			else if (raiz->cod == CONSTFLOAT) printf("fadd");
 			break;
 
 		case SUB:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
-			printf("isub");
+			if (raiz->cod == CONSTINT) printf("isub");
+			else if (raiz->cod == CONSTFLOAT) printf("fsub");
 			break;
 
 		case MUL:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
-			printf("imul");
+			if (raiz->cod == CONSTINT) printf("imul");
+			else if (raiz->cod == CONSTFLOAT) printf("fmul");
 			break;
 
 		case DIV:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
-			printf("idiv");
+			if (raiz->cod == CONSTINT) printf("idiv");
+			else if (raiz->cod == CONSTFLOAT) printf("fdiv");
 			break;
 
 		case CONSTINT:
 			if (raiz->constInt == -1) printf("iconst_m1");
 			else if (raiz->constInt > -1 && raiz->constInt <= 5) printf("iconst_%d", raiz->constInt);
 			else if (raiz->constInt > -128 && raiz->constInt < 128) printf("bipush %d", raiz->constInt);
-			else printf("not-implemented (constint > 128)");
+			else printf("ldc %d", raiz->constInt);
 			break;
 
 		case CONSTFLOAT:
-			//printf("%f ", raiz->constFloat);
-			printf("not-implemented (constfloat)");
+			printf("ldc %f", raiz->constFloat);
 			break;
 
 		case VAR:
@@ -273,13 +283,28 @@ struct AST * criarNoAST(int tipo, struct AST * esq, struct AST * dir)
 	struct AST * no = malloc(sizeof(struct AST));
 	if (no == NULL)
 	{
-		perror("Erro: [criarNoAST] - malloc(struct AST): ");
+		perror("Erro: [criarNoAST] - malloc(struct AST)");
 		exit(EXIT_FAILURE);
 	}
 
 	no->cod = tipo;
 	no->esq = esq;
 	no->dir = dir;
+
+	return no;
+}
+
+// Cria um nó Int2Float, retorna seu endereço e aponta para iptr;
+struct AST * i2fAST(struct AST * iptr) {
+	struct AST * no = malloc(sizeof(struct AST));
+	if (no == NULL)
+	{
+		perror("Erro: [i2fAST] - malloc(struct AST)");
+		exit(EXIT_FAILURE);
+	}
+
+	no->cod = CONV_I2F;
+	no->esq = iptr;
 
 	return no;
 }

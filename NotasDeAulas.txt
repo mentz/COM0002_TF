@@ -69,3 +69,17 @@ Adicionar "struct AST * ptr;" em struct Atributo.
 
 Fazer função que imprime cada expressão em notação pós-fixada.
 Apresentar até dia 07/11.
+
+Assembly até 14/11.
+
+------------------------------
+Aula de 09/11/2017
+
+Análise semântica de expressões aritméticas.
+
+Somar um inteiro com float não é possível de maneira direta.
+A conversão implícita de um tipo para outro a fim de permitir operações aritméticas entre eles é chamada "coerção".
+A conversão explícita de um tipo para outro a fim de permitir operações aritméticas entre eles é chamada "cast".
+
+Fazer toda a coerção e imprimir o assembly Jasmin correspondente.
+Para dia 14.11;

@@ -157,24 +157,85 @@ ArgumentoLogico
   	;
 
 ExpressaoAritmetica
-	: ExpressaoAritmetica '+' TermoAritmetico 	{$$.ptr = criarNoAST(ADD, $1.ptr, $3.ptr);}
-	| ExpressaoAritmetica '-' TermoAritmetico 	{$$.ptr = criarNoAST(SUB, $1.ptr, $3.ptr);}
+	: ExpressaoAritmetica '+' TermoAritmetico 	{if ($1.tipo == CONSTINT && $3.tipo == CONSTFLOAT) {
+													 $$.ptr = criarNoAST(MUL, i2fAST($1.ptr), $3.ptr);
+													 $$.tipo = CONSTFLOAT;
+													 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+												 }
+												 else
+												 if ($1.tipo == CONSTFLOAT && $3.tipo == CONSTINT) {
+												 	 $$.ptr = criarNoAST(MUL, $1.ptr, i2fAST($3.ptr));
+												 	 $$.tipo = CONSTFLOAT;
+												 	 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+												 }
+												 else {
+												 	 $$.ptr = criarNoAST(MUL, $1.ptr, $3.ptr);
+												 	 $$.tipo = $1.tipo;
+												 }}
+	| ExpressaoAritmetica '-' TermoAritmetico 	{if ($1.tipo == CONSTINT && $3.tipo == CONSTFLOAT) {
+													 $$.ptr = criarNoAST(MUL, i2fAST($1.ptr), $3.ptr);
+													 $$.tipo = CONSTFLOAT;
+													 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+												 }
+												 else
+												 if ($1.tipo == CONSTFLOAT && $3.tipo == CONSTINT) {
+												 	 $$.ptr = criarNoAST(MUL, $1.ptr, i2fAST($3.ptr));
+												 	 $$.tipo = CONSTFLOAT;
+												 	 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+												 }
+												 else {
+												 	 $$.ptr = criarNoAST(MUL, $1.ptr, $3.ptr);
+												 	 $$.tipo = $1.tipo;
+												 }}
 	| TermoAritmetico 							{$$.ptr = $1.ptr;}
 	;
 
 TermoAritmetico
-	: TermoAritmetico '*' FatorAritmetico 	{$$.ptr = criarNoAST(MUL, $1.ptr, $3.ptr);}
-	| TermoAritmetico '/' FatorAritmetico 	{$$.ptr = criarNoAST(DIV, $1.ptr, $3.ptr);}
-	| FatorAritmetico 						{$$.ptr = $1.ptr;}
+	: TermoAritmetico '*' FatorAritmetico 	{if ($1.tipo == CONSTINT && $3.tipo == CONSTFLOAT) {
+												 $$.ptr = criarNoAST(MUL, i2fAST($1.ptr), $3.ptr);
+												 $$.tipo = CONSTFLOAT;
+												 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+											 }
+											 else
+											 if ($1.tipo == CONSTFLOAT && $3.tipo == CONSTINT) {
+												 $$.ptr = criarNoAST(MUL, $1.ptr, i2fAST($3.ptr));
+												 $$.tipo = CONSTFLOAT;
+												 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+											 }
+											 else {
+												 $$.ptr = criarNoAST(MUL, $1.ptr, $3.ptr);
+												 $$.tipo = $1.tipo;
+											 }}
+	| TermoAritmetico '/' FatorAritmetico 	{if ($1.tipo == CONSTINT && $3.tipo == CONSTFLOAT) {
+												 $$.ptr = criarNoAST(DIV, i2fAST($1.ptr), $3.ptr);
+												 $$.tipo = CONSTFLOAT;
+												 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+											 }
+											 else
+											 if ($1.tipo == CONSTFLOAT && $3.tipo == CONSTINT) {
+												 $$.ptr = criarNoAST(DIV, $1.ptr, i2fAST($3.ptr));
+												 $$.tipo = CONSTFLOAT;
+												 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+											 }
+											 else {
+												 $$.ptr = criarNoAST(DIV, $1.ptr, $3.ptr);
+												 $$.tipo = $1.tipo;
+											 }}
+	| FatorAritmetico 						{$$.ptr = $1.ptr; $$.tipo = $1.tipo;}
 	;
 
 FatorAritmetico
-	: '('ExpressaoAritmetica')' {$$.ptr = $2.ptr;}
-	| '-' FatorAritmetico 		{$$.ptr = criarNoAST(NEG, $2.ptr, NULL);}
+	: '('ExpressaoAritmetica')' {$$.ptr = $2.ptr; $$.tipo = $2.tipo;}
+	| '-' FatorAritmetico 		{$$.ptr = criarNoAST(NEG, $2.ptr, NULL); $$.tipo = $2.tipo;}
 	| ChamadaFuncao 			{$$.ptr = criarFolhaID(FUNCAO, $1.id);}
-	| TINT 						{$$.ptr = criarFolhaInt(CONSTINT, $1.ival);}
-	| TFLOAT 					{$$.ptr = criarFolhaFloat(CONSTFLOAT, $1.fval);}
-	| TID 						{$$.ptr = criarFolhaID(VAR, $1.id);}
+	| TINT 						{$$.ptr = criarFolhaInt(CONSTINT, $1.ival); $$.tipo = T_INT;}
+	| TFLOAT 					{$$.ptr = criarFolhaFloat(CONSTFLOAT, $1.fval); $$.tipo = T_FLT;}
+	| TID 						{$$.ptr = criarFolhaID(VAR, $1.id);
+								 $$.tipo = consultaTipo($1.id);
+								 if ($$.tipo == T_STR) {
+									 printf("Erro: Aritmética com string não permitida\n");
+									 exit(EXIT_FAILURE);
+								 }}
 	;
 
 %%

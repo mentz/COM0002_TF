@@ -5,7 +5,7 @@
 #define MAX_ID_LEN 11
 
 enum {T_INT, T_STR, T_FLT};
-enum {MUL, DIV, ADD, SUB, CONSTINT, CONSTFLOAT, VAR, FUNCAO, ATRIB, NEG};
+enum {MUL, DIV, ADD, SUB, CONSTINT, CONSTFLOAT, VAR, FUNCAO, ATRIB, NEG, CONV_I2F};
 
 struct ListaId
 {
@@ -29,6 +29,7 @@ struct Simbolo
 {
 	char id[MAX_ID_LEN];
 	int tipo;
+	int frame;
 	struct Simbolo *esq, *dir;
 };
 
@@ -43,17 +44,14 @@ struct AST
 };
 
 struct ListaId* criarLista(char *id);
-
 struct ListaId* insLista(struct Atributo *atr, char *id);
-
 void insTabSim(int tipo, struct ListaId *lista);
-
+int consultaTipo(char *id);
 void freeLista(struct ListaId *lista);
-
 void printTabSim(struct Simbolo *tabSim);
-
 void imprimePosOrdem(struct AST *raiz);
 struct AST * criarFolhaID(int tipo, char *nome);
 struct AST * criarFolhaInt(int tipo, int value);
 struct AST * criarFolhaFloat(int tipo, float value);
 struct AST * criarNoAST(int tipo, struct AST *esq, struct AST *dir);
+struct AST * i2fAST(struct AST * iptr);
