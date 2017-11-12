@@ -265,8 +265,8 @@ FatorAritmetico
 								 $$.tipo = consultaTipo($1.id);
 								 if ($$.tipo == NAOEXISTE)
 								 {
-									 printf("Erro fatal: Variável inexistente '%s'\n", $$.id);
-									 exit(EXIT_FAILURE);
+									 addError(ERR_3, linha);
+									 YYABORT;
 								 }}
 	;
 

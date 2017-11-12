@@ -51,6 +51,10 @@ void printErrors()
 				printf("- Linha %d - Erro: aritmética com string (fatal).", aux->line);
 				break;
 
+			case ERR_3:
+				printf("- Linha %d - Erro: variável inexistente (fatal).", aux->line);
+				break;
+
 			default:
 				printf(" - Erro desconhecido.");
 				break;

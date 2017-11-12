@@ -19,7 +19,8 @@ enum
 {
 	ERR_0, 		// Atribuição de tipo diferente (int a = 1.2;)
 	ERR_1, 		// Aritmética com tipos diferentes (1.5 + 1)
-	ERR_2		// Aritmética com string (1.5 * 5 + a * "oi mundo")
+	ERR_2,		// Aritmética com string (1.5 * 5 + a * "oi mundo")
+	ERR_3		// Variável inexistente com o ID informado
 };
 
 struct CompErrors

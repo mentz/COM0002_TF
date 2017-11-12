@@ -1531,8 +1531,8 @@ yyreduce:
 								 (yyval).tipo = consultaTipo((yyvsp[0]).id);
 								 if ((yyval).tipo == NAOEXISTE)
 								 {
-									 printf("Erro fatal: Variável inexistente '%s'\n", (yyval).id);
-									 exit(EXIT_FAILURE);
+									 addError(ERR_3, linha);
+									 YYABORT;
 								 }}
 #line 1538 "compiler.tab.c" /* yacc.c:1646  */
     break;
