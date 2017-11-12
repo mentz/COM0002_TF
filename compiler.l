@@ -49,4 +49,4 @@ newline     \n
 {newline}	{linha++;}
 {ws}		{}
 
-.			{printf("Aqui, você deixou isso cair: %s (linha %d)\n", yytext, linha);}
+.			{printf("Token não reconhecido: %s (linha %d)\n", yytext, linha);}

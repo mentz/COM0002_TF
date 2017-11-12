@@ -104,14 +104,27 @@ CmdEnquanto
 
 CmdAtrib
 	: TID '=' ExpressaoAritmetica';' {$1.ptr = criarFolhaID(VAR, $1.id);
-									  $$.ptr = criarNoAST(ATRIB, $1.ptr, $3.ptr);
+									  $1.tipo = consultaTipo($1.id);
+									  if ($1.tipo == T_INT && $3.tipo == T_FLT) {
+										  $$.ptr = criarNoAST(ATRIB, $1.ptr, f2iAST($3.ptr));
+										  addError(ERR_0, linha);
+									  }
+									  else
+									  if ($1.tipo == T_FLT && $3.tipo == T_INT) {
+										  $$.ptr = criarNoAST(ATRIB, $1.ptr, i2fAST($3.ptr));
+										  addError(ERR_0, linha);
+									  }
+									  else {
+										  $$.ptr = criarNoAST(ATRIB, $1.ptr, $3.ptr);
+								  		  $$.tipo = $1.tipo;
+									  }
 									  imprimePosOrdem($$.ptr);
-									  printf("\n");}
+									  printf("----------\n");}
 	| TID '=' TLITERAL ';'
 	;
 
 CmdEscrita
-	: TPRINT '('ExpressaoAritmetica')'';'
+	: TPRINT '(' ExpressaoAritmetica ')'';'
 	| TPRINT '(' TLITERAL ')'';'
 	;
 
@@ -157,65 +170,79 @@ ArgumentoLogico
   	;
 
 ExpressaoAritmetica
-	: ExpressaoAritmetica '+' TermoAritmetico 	{if ($1.tipo == CONSTINT && $3.tipo == CONSTFLOAT) {
-													 $$.ptr = criarNoAST(MUL, i2fAST($1.ptr), $3.ptr);
-													 $$.tipo = CONSTFLOAT;
-													 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+	: ExpressaoAritmetica '+' TermoAritmetico 	{if ($1.tipo == T_STR || $3.tipo == T_STR) {
+											        addError(ERR_2, linha);
+												    YYABORT;
+										         }
+											     else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
+													 $$.ptr = criarNoAST(ADD, i2fAST($1.ptr), $3.ptr);
+													 $$.tipo = T_FLT;
+													 addError(ERR_1, linha);
 												 }
 												 else
-												 if ($1.tipo == CONSTFLOAT && $3.tipo == CONSTINT) {
-												 	 $$.ptr = criarNoAST(MUL, $1.ptr, i2fAST($3.ptr));
-												 	 $$.tipo = CONSTFLOAT;
-												 	 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+												 if ($1.tipo == T_FLT && $3.tipo == T_INT) {
+												 	 $$.ptr = criarNoAST(ADD, $1.ptr, i2fAST($3.ptr));
+												 	 $$.tipo = T_FLT;
+												 	 addError(ERR_1, linha);
 												 }
 												 else {
-												 	 $$.ptr = criarNoAST(MUL, $1.ptr, $3.ptr);
+												 	 $$.ptr = criarNoAST(ADD, $1.ptr, $3.ptr);
 												 	 $$.tipo = $1.tipo;
 												 }}
-	| ExpressaoAritmetica '-' TermoAritmetico 	{if ($1.tipo == CONSTINT && $3.tipo == CONSTFLOAT) {
-													 $$.ptr = criarNoAST(MUL, i2fAST($1.ptr), $3.ptr);
-													 $$.tipo = CONSTFLOAT;
-													 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+	| ExpressaoAritmetica '-' TermoAritmetico 	{if ($1.tipo == T_STR || $3.tipo == T_STR) {
+											        addError(ERR_2, linha);
+												    YYABORT;
+										         }
+										    	 else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
+													 $$.ptr = criarNoAST(SUB, i2fAST($1.ptr), $3.ptr);
+													 $$.tipo = T_FLT;
+													 addError(ERR_1, linha);
 												 }
 												 else
-												 if ($1.tipo == CONSTFLOAT && $3.tipo == CONSTINT) {
-												 	 $$.ptr = criarNoAST(MUL, $1.ptr, i2fAST($3.ptr));
-												 	 $$.tipo = CONSTFLOAT;
-												 	 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+												 if ($1.tipo == T_FLT && $3.tipo == T_INT) {
+												 	 $$.ptr = criarNoAST(SUB, $1.ptr, i2fAST($3.ptr));
+												 	 $$.tipo = T_FLT;
+												 	 addError(ERR_1, linha);
 												 }
 												 else {
-												 	 $$.ptr = criarNoAST(MUL, $1.ptr, $3.ptr);
+												 	 $$.ptr = criarNoAST(SUB, $1.ptr, $3.ptr);
 												 	 $$.tipo = $1.tipo;
 												 }}
 	| TermoAritmetico 							{$$.ptr = $1.ptr;}
 	;
 
 TermoAritmetico
-	: TermoAritmetico '*' FatorAritmetico 	{if ($1.tipo == CONSTINT && $3.tipo == CONSTFLOAT) {
+	: TermoAritmetico '*' FatorAritmetico 	{if ($1.tipo == T_STR || $3.tipo == T_STR) {
+											    addError(ERR_2, linha);
+												YYABORT;
+										     }
+											 else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
 												 $$.ptr = criarNoAST(MUL, i2fAST($1.ptr), $3.ptr);
-												 $$.tipo = CONSTFLOAT;
-												 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+												 $$.tipo = T_FLT;
+												 addError(ERR_1, linha);
 											 }
-											 else
-											 if ($1.tipo == CONSTFLOAT && $3.tipo == CONSTINT) {
+											 else if ($1.tipo == T_FLT && $3.tipo == T_INT) {
 												 $$.ptr = criarNoAST(MUL, $1.ptr, i2fAST($3.ptr));
-												 $$.tipo = CONSTFLOAT;
-												 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+												 $$.tipo = T_FLT;
+												 addError(ERR_1, linha);
 											 }
 											 else {
 												 $$.ptr = criarNoAST(MUL, $1.ptr, $3.ptr);
 												 $$.tipo = $1.tipo;
 											 }}
-	| TermoAritmetico '/' FatorAritmetico 	{if ($1.tipo == CONSTINT && $3.tipo == CONSTFLOAT) {
+	| TermoAritmetico '/' FatorAritmetico 	{if ($1.tipo == T_STR || $3.tipo == T_STR) {
+											    addError(ERR_2, linha);
+												YYABORT;
+										     }
+											 else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
 												 $$.ptr = criarNoAST(DIV, i2fAST($1.ptr), $3.ptr);
-												 $$.tipo = CONSTFLOAT;
-												 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+												 $$.tipo = T_FLT;
+												 addError(ERR_1, linha);
 											 }
-											 else
-											 if ($1.tipo == CONSTFLOAT && $3.tipo == CONSTINT) {
+											 else if ($1.tipo == T_FLT && $3.tipo == T_INT) {
 												 $$.ptr = criarNoAST(DIV, $1.ptr, i2fAST($3.ptr));
-												 $$.tipo = CONSTFLOAT;
-												 printf("Warn: Cálculo com operandos de tipos diferentes\n");
+												 $$.tipo = T_FLT;
+												 addError(ERR_1, linha);
 											 }
 											 else {
 												 $$.ptr = criarNoAST(DIV, $1.ptr, $3.ptr);
@@ -225,19 +252,20 @@ TermoAritmetico
 	;
 
 FatorAritmetico
-	: '('ExpressaoAritmetica')' {$$.ptr = $2.ptr; $$.tipo = $2.tipo;}
-	| '-' FatorAritmetico 		{$$.ptr = criarNoAST(NEG, $2.ptr, NULL); $$.tipo = $2.tipo;}
+	: '('ExpressaoAritmetica')' {$$.tipo = $2.tipo;
+	                             $$.ptr = $2.ptr;}
+	| '-' FatorAritmetico 		{$$.tipo = $2.tipo;
+	                             $$.ptr = criarNoAST(NEG, $2.ptr, NULL);}
 	| ChamadaFuncao 			{$$.ptr = criarFolhaID(FUNCAO, $1.id);}
-	| TINT 						{$$.ptr = criarFolhaInt(CONSTINT, $1.ival); $$.tipo = T_INT;}
-	| TFLOAT 					{$$.ptr = criarFolhaFloat(CONSTFLOAT, $1.fval); $$.tipo = T_FLT;}
+	| TINT 						{$$.tipo = T_INT;
+	                             $$.ptr = criarFolhaInt(CONSTINT, $1.ival);}
+	| TFLOAT 					{$$.tipo = T_FLT;
+	                             $$.ptr = criarFolhaFloat(CONSTFLOAT, $1.fval);}
 	| TID 						{$$.ptr = criarFolhaID(VAR, $1.id);
 								 $$.tipo = consultaTipo($1.id);
-								 if ($$.tipo == T_STR) {
-									 printf("Erro: Aritmética com string não permitida\n");
-									 exit(EXIT_FAILURE);
-								 } else if ($$.tipo == NAOEXISTE)
+								 if ($$.tipo == NAOEXISTE)
 								 {
-									 printf("Erro: Variável inexistente '%s'\n", $$.id);
+									 printf("Erro fatal: Variável inexistente '%s'\n", $$.id);
 									 exit(EXIT_FAILURE);
 								 }}
 	;

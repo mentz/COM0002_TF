@@ -2,6 +2,64 @@
 
 extern struct Simbolo *tabSim;
 extern int frameNumber;
+extern struct CompErrors *err;
+
+void addError(int error, int line)
+{
+	struct CompErrors *aux = err, *aux2;
+	
+	while (aux != NULL)
+	{
+		aux2 = aux;
+		aux  = aux->next;
+	}
+
+	aux = malloc(sizeof(struct CompErrors));
+	if (aux == NULL)
+	{
+		perror("Erro: addError Malloc");
+		exit(EXIT_FAILURE);
+	}
+
+	if (err == NULL) err = aux;
+
+	aux2->next     = aux;
+	aux->errorCode = error;
+	aux->line      = line;
+	aux->next      = NULL;
+}
+
+void printErrors()
+{
+	struct CompErrors *aux = err;
+	int i = 0;
+	while (aux != NULL)
+	{
+		if (i == 0) printf("Problemas na compilação:\n");
+		printf("#%d ", ++i);
+		switch (aux->errorCode)
+		{
+			case ERR_0:
+				printf("- Linha %d - Warn: aritmética com operandos de tipos diferentes (não fatal).", aux->line);
+				break;
+
+			case ERR_1:
+				printf("- Linha %d - Warn: atribuição de tipo diferente (não fatal).", aux->line);
+				break;
+
+			case ERR_2:
+				printf("- Linha %d - Erro: aritmética com string (fatal).", aux->line);
+				break;
+
+			default:
+				printf(" - Erro desconhecido.");
+				break;
+		}
+		printf("\n");
+
+		aux = aux->next;
+	}
+}
 
 // CRIA LISTA DE ID AQUI
 struct ListaId* criarLista(char *id)
@@ -81,6 +139,8 @@ void insTabSim(int tipo, struct ListaId *lista)
 		strncpy(novoSimbolo->id, lista_aux->id, MAX_ID_LEN - 1);
 		novoSimbolo->esq = NULL; novoSimbolo->dir = NULL;
 
+		novoSimbolo->frame = frameNumber++;
+
 		if (noTabSim == NULL)
 		{
 			tabSim = novoSimbolo;
@@ -88,7 +148,6 @@ void insTabSim(int tipo, struct ListaId *lista)
 		}
 		else
 		{
-			novoSimbolo->frame = frameNumber++;
 			if (direcao == 0)
 			{
 				noTabSim->esq = novoSimbolo;
@@ -105,7 +164,34 @@ void insTabSim(int tipo, struct ListaId *lista)
 	freeLista(lista);
 }
 
+
+/*-----------------------------------*/
 int consultaTipo(char *id)
+{
+	struct Simbolo * aux = tabSim, *aux2;
+	// Encontrar tipo da variável na tabela de símbolos.
+	while (aux != NULL)
+	{
+		if (strcmp(id, aux->id) < 0)
+		{
+			aux = aux->esq;
+			continue;
+		} else if (strcmp(id, aux->id) > 0)
+		{
+			aux = aux->dir;
+			continue;
+		} else
+		{
+			return aux->tipo;
+		}
+	}
+
+	return NAOEXISTE;
+}
+
+
+/*-----------------------------------*/
+int consultaFrame(char *id)
 {
 	struct Simbolo * aux = tabSim;
 	// Encontrar tipo da variável na tabela de símbolos.
@@ -121,7 +207,7 @@ int consultaTipo(char *id)
 			continue;
 		} else
 		{
-			return aux->tipo;
+			return aux->frame;
 		}
 	}
 
@@ -158,10 +244,109 @@ void printTabSim(struct Simbolo *tabSim)
 			default: strcpy(tipo, "nimplementado"); break;
 		}
 
-		printf("%-10s | %d | %s\n", tabSim->id, tabSim->frame, tipo);
+		printf("%-10s | %5d | %s\n", tabSim->id, tabSim->frame, tipo);
 	}
 }
 
+// FAZER ISSO v
+struct AST * criarFolhaID(int cod, char *nome)
+{
+	struct AST * folha = malloc(sizeof(struct AST));
+	if (folha == NULL)
+	{
+		perror("Erro: [criarFolhaID] - malloc(struct AST): ");
+		exit(EXIT_FAILURE);
+	}
+
+	folha->cod		= cod;
+	folha->tipo		= consultaTipo(nome);
+	strncpy(folha->id, nome, MAX_ID_LEN);
+
+	return folha;
+}
+
+// FAZER ISSO v
+struct AST * criarFolhaInt(int cod, int value)
+{
+	struct AST * folha = malloc(sizeof(struct AST));
+	if (folha == NULL)
+	{
+		perror("Erro: [criarFolhaInt] - malloc(struct AST): ");
+		exit(EXIT_FAILURE);
+	}
+
+	folha->cod 		= cod;
+	folha->tipo		= T_INT;
+	folha->constInt = value;
+
+	return folha;
+}
+
+// FAZER ISSO v
+struct AST * criarFolhaFloat(int cod, float value)
+{
+	struct AST * folha = malloc(sizeof(struct AST));
+	if (folha == NULL)
+	{
+		perror("Erro: [criarFolhaFloat] - malloc(struct AST): ");
+		exit(EXIT_FAILURE);
+	}
+
+	folha->cod 		  = cod;
+	folha->tipo		  = T_FLT;
+	folha->constFloat = value;
+
+	return folha;
+}
+
+struct AST * criarNoAST(int cod, struct AST * esq, struct AST * dir)
+{
+	struct AST * no = malloc(sizeof(struct AST));
+	if (no == NULL)
+	{
+		perror("Erro: [criarNoAST] - malloc(struct AST)");
+		exit(EXIT_FAILURE);
+	}
+
+	no->cod  = cod;
+	no->esq  = esq;
+	no->dir  = dir;
+	no->tipo = esq->tipo;
+
+	return no;
+}
+
+// Cria um nó Int2Float, retorna seu endereço e aponta para iptr;
+struct AST * i2fAST(struct AST * iptr) {
+	struct AST * no = malloc(sizeof(struct AST));
+	if (no == NULL)
+	{
+		perror("Erro: [i2fAST] - malloc(struct AST)");
+		exit(EXIT_FAILURE);
+	}
+
+	no->cod  = I2F;
+	no->tipo = T_FLT;
+	no->esq  = iptr;
+
+	return no;
+}
+
+// Cria um nó Float2Int, retorna seu endereço e aponta para iptr;
+struct AST * f2iAST(struct AST * iptr) {
+	struct AST * no = malloc(sizeof(struct AST));
+	if (no == NULL)
+	{
+		perror("Erro: [f2iAST] - malloc(struct AST)");
+		exit(EXIT_FAILURE);
+	}
+
+	no->cod  = F2I;
+	no->tipo = T_FLT;
+	no->esq  = iptr;
+
+	return no;
+}
 
 // Impressão pós-ordem
 void imprimePosOrdem(struct AST * raiz)
@@ -171,29 +356,33 @@ void imprimePosOrdem(struct AST * raiz)
 		case ADD:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
-			if (raiz->cod == CONSTINT) printf("iadd");
-			else if (raiz->cod == CONSTFLOAT) printf("fadd");
+			if (raiz->tipo == T_INT) printf("iadd");
+			else if (raiz->tipo == T_FLT) printf("fadd");
+			else printf("<ADD>");
 			break;
 
 		case SUB:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
-			if (raiz->cod == CONSTINT) printf("isub");
-			else if (raiz->cod == CONSTFLOAT) printf("fsub");
+			if (raiz->tipo == T_INT) printf("isub");
+			else if (raiz->tipo == T_FLT) printf("fsub");
+			else printf("<SUB>");
 			break;
 
 		case MUL:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
-			if (raiz->cod == CONSTINT) printf("imul");
-			else if (raiz->cod == CONSTFLOAT) printf("fmul");
+			if (raiz->tipo == T_INT) printf("imul");
+			else if (raiz->tipo == T_FLT) printf("fmul");
+			else printf("<MUL>");
 			break;
 
 		case DIV:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
-			if (raiz->cod == CONSTINT) printf("idiv");
-			else if (raiz->cod == CONSTFLOAT) printf("fdiv");
+			if (raiz->tipo == T_INT) printf("idiv");
+			else if (raiz->tipo == T_FLT) printf("fdiv");
+			else printf("<DIV>");
 			break;
 
 		case CONSTINT:
@@ -208,7 +397,9 @@ void imprimePosOrdem(struct AST * raiz)
 			break;
 
 		case VAR:
-			printf("iload <%s>", raiz->id);
+			if (raiz->tipo == T_INT) printf("iload %d", consultaFrame(raiz->id));
+			else if (raiz->tipo == T_FLT) printf("fload %d", consultaFrame(raiz->id));
+			else printf("<VAR>");
 			break;
 
 		case FUNCAO:
@@ -216,100 +407,35 @@ void imprimePosOrdem(struct AST * raiz)
 			break;
 
 		case ATRIB:
-			//imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
-			printf("istore <%s>", raiz->esq->id);
+			if (raiz->tipo == T_INT) printf("istore %d", consultaFrame(raiz->esq->id));
+			else if (raiz->tipo == T_FLT) printf("fstore %d", consultaFrame(raiz->esq->id));
+			else printf("<ATRIB>");
 			break;
 
 		case NEG:
 			imprimePosOrdem(raiz->esq);
-			printf("ineg");
+			if (raiz->tipo == T_INT) printf("ineg");
+			else if (raiz->tipo == T_FLT) printf("fneg");
+			else printf("<NEG>");
+			break;
+
+		case I2F:
+			imprimePosOrdem(raiz->esq);
+			printf("i2f");
+			break;
+			
+		case F2I:
+			imprimePosOrdem(raiz->esq);
+			printf("f2i");
 			break;
 
 		default:
+			printf("unimplemented");
 			break;
 	}
 
 	free(raiz);
 	raiz = NULL;
 	printf("\n");
-}
-
-// FAZER ISSO v
-struct AST * criarFolhaID(int tipo, char *nome)
-{
-	struct AST * folha = malloc(sizeof(struct AST));
-	if (folha == NULL)
-	{
-		perror("Erro: [criarFolhaID] - malloc(struct AST): ");
-		exit(EXIT_FAILURE);
-	}
-
-	folha->cod		= tipo;
-	strncpy(folha->id, nome, MAX_ID_LEN);
-
-	return folha;
-}
-
-// FAZER ISSO v
-struct AST * criarFolhaInt(int tipo, int value)
-{
-	struct AST * folha = malloc(sizeof(struct AST));
-	if (folha == NULL)
-	{
-		perror("Erro: [criarFolhaInt] - malloc(struct AST): ");
-		exit(EXIT_FAILURE);
-	}
-
-	folha->cod 		= tipo;
-	folha->constInt = value;
-
-	return folha;
-}
-
-// FAZER ISSO v
-struct AST * criarFolhaFloat(int tipo, float value)
-{
-	struct AST * folha = malloc(sizeof(struct AST));
-	if (folha == NULL)
-	{
-		perror("Erro: [criarFolhaFloat] - malloc(struct AST): ");
-		exit(EXIT_FAILURE);
-	}
-
-	folha->cod 		  = tipo;
-	folha->constFloat = value;
-
-	return folha;
-}
-
-struct AST * criarNoAST(int tipo, struct AST * esq, struct AST * dir)
-{
-	struct AST * no = malloc(sizeof(struct AST));
-	if (no == NULL)
-	{
-		perror("Erro: [criarNoAST] - malloc(struct AST)");
-		exit(EXIT_FAILURE);
-	}
-
-	no->cod = tipo;
-	no->esq = esq;
-	no->dir = dir;
-
-	return no;
-}
-
-// Cria um nó Int2Float, retorna seu endereço e aponta para iptr;
-struct AST * i2fAST(struct AST * iptr) {
-	struct AST * no = malloc(sizeof(struct AST));
-	if (no == NULL)
-	{
-		perror("Erro: [i2fAST] - malloc(struct AST)");
-		exit(EXIT_FAILURE);
-	}
-
-	no->cod = CONV_I2F;
-	no->esq = iptr;
-
-	return no;
 }

@@ -1,4 +1,6 @@
 {
-	int a;
-	a = (1 + 2) * 6 + 3 * c;
+	int a, b;
+	float f;
+	a = 1 * b + a * f;
+	f = -f;
 }

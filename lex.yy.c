@@ -954,7 +954,7 @@ YY_RULE_SETUP
 case 37:
 YY_RULE_SETUP
 #line 52 "compiler.l"
-{printf("Aqui, você deixou isso cair: %s (linha %d)\n", yytext, linha);}
+{printf("Token não reconhecido: %s (linha %d)\n", yytext, linha);}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP

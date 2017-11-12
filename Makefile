@@ -13,6 +13,6 @@ SEM: $(S_IN)
 	bison --verbose $(S_IN)
 
 OUT: $(IN)
-	gcc -o $(OUT) $(IN) -fmax-errors=3
+	gcc -o $(OUT) $(IN) -fmax-errors=3 -lm
 
 .PHONY: all
