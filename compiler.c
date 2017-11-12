@@ -1520,12 +1520,16 @@ yyreduce:
 								 if ((yyval).tipo == T_STR) {
 									 printf("Erro: Aritmética com string não permitida\n");
 									 exit(EXIT_FAILURE);
+								 } else if ((yyval).tipo == NAOEXISTE)
+								 {
+									 printf("Erro: Variável inexistente '%s'\n", (yyval).id);
+									 exit(EXIT_FAILURE);
 								 }}
-#line 1525 "y.tab.c" /* yacc.c:1646  */
+#line 1529 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1529 "y.tab.c" /* yacc.c:1646  */
+#line 1533 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1753,7 +1757,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 241 "compiler.y" /* yacc.c:1906  */
+#line 245 "compiler.y" /* yacc.c:1906  */
 
 
 #include "lex.yy.c"

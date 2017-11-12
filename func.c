@@ -119,8 +119,13 @@ int consultaTipo(char *id)
 		{
 			aux = aux->dir;
 			continue;
+		} else
+		{
+			return aux->tipo;
 		}
 	}
+
+	return NAOEXISTE;
 }
 
 void freeLista(struct ListaId *lista)

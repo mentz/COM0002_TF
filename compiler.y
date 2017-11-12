@@ -235,6 +235,10 @@ FatorAritmetico
 								 if ($$.tipo == T_STR) {
 									 printf("Erro: Aritmética com string não permitida\n");
 									 exit(EXIT_FAILURE);
+								 } else if ($$.tipo == NAOEXISTE)
+								 {
+									 printf("Erro: Variável inexistente '%s'\n", $$.id);
+									 exit(EXIT_FAILURE);
 								 }}
 	;
 
