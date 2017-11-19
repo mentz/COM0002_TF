@@ -5,20 +5,25 @@
 
 #define MAX_ID_LEN 11
 
-enum
+enum 
 {
-	NAOEXISTE, T_INT, T_STR, T_FLT
+	T_NEX, T_INT, T_STR, T_FLT
+};
+
+enum AST_TYPES
+{
+	AST_LISTA,
+	AST_MUL, AST_DIV, AST_ADD, AST_SUB,
+	AST_CONSTINT, AST_CONSTFLOAT, AST_VAR, AST_FUNCAO,
+	AST_ATRIB, AST_NEG, AST_I2F, AST_F2I,
+	AST_REL_MEN, AST_REL_MAI, AST_REL_MEIG, AST_REL_MAIG, AST_REL_EQ, AST_REL_DIF,
+	AST_LOG_AND, AST_LOG_OR, AST_LOG_NOT
 };
 
 enum
 {
-	MUL, DIV, ADD, SUB, CONSTINT, CONSTFLOAT, VAR, FUNCAO, ATRIB, NEG, I2F, F2I
-};
-
-enum
-{
-	ERR_0, 		// Atribuição de tipo diferente (int a = 1.2;)
-	ERR_1, 		// Aritmética com tipos diferentes (1.5 + 1)
+	ERR_0, 		// Aritmética com tipos diferentes (1.5 + 1)
+	ERR_1, 		// Atribuição de tipo diferente (int a = 1.2;)
 	ERR_2,		// Aritmética com string (1.5 * 5 + a * "oi mundo")
 	ERR_3		// Variável inexistente com o ID informado
 };
@@ -79,8 +84,8 @@ void freeLista(struct ListaId *lista);
 void printTabSim(struct Simbolo *tabSim);
 void imprimePosOrdem(struct AST *raiz);
 struct AST * criarFolhaID(int tipo, char *nome);
-struct AST * criarFolhaInt(int tipo, int value);
-struct AST * criarFolhaFloat(int tipo, float value);
+struct AST * criarFolhaInt(int value);
+struct AST * criarFolhaFloat(float value);
 struct AST * criarNoAST(int tipo, struct AST *esq, struct AST *dir);
 struct AST * i2fAST(struct AST * iptr);
 struct AST * f2iAST(struct AST * iptr);

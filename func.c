@@ -190,7 +190,7 @@ int consultaTipo(char *id)
 		}
 	}
 
-	return NAOEXISTE;
+	return T_NEX;
 }
 
 
@@ -215,7 +215,7 @@ int consultaFrame(char *id)
 		}
 	}
 
-	return NAOEXISTE;
+	return T_NEX;
 }
 
 void freeLista(struct ListaId *lista)
@@ -252,7 +252,7 @@ void printTabSim(struct Simbolo *tabSim)
 	}
 }
 
-// FAZER ISSO v
+// AST
 struct AST * criarFolhaID(int cod, char *nome)
 {
 	struct AST * folha = malloc(sizeof(struct AST));
@@ -269,8 +269,8 @@ struct AST * criarFolhaID(int cod, char *nome)
 	return folha;
 }
 
-// FAZER ISSO v
-struct AST * criarFolhaInt(int cod, int value)
+// AST
+struct AST * criarFolhaInt(int value)
 {
 	struct AST * folha = malloc(sizeof(struct AST));
 	if (folha == NULL)
@@ -279,15 +279,15 @@ struct AST * criarFolhaInt(int cod, int value)
 		exit(EXIT_FAILURE);
 	}
 
-	folha->cod 		= cod;
+	folha->cod 		= AST_CONSTINT;
 	folha->tipo		= T_INT;
 	folha->constInt = value;
 
 	return folha;
 }
 
-// FAZER ISSO v
-struct AST * criarFolhaFloat(int cod, float value)
+// AST
+struct AST * criarFolhaFloat(int value)
 {
 	struct AST * folha = malloc(sizeof(struct AST));
 	if (folha == NULL)
@@ -296,13 +296,14 @@ struct AST * criarFolhaFloat(int cod, float value)
 		exit(EXIT_FAILURE);
 	}
 
-	folha->cod 		  = cod;
+	folha->cod 		  = AST_CONSTFLOAT;
 	folha->tipo		  = T_FLT;
 	folha->constFloat = value;
 
 	return folha;
 }
 
+// AST
 struct AST * criarNoAST(int cod, struct AST * esq, struct AST * dir)
 {
 	struct AST * no = malloc(sizeof(struct AST));
@@ -329,7 +330,7 @@ struct AST * i2fAST(struct AST * iptr) {
 		exit(EXIT_FAILURE);
 	}
 
-	no->cod  = I2F;
+	no->cod  = AST_I2F;
 	no->tipo = T_FLT;
 	no->esq  = iptr;
 
@@ -345,11 +346,24 @@ struct AST * f2iAST(struct AST * iptr) {
 		exit(EXIT_FAILURE);
 	}
 
-	no->cod  = F2I;
+	no->cod  = AST_F2I;
 	no->tipo = T_FLT;
 	no->esq  = iptr;
 
 	return no;
+}
+
+// Cria um nó IF, retorna seu endereço;
+struct AST * criarNoIF(struct AST * cond, struct AST * b1, struct AST * b2)
+{
+	struct AST * no = malloc(sizeof(struct AST));
+	if (no == NULL)
+	{
+		perror("Erro: [criarNoIF] - malloc(struct AST)");
+		exit(EXIT_FAILURE);
+	}
+
+
 }
 
 // Impressão pós-ordem
