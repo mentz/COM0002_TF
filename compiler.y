@@ -98,12 +98,16 @@ ListaCmd
 	}
 	| Comando
 	{
-		$$.ptr = $2.ptr;
+		$$.ptr = $1.ptr;
+		imprimePosOrdem($$.ptr);
 	}
 	;
 
 Comando
 	: CmdSe
+	{
+		$$.ptr = $1.ptr;
+	}
 	| CmdEnquanto
 	| CmdAtrib
 	| CmdEscrita
@@ -120,11 +124,11 @@ Retorno
 CmdSe
 	: TIF '('ExpressaoLogica')' Bloco
 	{
-		$$.ptr = criarNoIF(AST_IF, $3.ptr, $5.ptr, NULL);
+		$$.ptr = criarNoIF($3.ptr, $5.ptr, NULL);
 	}
 	| TIF '('ExpressaoLogica')' Bloco TELSE Bloco
 	{
-		$$.ptr = criarNoIF(AST_IF, $3.ptr, $5.ptr, $7.ptr);
+		$$.ptr = criarNoIF($3.ptr, $5.ptr, $7.ptr);
 	}
 	;
 
@@ -135,23 +139,23 @@ CmdEnquanto
 CmdAtrib
 	: TID '=' ExpressaoAritmetica';'
 	{
-		$1.ptr = criarFolhaID(VAR, $1.id);
+		$1.ptr = criarFolhaID(AST_VAR, $1.id);
 		$1.tipo = consultaTipo($1.id);
 		if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoAST(ATRIB, $1.ptr, f2iAST($3.ptr));
-			addError(ERR_0, linha);
+			$$.ptr = criarNoAST(AST_ATRIB, $1.ptr, f2iAST($3.ptr));
+			addError(ERR_1, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoAST(ATRIB, $1.ptr, i2fAST($3.ptr));
-			addError(ERR_0, linha);
+			$$.ptr = criarNoAST(AST_ATRIB, $1.ptr, i2fAST($3.ptr));
+			addError(ERR_1, linha);
 		}
 		else {
-			$$.ptr = criarNoAST(ATRIB, $1.ptr, $3.ptr);
+			$$.ptr = criarNoAST(AST_ATRIB, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
-		imprimePosOrdem($$.ptr);
-		printf("----------\n");
+		//imprimePosOrdem($$.ptr);
+		//printf("----------\n");
 	}
 
 	| TID '=' TLITERAL ';'
@@ -203,6 +207,7 @@ ExpressaoRelacional
 		else {
 			$$.ptr = criarNoAST(AST_REL_MEN, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
+		}
 	}
 	| ExpressaoAritmetica '>' ExpressaoAritmetica
 	{
@@ -224,6 +229,7 @@ ExpressaoRelacional
 		else {
 			$$.ptr = criarNoAST(AST_REL_MAI, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
+		}
 	}
 	| ExpressaoAritmetica TMEIG ExpressaoAritmetica
 	{
@@ -245,6 +251,7 @@ ExpressaoRelacional
 		else {
 			$$.ptr = criarNoAST(AST_REL_MEIG, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
+		}
 	}
 	| ExpressaoAritmetica TMAIG ExpressaoAritmetica
 	{
@@ -266,6 +273,7 @@ ExpressaoRelacional
 		else {
 			$$.ptr = criarNoAST(AST_REL_MAIG, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
+		}
 	}
 	| ExpressaoAritmetica TEQ ExpressaoAritmetica
 	{
@@ -287,6 +295,7 @@ ExpressaoRelacional
 		else {
 			$$.ptr = criarNoAST(AST_REL_EQ, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
+		}
 	}
 	| ExpressaoAritmetica TDIF ExpressaoAritmetica
 	{
@@ -350,18 +359,18 @@ ExpressaoAritmetica
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoAST(ADD, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoAST(AST_ADD, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
-			addError(ERR_1, linha);
+			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoAST(ADD, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoAST(AST_ADD, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
-			addError(ERR_1, linha);
+			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoAST(ADD, $1.ptr, $3.ptr);
+			$$.ptr = criarNoAST(AST_ADD, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
@@ -374,13 +383,13 @@ ExpressaoAritmetica
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
 			$$.ptr = criarNoAST(AST_SUB, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
-			addError(ERR_1, linha);
+			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
 			$$.ptr = criarNoAST(AST_SUB, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
-			addError(ERR_1, linha);
+			addError(ERR_0, linha);
 		}
 		else {
 			$$.ptr = criarNoAST(AST_SUB, $1.ptr, $3.ptr);
@@ -401,17 +410,17 @@ TermoAritmetico
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoAST(MUL, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoAST(AST_MUL, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
-			addError(ERR_1, linha);
+			addError(ERR_0, linha);
 		}
 		else if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoAST(MUL, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoAST(AST_MUL, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
-			addError(ERR_1, linha);
+			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoAST(MUL, $1.ptr, $3.ptr);
+			$$.ptr = criarNoAST(AST_MUL, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
@@ -422,17 +431,17 @@ TermoAritmetico
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoAST(DIV, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoAST(AST_DIV, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
-			addError(ERR_1, linha);
+			addError(ERR_0, linha);
 		}
 		else if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoAST(DIV, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoAST(AST_DIV, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
-			addError(ERR_1, linha);
+			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoAST(DIV, $1.ptr, $3.ptr);
+			$$.ptr = criarNoAST(AST_DIV, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}

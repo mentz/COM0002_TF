@@ -287,7 +287,7 @@ struct AST * criarFolhaInt(int value)
 }
 
 // AST
-struct AST * criarFolhaFloat(int value)
+struct AST * criarFolhaFloat(float value)
 {
 	struct AST * folha = malloc(sizeof(struct AST));
 	if (folha == NULL)
@@ -316,7 +316,8 @@ struct AST * criarNoAST(int cod, struct AST * esq, struct AST * dir)
 	no->cod  = cod;
 	no->esq  = esq;
 	no->dir  = dir;
-	no->tipo = esq->tipo;
+	if (cod != AST_LISTA)
+		no->tipo = esq->tipo;
 
 	return no;
 }
@@ -363,15 +364,21 @@ struct AST * criarNoIF(struct AST * cond, struct AST * b1, struct AST * b2)
 		exit(EXIT_FAILURE);
 	}
 
+	no->cod  = AST_IF;
+	no->cond = cond;
+	no->esq  = b1;
+	no->dir  = b2;
 
+	return no;
 }
 
 // Impressão pós-ordem
 void imprimePosOrdem(struct AST * raiz)
 {
+	printf("nó atual: %d\n", raiz->cod);
 	switch (raiz->cod)
 	{
-		case ADD:
+		case AST_ADD:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
 			if (raiz->tipo == T_INT) printf("iadd");
@@ -379,7 +386,7 @@ void imprimePosOrdem(struct AST * raiz)
 			else printf("<ADD>");
 			break;
 
-		case SUB:
+		case AST_SUB:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
 			if (raiz->tipo == T_INT) printf("isub");
@@ -387,7 +394,7 @@ void imprimePosOrdem(struct AST * raiz)
 			else printf("<SUB>");
 			break;
 
-		case MUL:
+		case AST_MUL:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
 			if (raiz->tipo == T_INT) printf("imul");
@@ -395,7 +402,7 @@ void imprimePosOrdem(struct AST * raiz)
 			else printf("<MUL>");
 			break;
 
-		case DIV:
+		case AST_DIV:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
 			if (raiz->tipo == T_INT) printf("idiv");
@@ -403,53 +410,59 @@ void imprimePosOrdem(struct AST * raiz)
 			else printf("<DIV>");
 			break;
 
-		case CONSTINT:
+		case AST_CONSTINT:
 			if (raiz->constInt == -1) printf("iconst_m1");
 			else if (raiz->constInt > -1 && raiz->constInt <= 5) printf("iconst_%d", raiz->constInt);
 			else if (raiz->constInt > -128 && raiz->constInt < 128) printf("bipush %d", raiz->constInt);
 			else printf("ldc %d", raiz->constInt);
 			break;
 
-		case CONSTFLOAT:
+		case AST_CONSTFLOAT:
 			printf("ldc %f", raiz->constFloat);
 			break;
 
-		case VAR:
+		case AST_VAR:
 			if (raiz->tipo == T_INT) printf("iload %d", consultaFrame(raiz->id));
 			else if (raiz->tipo == T_FLT) printf("fload %d", consultaFrame(raiz->id));
 			else printf("<VAR>");
 			break;
 
-		case FUNCAO:
-			printf("not-implemented (funcao)", raiz->id);
+		case AST_FUNCAO:
+			printf("unimplemented: funcao", raiz->id);
 			break;
 
-		case ATRIB:
+		case AST_LISTA:
+			printf("LISTA\n");
+			imprimePosOrdem(raiz->esq);
+			imprimePosOrdem(raiz->dir);
+			break;
+
+		case AST_ATRIB:
 			imprimePosOrdem(raiz->dir);
 			if (raiz->tipo == T_INT) printf("istore %d", consultaFrame(raiz->esq->id));
 			else if (raiz->tipo == T_FLT) printf("fstore %d", consultaFrame(raiz->esq->id));
 			else printf("<ATRIB>");
 			break;
 
-		case NEG:
+		case AST_NEG:
 			imprimePosOrdem(raiz->esq);
 			if (raiz->tipo == T_INT) printf("ineg");
 			else if (raiz->tipo == T_FLT) printf("fneg");
 			else printf("<NEG>");
 			break;
 
-		case I2F:
+		case AST_I2F:
 			imprimePosOrdem(raiz->esq);
 			printf("i2f");
 			break;
 			
-		case F2I:
+		case AST_F2I:
 			imprimePosOrdem(raiz->esq);
 			printf("f2i");
 			break;
 
 		default:
-			printf("unimplemented");
+			printf("unimplemented: %d", raiz->cod);
 			break;
 	}
 

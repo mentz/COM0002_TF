@@ -2,5 +2,4 @@
 	int a, b;
 	float f;
 	a = 1 * b + a * f;
-	f = -d;
 }
