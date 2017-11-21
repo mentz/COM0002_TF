@@ -15,8 +15,8 @@ enum AST_TYPES
 	AST_MUL, AST_DIV, AST_ADD, AST_SUB,
 	AST_CONSTINT, AST_CONSTFLOAT, AST_VAR, AST_FUNCAO,
 	AST_LISTA, AST_ATRIB, AST_NEG, AST_I2F, AST_F2I, AST_IF,
-	AST_REL_MEN, AST_REL_MAI, AST_REL_MEIG, AST_REL_MAIG, AST_REL_EQ, AST_REL_DIF,
-	AST_LOG_AND, AST_LOG_OR, AST_LOG_NOT
+	AST_LOG_AND, AST_LOG_OR, AST_LOG_NOT,
+	AST_REL_DIF, AST_REL_EQ, AST_REL_MEN, AST_REL_MAI, AST_REL_MEIG, AST_REL_MAIG
 };
 
 enum
@@ -65,10 +65,13 @@ struct AST
 	int cod;
 	int tipo;
 	char id[MAX_ID_LEN];
-	struct AST *esq, *dir, *cond;
+	struct AST *esq, *dir;
+	struct AST *cond, *pthen, *pelse;
 	int constInt;
 	float constFloat;
-	int labelTrue, labelFalse;
+	int labelTrue;
+	int labelFalse;
+	int labelNext;
 };
 
 

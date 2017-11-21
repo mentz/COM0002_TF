@@ -46,7 +46,16 @@ Parametro
 
 BlocoPrincipal
 	: '{'Declaracoes ListaCmd'}'
+	{
+		//$$.ptr = criarNoAST(AST_BLOCO, $2.ptr, $3.ptr);
+		$$.ptr = $3.ptr;
+		imprimePosOrdem($$.ptr);
+	}
 	| '{'ListaCmd'}'
+	{
+		$$.ptr = $2.ptr;
+		imprimePosOrdem($$.ptr);
+	}
 	;
 
 Declaracoes
@@ -89,6 +98,9 @@ ListaId
 
 Bloco
 	: '{'ListaCmd'}'
+	{
+		$$.ptr = $2.ptr;
+	}
 	;
 
 ListaCmd
@@ -99,7 +111,6 @@ ListaCmd
 	| Comando
 	{
 		$$.ptr = criarNoAST(AST_LISTA, $1.ptr, NULL);
-		imprimePosOrdem($$.ptr);
 	}
 	;
 
@@ -109,11 +120,29 @@ Comando
 		$$.ptr = $1.ptr;
 	}
 	| CmdEnquanto
+	{
+		$$.ptr = NULL;
+	}
 	| CmdAtrib
+	{
+		$$.ptr = $1.ptr;
+	}
 	| CmdEscrita
+	{
+		$$.ptr = NULL;
+	}
 	| CmdLeitura
+	{
+		$$.ptr = NULL;
+	}
 	| ChamadaProc
+	{
+		$$.ptr = NULL;
+	}
 	| Retorno
+	{
+		$$.ptr = NULL;
+	}
 	;
 
 Retorno
