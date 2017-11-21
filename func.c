@@ -8,7 +8,7 @@ extern int labelCounter;
 void addError(int error, int line)
 {
 	struct CompErrors *aux = err, *aux2;
-	
+
 	while (aux != NULL)
 	{
 		aux2 = aux;
@@ -477,7 +477,7 @@ void imprimePosOrdem(struct AST * raiz)
 			printf("i2f");
 			printf("\n");
 			break;
-			
+
 		case AST_F2I:
 			imprimePosOrdem(raiz->esq);
 			printf("\t");
@@ -487,7 +487,7 @@ void imprimePosOrdem(struct AST * raiz)
 
 		case AST_IF:
 			raiz->labelTrue        = labelCounter++;
-			if (raiz->pelse != NULL) 
+			if (raiz->pelse != NULL)
 				raiz->labelFalse       = labelCounter++;
 			raiz->labelNext        = labelCounter++;
 			raiz->cond->labelTrue  = raiz->labelTrue;
@@ -498,13 +498,14 @@ void imprimePosOrdem(struct AST * raiz)
 			imprimePosOrdem(raiz->pthen);
 			if (raiz->pelse != NULL)
 			{
+				printf("\tgoto L%d\n", raiz->labelNext);
 				printf("L%d:", raiz->labelFalse);
 				imprimePosOrdem(raiz->pelse);
 			}
 			printf("L%d:", raiz->labelNext);
 			//printf("\n");
 			break;
-		
+
 		case AST_LOG_AND:
 			raiz->esq->labelTrue  = labelCounter++;
 			raiz->esq->labelFalse = raiz->labelFalse;
