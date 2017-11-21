@@ -1,8 +1,9 @@
 #include "func.h"
 
+extern struct CompErrors *err;
 extern struct Simbolo *tabSim;
 extern int frameNumber;
-extern struct CompErrors *err;
+extern int labelCounter;
 
 void addError(int error, int line)
 {
@@ -375,12 +376,16 @@ struct AST * criarNoIF(struct AST * cond, struct AST * b1, struct AST * b2)
 // Impressão pós-ordem
 void imprimePosOrdem(struct AST * raiz)
 {
-	printf("nó atual: %d\n", raiz->cod);
 	switch (raiz->cod)
 	{
+		/*
+		AST_REL_MEN, AST_REL_MAI, AST_REL_MEIG, AST_REL_MAIG, AST_REL_EQ, AST_REL_DIF,
+		AST_LOG_AND, AST_LOG_OR, AST_LOG_NOT
+		*/
 		case AST_ADD:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
+			printf("AST_ADD: ");
 			if (raiz->tipo == T_INT) printf("iadd");
 			else if (raiz->tipo == T_FLT) printf("fadd");
 			else printf("<ADD>");
@@ -389,6 +394,7 @@ void imprimePosOrdem(struct AST * raiz)
 		case AST_SUB:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
+			printf("AST_SUB: ");
 			if (raiz->tipo == T_INT) printf("isub");
 			else if (raiz->tipo == T_FLT) printf("fsub");
 			else printf("<SUB>");
@@ -397,6 +403,7 @@ void imprimePosOrdem(struct AST * raiz)
 		case AST_MUL:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
+			printf("AST_MUL: ");
 			if (raiz->tipo == T_INT) printf("imul");
 			else if (raiz->tipo == T_FLT) printf("fmul");
 			else printf("<MUL>");
@@ -405,12 +412,14 @@ void imprimePosOrdem(struct AST * raiz)
 		case AST_DIV:
 			imprimePosOrdem(raiz->esq);
 			imprimePosOrdem(raiz->dir);
+			printf("AST_DIV: ");
 			if (raiz->tipo == T_INT) printf("idiv");
 			else if (raiz->tipo == T_FLT) printf("fdiv");
 			else printf("<DIV>");
 			break;
 
 		case AST_CONSTINT:
+			printf("AST_CONSTINT: ");
 			if (raiz->constInt == -1) printf("iconst_m1");
 			else if (raiz->constInt > -1 && raiz->constInt <= 5) printf("iconst_%d", raiz->constInt);
 			else if (raiz->constInt > -128 && raiz->constInt < 128) printf("bipush %d", raiz->constInt);
@@ -418,27 +427,31 @@ void imprimePosOrdem(struct AST * raiz)
 			break;
 
 		case AST_CONSTFLOAT:
+			printf("AST_CONSTFLOAT: ");
 			printf("ldc %f", raiz->constFloat);
 			break;
 
 		case AST_VAR:
+			printf("AST_VAR: ");
 			if (raiz->tipo == T_INT) printf("iload %d", consultaFrame(raiz->id));
 			else if (raiz->tipo == T_FLT) printf("fload %d", consultaFrame(raiz->id));
 			else printf("<VAR>");
 			break;
 
 		case AST_FUNCAO:
+			printf("AST_FUNCAO: ");
 			printf("unimplemented: funcao", raiz->id);
 			break;
 
 		case AST_LISTA:
-			printf("LISTA\n");
+			printf("AST_LISTA: \n");
 			imprimePosOrdem(raiz->esq);
-			imprimePosOrdem(raiz->dir);
+			if (raiz->dir != NULL) imprimePosOrdem(raiz->dir);
 			break;
 
 		case AST_ATRIB:
 			imprimePosOrdem(raiz->dir);
+			printf("AST_ATRIB: ");
 			if (raiz->tipo == T_INT) printf("istore %d", consultaFrame(raiz->esq->id));
 			else if (raiz->tipo == T_FLT) printf("fstore %d", consultaFrame(raiz->esq->id));
 			else printf("<ATRIB>");
@@ -446,6 +459,7 @@ void imprimePosOrdem(struct AST * raiz)
 
 		case AST_NEG:
 			imprimePosOrdem(raiz->esq);
+			printf("AST_NEG: ");
 			if (raiz->tipo == T_INT) printf("ineg");
 			else if (raiz->tipo == T_FLT) printf("fneg");
 			else printf("<NEG>");
@@ -453,12 +467,74 @@ void imprimePosOrdem(struct AST * raiz)
 
 		case AST_I2F:
 			imprimePosOrdem(raiz->esq);
+			printf("AST_I2F: ");
 			printf("i2f");
 			break;
 			
 		case AST_F2I:
 			imprimePosOrdem(raiz->esq);
+			printf("AST_F2I: ");
 			printf("f2i");
+			break;
+
+		case AST_IF:
+		printf("EU TO AQUI CARIA;\n");
+			raiz->labelTrue        = labelCounter++;
+			raiz->labelFalse       = labelCounter++;
+			raiz->cond->labelTrue  = raiz->labelTrue;
+			raiz->cond->labelFalse = raiz->labelFalse;
+			imprimePosOrdem(raiz->cond);
+			printf("AST_IF: ");
+			//if (raiz->cond->cod != AST_LOG_AND || raiz->cond->cod != AST_LOG_OR)
+				printf("goto L%d", raiz->labelFalse);
+			break;
+
+		case AST_REL_DIF:
+			imprimePosOrdem(raiz->esq);
+			imprimePosOrdem(raiz->dir);
+			if (raiz->tipo == T_INT) printf("if_icmp");
+			else if (raiz->tipo == T_FLT) printf("unimplemented <fcmp>");
+			printf("ne L%d", raiz->labelTrue);
+			break;
+
+		case AST_REL_EQ:
+			imprimePosOrdem(raiz->esq);
+			imprimePosOrdem(raiz->dir);
+			if (raiz->tipo == T_INT) printf("if_icmp");
+			else if (raiz->tipo == T_FLT) printf("unimplemented <fcmp>");
+			printf("eq L%d", raiz->labelTrue);
+			break;
+
+		case AST_REL_MEN:
+			imprimePosOrdem(raiz->esq);
+			imprimePosOrdem(raiz->dir);
+			if (raiz->tipo == T_INT) printf("if_icmp");
+			else if (raiz->tipo == T_FLT) printf("unimplemented <fcmp>");
+			printf("lt L%d", raiz->labelTrue);
+			break;
+
+		case AST_REL_MEIG:
+			imprimePosOrdem(raiz->esq);
+			imprimePosOrdem(raiz->dir);
+			if (raiz->tipo == T_INT) printf("if_icmp");
+			else if (raiz->tipo == T_FLT) printf("unimplemented <fcmp>");
+			printf("le L%d", raiz->labelTrue);
+			break;
+
+		case AST_REL_MAI:
+			imprimePosOrdem(raiz->esq);
+			imprimePosOrdem(raiz->dir);
+			if (raiz->tipo == T_INT) printf("if_icmp");
+			else if (raiz->tipo == T_FLT) printf("unimplemented <fcmp>");
+			printf("gt L%d", raiz->labelTrue);
+			break;
+
+		case AST_REL_MAIG:
+			imprimePosOrdem(raiz->esq);
+			imprimePosOrdem(raiz->dir);
+			if (raiz->tipo == T_INT) printf("if_icmp");
+			else if (raiz->tipo == T_FLT) printf("unimplemented <fcmp>");
+			printf("ge L%d", raiz->labelTrue);
 			break;
 
 		default:

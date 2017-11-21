@@ -98,7 +98,7 @@ ListaCmd
 	}
 	| Comando
 	{
-		$$.ptr = $1.ptr;
+		$$.ptr = criarNoAST(AST_LISTA, $1.ptr, NULL);
 		imprimePosOrdem($$.ptr);
 	}
 	;
@@ -154,8 +154,6 @@ CmdAtrib
 			$$.ptr = criarNoAST(AST_ATRIB, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
-		//imprimePosOrdem($$.ptr);
-		//printf("----------\n");
 	}
 
 	| TID '=' TLITERAL ';'

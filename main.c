@@ -6,6 +6,7 @@ extern FILE *yyin;
 struct CompErrors *err;
 struct Simbolo *tabSim = NULL;
 int frameNumber = 0;
+int labelCounter = 0;
 
 int main(int argc, char * argv[])
 {

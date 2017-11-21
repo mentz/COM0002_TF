@@ -68,6 +68,7 @@ struct AST
 	struct AST *esq, *dir, *cond;
 	int constInt;
 	float constFloat;
+	int labelTrue, labelFalse;
 };
 
 
