@@ -5,21 +5,23 @@
 
 #define MAX_ID_LEN 11
 
-enum 
+enum
 {
 	T_NEX, T_INT, T_STR, T_FLT
 };
 
 enum AST_TYPES
 {
-	AST_MUL, AST_DIV, AST_ADD, AST_SUB,
+	AST_ARIT,
 	AST_CONSTINT, AST_CONSTFLOAT, AST_VAR, AST_FUNCAO,
 	AST_LISTA, AST_ATRIB, AST_NEG, AST_I2F, AST_F2I, AST_IF,
-	AST_LOG_AND, AST_LOG_OR, AST_LOG_NOT,
-	AST_REL_DIF, AST_REL_EQ, AST_REL_MEN, AST_REL_MAI, AST_REL_MEIG, AST_REL_MAIG
+	AST_LOG_AND, AST_LOG_OR, AST_LOG_NOT, AST_REL
 };
 
-enum
+enum ARIT_TYPES { ADD, SUB, MUL, DIV };
+enum REL_TYPES { EQ, NE, LT, LE, GT, GE };
+
+enum ERR_CODES
 {
 	ERR_0, 		// Aritmética com tipos diferentes (1.5 + 1)
 	ERR_1, 		// Atribuição de tipo diferente (int a = 1.2;)
@@ -48,7 +50,7 @@ struct Atributo
 	struct AST *ptr;
 	int ival;
 	float fval;
-	
+
 	// int neg;
 };
 
@@ -65,13 +67,13 @@ struct AST
 	int cod;
 	int tipo;
 	char id[MAX_ID_LEN];
-	struct AST *esq, *dir;
-	struct AST *cond, *pthen, *pelse;
+	union {
+		struct AST *esq, *dir;
+		struct AST *cond, *pthen, *pelse;
+	}
 	int constInt;
 	float constFloat;
-	int labelTrue;
-	int labelFalse;
-	int labelNext;
+	int relop;
 };
 
 
@@ -85,11 +87,13 @@ int consultaTipo(char *id);
 int consultaFrame(char *id);
 void freeLista(struct ListaId *lista);
 void printTabSim(struct Simbolo *tabSim);
-void imprimePosOrdem(struct AST *raiz);
+void printAST(struct AST *raiz);
 struct AST * criarFolhaID(int tipo, char *nome);
 struct AST * criarFolhaInt(int value);
 struct AST * criarFolhaFloat(float value);
 struct AST * criarNoAST(int tipo, struct AST *esq, struct AST *dir);
+struct AST * criarNoArit(int op, struct AST *esq, struct AST *dir);
+struct AST * criarNoRel(int op, struct AST * esq, struct AST * dir);
 struct AST * i2fAST(struct AST * iptr);
 struct AST * f2iAST(struct AST * iptr);
 struct AST * criarNoIF(struct AST * cond, struct AST * b1, struct AST * b2);

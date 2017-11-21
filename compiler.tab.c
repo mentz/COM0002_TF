@@ -1364,7 +1364,7 @@ yyreduce:
 
   case 19:
 #line 79 "compiler.y" /* yacc.c:1646  */
-    {	
+    {
 		(yyval).tipo = T_STR;
 	}
 #line 1371 "compiler.tab.c" /* yacc.c:1646  */

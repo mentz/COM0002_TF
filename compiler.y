@@ -71,12 +71,12 @@ Declaracao
 	;
 
 Tipo
-	: TINT 
+	: TINT
 	{
 		$$.tipo = T_INT;
 	}
-	| TSTRING 
-	{	
+	| TSTRING
+	{
 		$$.tipo = T_STR;
 	}
 	| TFLOAT
@@ -221,18 +221,18 @@ ExpressaoRelacional
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoAST(AST_REL_MEN, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoLogRel(AST_REL, LT, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoAST(AST_REL_MEN, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoLogRel(AST_REL, LT, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoAST(AST_REL_MEN, $1.ptr, $3.ptr);
+			$$.ptr = criarNoLogRel(AST_REL, LT, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
@@ -243,18 +243,18 @@ ExpressaoRelacional
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoAST(AST_REL_MAI, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoLogRel(AST_REL, GT, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoAST(AST_REL_MAI, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoLogRel(AST_REL, GT, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoAST(AST_REL_MAI, $1.ptr, $3.ptr);
+			$$.ptr = criarNoLogRel(AST_REL, GT, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
@@ -265,18 +265,18 @@ ExpressaoRelacional
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoAST(AST_REL_MEIG, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoLogRel(AST_REL, LE, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoAST(AST_REL_MEIG, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoLogRel(AST_REL, LE, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoAST(AST_REL_MEIG, $1.ptr, $3.ptr);
+			$$.ptr = criarNoLogRel(AST_REL, LE, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
@@ -287,18 +287,18 @@ ExpressaoRelacional
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoAST(AST_REL_MAIG, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoLogRel(AST_REL, GE, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoAST(AST_REL_MAIG, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoLogRel(AST_REL, GE, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoAST(AST_REL_MAIG, $1.ptr, $3.ptr);
+			$$.ptr = criarNoLogRel(AST_REL, GE, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
@@ -309,18 +309,18 @@ ExpressaoRelacional
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoAST(AST_REL_EQ, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoLogRel(AST_REL, EQ, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoAST(AST_REL_EQ, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoLogRel(AST_REL, EQ, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoAST(AST_REL_EQ, $1.ptr, $3.ptr);
+			$$.ptr = criarNoLogRel(AST_REL, EQ, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
@@ -331,18 +331,18 @@ ExpressaoRelacional
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoAST(AST_REL_DIF, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoLogRel(AST_REL, NE, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoAST(AST_REL_DIF, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoLogRel(AST_REL, NE, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoAST(AST_REL_DIF, $1.ptr, $3.ptr);
+			$$.ptr = criarNoLogRel(AST_REL, NE, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
@@ -372,32 +372,32 @@ ArgumentoLogico
 	{
 		$$.ptr = criarNoAST(AST_LOG_NOT, $2.ptr, NULL);
 	}
-	| ExpressaoRelacional 
+	| ExpressaoRelacional
 	{
 		$$.ptr = $1.ptr;
 	}
   	;
 
 ExpressaoAritmetica
-	: ExpressaoAritmetica '+' TermoAritmetico 
+	: ExpressaoAritmetica '+' TermoAritmetico
 	{
 		if ($1.tipo == T_STR || $3.tipo == T_STR) {
 			addError(ERR_2, linha);
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoAST(AST_ADD, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoArit(ADD, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoAST(AST_ADD, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoArit(ADD, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoAST(AST_ADD, $1.ptr, $3.ptr);
+			$$.ptr = criarNoArit(ADD, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
@@ -408,18 +408,18 @@ ExpressaoAritmetica
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoAST(AST_SUB, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoArit(SUB, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoAST(AST_SUB, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoArit(SUB, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoAST(AST_SUB, $1.ptr, $3.ptr);
+			$$.ptr = criarNoArit(SUB, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
@@ -430,45 +430,45 @@ ExpressaoAritmetica
 	;
 
 TermoAritmetico
-	: TermoAritmetico '*' FatorAritmetico 
+	: TermoAritmetico '*' FatorAritmetico
 	{
 		if ($1.tipo == T_STR || $3.tipo == T_STR) {
 			addError(ERR_2, linha);
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoAST(AST_MUL, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoArit(MUL, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoAST(AST_MUL, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoArit(MUL, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoAST(AST_MUL, $1.ptr, $3.ptr);
+			$$.ptr = criarNoArit(MUL, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
-	| TermoAritmetico '/' FatorAritmetico 
+	| TermoAritmetico '/' FatorAritmetico
 	{
 		if ($1.tipo == T_STR || $3.tipo == T_STR) {
 			addError(ERR_2, linha);
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoAST(AST_DIV, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoArit(DIV, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoAST(AST_DIV, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoArit(DIV, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoAST(AST_DIV, $1.ptr, $3.ptr);
+			$$.ptr = criarNoArit(DIV, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
