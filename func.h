@@ -19,7 +19,7 @@ enum AST_TYPES
 };
 
 enum ARIT_TYPES { ADD, SUB, MUL, DIV };
-enum REL_TYPES { EQ, NE, LT, LE, GT, GE };
+enum LOGREL_TYPES { EQ, NE, LT, LE, GT, GE };
 
 enum ERR_CODES
 {
@@ -29,20 +29,20 @@ enum ERR_CODES
 	ERR_3		// Variável inexistente com o ID informado
 };
 
-struct CompErrors
+typedef struct CompErrors
 {
 	int errorCode;
 	int line;
 	struct CompErrors *next;
-};
+} CompErrors;
 
-struct ListaId
+typedef struct ListaId
 {
 	char id[MAX_ID_LEN];
 	struct ListaId *prox;
-};
+} ListaId;
 
-struct Atributo
+typedef struct Atributo
 {
 	int tipo;
 	struct ListaId *listaId;
@@ -50,50 +50,49 @@ struct Atributo
 	struct AST *ptr;
 	int ival;
 	float fval;
+} Atributo;
 
-	// int neg;
-};
-
-struct Simbolo
+typedef struct Simbolo
 {
 	char id[MAX_ID_LEN];
 	int tipo;
 	int frame;
 	struct Simbolo *esq, *dir;
-};
+} Simbolo;
 
-struct AST
+typedef struct AST
 {
 	int cod;
 	int tipo;
+	int op;
 	char id[MAX_ID_LEN];
 	union {
 		struct AST *esq, *dir;
 		struct AST *cond, *pthen, *pelse;
-	}
+	};
 	int constInt;
 	float constFloat;
-	int relop;
-};
+} AST;
 
 
 void addError(int error, int line);
 void printErrors();
 
-struct ListaId* criarLista(char *id);
-struct ListaId* insLista(struct Atributo *atr, char *id);
-void insTabSim(int tipo, struct ListaId *lista);
+ListaId* criarLista(char *id);
+ListaId* insLista(Atributo *atr, char *id);
+void insTabSim(int tipo, ListaId *lista);
 int consultaTipo(char *id);
 int consultaFrame(char *id);
-void freeLista(struct ListaId *lista);
-void printTabSim(struct Simbolo *tabSim);
-void printAST(struct AST *raiz);
-struct AST * criarFolhaID(int tipo, char *nome);
-struct AST * criarFolhaInt(int value);
-struct AST * criarFolhaFloat(float value);
-struct AST * criarNoAST(int tipo, struct AST *esq, struct AST *dir);
-struct AST * criarNoArit(int op, struct AST *esq, struct AST *dir);
-struct AST * criarNoRel(int op, struct AST * esq, struct AST * dir);
-struct AST * i2fAST(struct AST * iptr);
-struct AST * f2iAST(struct AST * iptr);
-struct AST * criarNoIF(struct AST * cond, struct AST * b1, struct AST * b2);
+void freeLista(ListaId *lista);
+void printTabSim(Simbolo *tabSim);
+void printAST(AST *r);
+void printLogRel(AST *r, int labelTrue, int labelFalse);
+AST * criarFolhaID(int tipo, char *nome);
+AST * criarFolhaInt(int value);
+AST * criarFolhaFloat(float value);
+AST * criarNoAST(int tipo, AST *esq, AST *dir);
+AST * criarNoArit(int op, AST *esq, AST *dir);
+AST * criarNoRel(int op, AST * esq, AST * dir);
+AST * i2fAST(AST * iptr);
+AST * f2iAST(AST * iptr);
+AST * criarNoIF(AST * cond, AST * b1, AST * b2);

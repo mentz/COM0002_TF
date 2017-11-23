@@ -1,13 +1,13 @@
 #include "func.h"
 
-extern struct CompErrors *err;
-extern struct Simbolo *tabSim;
+extern CompErrors *err;
+extern Simbolo *tabSim;
 extern int frameNumber;
 extern int labelCounter;
 
 void addError(int error, int line)
 {
-	struct CompErrors *aux = err, *aux2;
+	CompErrors *aux = err, *aux2;
 
 	while (aux != NULL)
 	{
@@ -15,7 +15,7 @@ void addError(int error, int line)
 		aux  = aux->next;
 	}
 
-	aux = malloc(sizeof(struct CompErrors));
+	aux = malloc(sizeof(CompErrors));
 	if (aux == NULL)
 	{
 		perror("Erro: addError Malloc");
@@ -32,7 +32,7 @@ void addError(int error, int line)
 
 void printErrors()
 {
-	struct CompErrors *aux = err;
+	CompErrors *aux = err;
 	int i = 0;
 	while (aux != NULL)
 	{
@@ -67,10 +67,10 @@ void printErrors()
 }
 
 // CRIA LISTA DE ID AQUI
-struct ListaId* criarLista(char *id)
+ListaId* criarLista(char *id)
 {
-	struct ListaId *ret;
-	ret = malloc(sizeof(struct ListaId));
+	ListaId *ret;
+	ret = malloc(sizeof(ListaId));
 	if (!ret)
 	{
 		perror("Erro em criarLista, malloc ret: ");
@@ -84,11 +84,11 @@ struct ListaId* criarLista(char *id)
 }
 
 // INSERE NA LISTA DE ID AQUI
-struct ListaId* insLista(struct Atributo *atr, char *id)
+ListaId* insLista(Atributo *atr, char *id)
 {
-	struct ListaId *aux = atr->listaId, *novo = NULL;
+	ListaId *aux = atr->listaId, *novo = NULL;
 
-	novo = malloc(sizeof(struct ListaId));
+	novo = malloc(sizeof(ListaId));
 	if (!novo)
 	{
 		perror("Erro em insLista, malloc novo: ");
@@ -102,12 +102,12 @@ struct ListaId* insLista(struct Atributo *atr, char *id)
 }
 
 // INSERE NA TABELA DE SÍMBOLOS AQUI
-void insTabSim(int tipo, struct ListaId *lista)
+void insTabSim(int tipo, ListaId *lista)
 {
-	struct Simbolo *noTabSim = tabSim, *novoSimbolo = NULL;
+	Simbolo *noTabSim = tabSim, *novoSimbolo = NULL;
 
 	int direcao = -1;
-	struct ListaId *lista_aux = lista, *lista_aux2 = NULL;
+	ListaId *lista_aux = lista, *lista_aux2 = NULL;
 	while (lista_aux != NULL)
 	{
 		noTabSim = tabSim;
@@ -133,7 +133,7 @@ void insTabSim(int tipo, struct ListaId *lista)
 			}
 		}
 
-		novoSimbolo = malloc(sizeof(struct Simbolo));
+		novoSimbolo = malloc(sizeof(Simbolo));
 		if (!novoSimbolo)
 		{
 			perror("Erro: [insTabSim] - malloc novoSimbolo: ");
@@ -173,7 +173,7 @@ void insTabSim(int tipo, struct ListaId *lista)
 /*-----------------------------------*/
 int consultaTipo(char *id)
 {
-	struct Simbolo * aux = tabSim, *aux2;
+	Simbolo * aux = tabSim, *aux2;
 	// Encontrar tipo da variável na tabela de símbolos.
 	while (aux != NULL)
 	{
@@ -198,7 +198,7 @@ int consultaTipo(char *id)
 /*-----------------------------------*/
 int consultaFrame(char *id)
 {
-	struct Simbolo * aux = tabSim;
+	Simbolo * aux = tabSim;
 	// Encontrar tipo da variável na tabela de símbolos.
 	while (aux != NULL)
 	{
@@ -219,9 +219,9 @@ int consultaFrame(char *id)
 	return T_NEX;
 }
 
-void freeLista(struct ListaId *lista)
+void freeLista(ListaId *lista)
 {
-	struct ListaId *aux = lista, *aux2 = NULL;
+	ListaId *aux = lista, *aux2 = NULL;
 	while (aux != NULL)
 	{
 		aux2 = aux;
@@ -232,7 +232,7 @@ void freeLista(struct ListaId *lista)
 	aux = NULL;
 }
 
-void printTabSim(struct Simbolo *tabSim)
+void printTabSim(Simbolo *tabSim)
 {
 	if (tabSim != NULL)
 	{
@@ -254,12 +254,12 @@ void printTabSim(struct Simbolo *tabSim)
 }
 
 // AST
-struct AST * criarFolhaID(int cod, char *nome)
+AST * criarFolhaID(int cod, char *nome)
 {
-	struct AST * folha = malloc(sizeof(struct AST));
+	AST * folha = malloc(sizeof(AST));
 	if (folha == NULL)
 	{
-		perror("Erro: [criarFolhaID] - malloc(struct AST): ");
+		perror("Erro: [criarFolhaID] - malloc(AST): ");
 		exit(EXIT_FAILURE);
 	}
 
@@ -271,12 +271,12 @@ struct AST * criarFolhaID(int cod, char *nome)
 }
 
 // AST
-struct AST * criarFolhaInt(int value)
+AST * criarFolhaInt(int value)
 {
-	struct AST * folha = malloc(sizeof(struct AST));
+	AST * folha = malloc(sizeof(AST));
 	if (folha == NULL)
 	{
-		perror("Erro: [criarFolhaInt] - malloc(struct AST): ");
+		perror("Erro: [criarFolhaInt] - malloc(AST): ");
 		exit(EXIT_FAILURE);
 	}
 
@@ -288,12 +288,12 @@ struct AST * criarFolhaInt(int value)
 }
 
 // AST
-struct AST * criarFolhaFloat(float value)
+AST * criarFolhaFloat(float value)
 {
-	struct AST * folha = malloc(sizeof(struct AST));
+	AST * folha = malloc(sizeof(AST));
 	if (folha == NULL)
 	{
-		perror("Erro: [criarFolhaFloat] - malloc(struct AST): ");
+		perror("Erro: [criarFolhaFloat] - malloc(AST): ");
 		exit(EXIT_FAILURE);
 	}
 
@@ -305,12 +305,12 @@ struct AST * criarFolhaFloat(float value)
 }
 
 // AST
-struct AST * criarNoAST(int cod, struct AST * esq, struct AST * dir)
+AST * criarNoAST(int cod, AST * esq, AST * dir)
 {
-	struct AST * no = malloc(sizeof(struct AST));
+	AST * no = malloc(sizeof(AST));
 	if (no == NULL)
 	{
-		perror("Erro: [criarNoAST] - malloc(struct AST)");
+		perror("Erro: [criarNoAST] - malloc(AST)");
 		exit(EXIT_FAILURE);
 	}
 
@@ -323,52 +323,12 @@ struct AST * criarNoAST(int cod, struct AST * esq, struct AST * dir)
 	return no;
 }
 
-// No Aritmético
-struct AST * criarNoArit(int op, struct AST *esq, struct AST *dir)
-{
-	struct AST * no = malloc(sizeof(struct AST));
-	if (no == NULL)
-	{
-		perror("Erro: [criarNoArit] - malloc(struct AST)");
-		exit(EXIT_FAILURE);
-	}
-
-	no->cod  = AST_ARIT;
-	no->op   = op;
-	no->esq  = esq;
-	no->dir  = dir;
-	if (cod != AST_LISTA)
-		no->tipo = esq->tipo;
-
-	return no;
-}
-
-// No Lógico-Relacional
-struct AST * criarNoRel(int op, struct AST * esq, struct AST * dir)
-{
-	struct AST * no = malloc(sizeof(struct AST));
-	if (no == NULL)
-	{
-		perror("Erro: [criarNoRel] - malloc(struct AST)");
-		exit(EXIT_FAILURE);
-	}
-
-	no->cod  = AST_REL;
-	no->op   = op;
-	no->esq  = esq;
-	no->dir  = dir;
-	if (cod != AST_LISTA)
-		no->tipo = esq->tipo;
-
-	return no;
-}
-
 // Cria um nó Int2Float, retorna seu endereço e aponta para iptr;
-struct AST * i2fAST(struct AST * iptr) {
-	struct AST * no = malloc(sizeof(struct AST));
+AST * i2fAST(AST * iptr) {
+	AST * no = malloc(sizeof(AST));
 	if (no == NULL)
 	{
-		perror("Erro: [i2fAST] - malloc(struct AST)");
+		perror("Erro: [i2fAST] - malloc(AST)");
 		exit(EXIT_FAILURE);
 	}
 
@@ -380,11 +340,11 @@ struct AST * i2fAST(struct AST * iptr) {
 }
 
 // Cria um nó Float2Int, retorna seu endereço e aponta para iptr;
-struct AST * f2iAST(struct AST * iptr) {
-	struct AST * no = malloc(sizeof(struct AST));
+AST * f2iAST(AST * iptr) {
+	AST * no = malloc(sizeof(AST));
 	if (no == NULL)
 	{
-		perror("Erro: [f2iAST] - malloc(struct AST)");
+		perror("Erro: [f2iAST] - malloc(AST)");
 		exit(EXIT_FAILURE);
 	}
 
@@ -395,13 +355,51 @@ struct AST * f2iAST(struct AST * iptr) {
 	return no;
 }
 
-// Cria um nó IF, retorna seu endereço;
-struct AST * criarNoIF(struct AST * cond, struct AST * b1, struct AST * b2)
+// No Aritmético
+AST * criarNoArit(int op, AST *esq, AST *dir)
 {
-	struct AST * no = malloc(sizeof(struct AST));
+	AST *no = malloc(sizeof(AST));
 	if (no == NULL)
 	{
-		perror("Erro: [criarNoIF] - malloc(struct AST)");
+		perror("Erro: [criarNoArit] - malloc(AST)");
+		exit(EXIT_FAILURE);
+	}
+
+	no->cod  = AST_ARIT;
+	no->op   = op;
+	no->esq  = esq;
+	no->dir  = dir;
+	no->tipo = esq->tipo;
+
+	return no;
+}
+
+// No Lógico-Relacional
+AST * criarNoRel(int op, AST * esq, AST * dir)
+{
+	AST * no = malloc(sizeof(AST));
+	if (no == NULL)
+	{
+		perror("Erro: [criarNoRel] - malloc(AST)");
+		exit(EXIT_FAILURE);
+	}
+
+	no->cod  = AST_REL;
+	no->op   = op;
+	no->esq  = esq;
+	no->dir  = dir;
+	no->tipo = esq->tipo;
+
+	return no;
+}
+
+// Cria um nó IF, retorna seu endereço;
+AST * criarNoIF(AST * cond, AST * b1, AST * b2)
+{
+	AST * no = malloc(sizeof(AST));
+	if (no == NULL)
+	{
+		perror("Erro: [criarNoIF] - malloc(AST)");
 		exit(EXIT_FAILURE);
 	}
 
@@ -414,7 +412,7 @@ struct AST * criarNoIF(struct AST * cond, struct AST * b1, struct AST * b2)
 }
 
 // Impressão pós-ordem
-void printAST(struct AST * r)
+void printAST(AST * r)
 {
 	int labelTrue, labelFalse, labelNext;
 	switch (r->cod)
@@ -481,7 +479,6 @@ void printAST(struct AST * r)
 		case AST_LISTA:
 			if (r->esq != NULL) printAST(r->esq);
 			if (r->dir != NULL) printAST(r->dir);
-			//printf("\n");
 			break;
 
 		case AST_ATRIB:
@@ -522,7 +519,7 @@ void printAST(struct AST * r)
 				labelFalse = labelCounter++;
 			labelNext = labelCounter++;
 
-			printLogRel(r->cond);
+			printLogRel(r->cond, labelTrue, labelNext);
 			printf("L%d:", labelTrue);
 			printAST(r->pthen);
 			if (r->pelse != NULL)
@@ -535,19 +532,17 @@ void printAST(struct AST * r)
 			break;
 
 		default:
-			printf("unimplemented: %d", r->cod);
+			printf("unimplemented: %d, %d", r->cod, r->op);
 			printf("\n");
 			break;
 	}
 
-	//printf("    \t%d\t", r->cod);
-
-	free(r);
-	r = NULL;
+	//free(r);
+	//r = NULL;
 }
 
 // Impressão pós-ordem
-void printLogRel(struct AST * r, int labelTrue, labelFalse)
+void printLogRel(AST * r, int labelTrue, int labelFalse)
 {
 	printf("\t");
 	int labelAux;
@@ -577,7 +572,7 @@ void printLogRel(struct AST * r, int labelTrue, labelFalse)
 			printf("\t");
 			if (r->tipo == T_INT) printf("if_icmp");
 			else if (r->tipo == T_FLT) printf("if_fcmp");
-			switch (r->relop)
+			switch (r->op)
 			{
 				case EQ: printf("eq"); break;
 				case NE: printf("ne"); break;
@@ -588,16 +583,16 @@ void printLogRel(struct AST * r, int labelTrue, labelFalse)
 				default: printf("ERROR"); break;
 			}
 
-			printf(" L%d\n", r->labelTrue
-			printf("\tgoto L%d", r->labelFalse);
+			printf(" L%d\n", labelTrue);
+			printf("\tgoto L%d", labelFalse);
 			printf("\n");
 			break;
 
-		default: printf("CAGEI"); break;
+		default: printf("CAGEI\n"); break;
 	}
 
 	//printf("    \t%d\t", r->cod);
 
-	free(r);
-	r = NULL;
+	//free(r);
+	//r = NULL;
 }

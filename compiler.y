@@ -49,12 +49,12 @@ BlocoPrincipal
 	{
 		//$$.ptr = criarNoAST(AST_BLOCO, $2.ptr, $3.ptr);
 		$$.ptr = $3.ptr;
-		imprimePosOrdem($$.ptr);
+		printAST($$.ptr);
 	}
 	| '{'ListaCmd'}'
 	{
 		$$.ptr = $2.ptr;
-		imprimePosOrdem($$.ptr);
+		printAST($$.ptr);
 	}
 	;
 
@@ -163,6 +163,9 @@ CmdSe
 
 CmdEnquanto
 	: TWHILE '('ExpressaoLogica')' Bloco
+	{
+		//$$.ptr = criarNoWHILE($3.ptr, $5.ptr);
+	}
 	;
 
 CmdAtrib
@@ -221,18 +224,18 @@ ExpressaoRelacional
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoLogRel(AST_REL, LT, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoRel(LT, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoLogRel(AST_REL, LT, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoRel(LT, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoLogRel(AST_REL, LT, $1.ptr, $3.ptr);
+			$$.ptr = criarNoRel(LT, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
@@ -243,18 +246,18 @@ ExpressaoRelacional
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoLogRel(AST_REL, GT, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoRel(GT, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoLogRel(AST_REL, GT, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoRel(GT, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoLogRel(AST_REL, GT, $1.ptr, $3.ptr);
+			$$.ptr = criarNoRel(GT, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
@@ -265,18 +268,18 @@ ExpressaoRelacional
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoLogRel(AST_REL, LE, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoRel(LE, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoLogRel(AST_REL, LE, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoRel(LE, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoLogRel(AST_REL, LE, $1.ptr, $3.ptr);
+			$$.ptr = criarNoRel(LE, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
@@ -287,18 +290,18 @@ ExpressaoRelacional
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoLogRel(AST_REL, GE, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoRel(GE, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoLogRel(AST_REL, GE, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoRel(GE, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoLogRel(AST_REL, GE, $1.ptr, $3.ptr);
+			$$.ptr = criarNoRel(GE, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
@@ -309,18 +312,18 @@ ExpressaoRelacional
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoLogRel(AST_REL, EQ, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoRel(EQ, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoLogRel(AST_REL, EQ, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoRel(EQ, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoLogRel(AST_REL, EQ, $1.ptr, $3.ptr);
+			$$.ptr = criarNoRel(EQ, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}
@@ -331,18 +334,18 @@ ExpressaoRelacional
 			YYABORT;
 		}
 		else if ($1.tipo == T_INT && $3.tipo == T_FLT) {
-			$$.ptr = criarNoLogRel(AST_REL, NE, i2fAST($1.ptr), $3.ptr);
+			$$.ptr = criarNoRel(NE, i2fAST($1.ptr), $3.ptr);
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else
 		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
-			$$.ptr = criarNoLogRel(AST_REL, NE, $1.ptr, i2fAST($3.ptr));
+			$$.ptr = criarNoRel(NE, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
 		else {
-			$$.ptr = criarNoLogRel(AST_REL, NE, $1.ptr, $3.ptr);
+			$$.ptr = criarNoRel(NE, $1.ptr, $3.ptr);
 			$$.tipo = $1.tipo;
 		}
 	}

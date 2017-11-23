@@ -1,4 +1,4 @@
 *.tab.c
 *.yy.c
 compiler.c
-a.out
+compiler
