@@ -17,7 +17,13 @@ extern struct Simbolo *tabsim;
 
 Programa
 	: ListaFuncoes BlocoPrincipal
+	{
+		printAST($1.ptr);
+	}
 	| BlocoPrincipal
+	{
+		printAST($1.ptr);
+	}
 	;
 
 ListaFuncoes
@@ -49,12 +55,10 @@ BlocoPrincipal
 	{
 		//$$.ptr = criarNoAST(AST_BLOCO, $2.ptr, $3.ptr);
 		$$.ptr = $3.ptr;
-		printAST($$.ptr);
 	}
 	| '{'ListaCmd'}'
 	{
 		$$.ptr = $2.ptr;
-		printAST($$.ptr);
 	}
 	;
 
@@ -250,8 +254,7 @@ ExpressaoRelacional
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
-		else
-		if ($1.tipo == T_FLT && $3.tipo == T_INT) {
+		else if ($1.tipo == T_FLT && $3.tipo == T_INT) {
 			$$.ptr = criarNoRel(GT, $1.ptr, i2fAST($3.ptr));
 			$$.tipo = T_FLT;
 			addError(ERR_0, linha);

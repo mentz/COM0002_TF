@@ -67,8 +67,12 @@ typedef struct AST
 	int op;
 	char id[MAX_ID_LEN];
 	union {
-		struct AST *esq, *dir;
-		struct AST *cond, *pthen, *pelse;
+		struct {
+			struct AST *esq, *dir;
+		};
+		struct {
+			struct AST *cond, *pthen, *pelse;
+		};
 	};
 	int constInt;
 	float constFloat;

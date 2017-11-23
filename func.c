@@ -122,7 +122,9 @@ void insTabSim(int tipo, ListaId *lista)
 					direcao = 0; // ESQUERDA
 					break;
 				}
-			} else {
+			}
+			else
+			{
 				if (noTabSim->dir != NULL)
 					noTabSim = noTabSim->dir;
 				else
@@ -537,14 +539,13 @@ void printAST(AST * r)
 			break;
 	}
 
-	//free(r);
-	//r = NULL;
+	free(r);
+	r = NULL;
 }
 
 // Impressão pós-ordem
 void printLogRel(AST * r, int labelTrue, int labelFalse)
 {
-	printf("\t");
 	int labelAux;
 	switch (r->cod)
 	{
@@ -572,6 +573,7 @@ void printLogRel(AST * r, int labelTrue, int labelFalse)
 			printf("\t");
 			if (r->tipo == T_INT) printf("if_icmp");
 			else if (r->tipo == T_FLT) printf("if_fcmp");
+			else ;
 			switch (r->op)
 			{
 				case EQ: printf("eq"); break;
@@ -580,7 +582,7 @@ void printLogRel(AST * r, int labelTrue, int labelFalse)
 				case LE: printf("le"); break;
 				case GT: printf("gt"); break;
 				case GE: printf("ge"); break;
-				default: printf("ERROR"); break;
+				default: printf("<ERROR %d>", r->op); break;
 			}
 
 			printf(" L%d\n", labelTrue);
@@ -593,6 +595,6 @@ void printLogRel(AST * r, int labelTrue, int labelFalse)
 
 	//printf("    \t%d\t", r->cod);
 
-	//free(r);
-	//r = NULL;
+	free(r);
+	r = NULL;
 }

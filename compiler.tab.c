@@ -441,14 +441,14 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    19,    19,    20,    24,    25,    29,    30,    34,    35,
-      39,    40,    44,    48,    54,    62,    63,    67,    74,    78,
-      82,    89,    93,   100,   107,   111,   118,   122,   126,   130,
-     134,   138,   142,   149,   150,   154,   158,   165,   172,   191,
-     195,   196,   200,   204,   208,   209,   213,   214,   215,   216,
-     220,   242,   264,   286,   308,   330,   355,   359,   363,   370,
-     374,   378,   385,   407,   429,   436,   457,   478,   486,   491,
-     496,   500,   505,   510
+       0,    19,    19,    23,    30,    31,    35,    36,    40,    41,
+      45,    46,    50,    54,    59,    66,    67,    71,    78,    82,
+      86,    93,    97,   104,   111,   115,   122,   126,   130,   134,
+     138,   142,   146,   153,   154,   158,   162,   169,   176,   195,
+     199,   200,   204,   208,   212,   213,   217,   218,   219,   220,
+     224,   246,   267,   289,   311,   333,   358,   362,   366,   373,
+     377,   381,   388,   410,   432,   439,   460,   481,   489,   494,
+     499,   503,   508,   513
 };
 #endif
 
@@ -1327,179 +1327,193 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 13:
-#line 49 "compiler.y" /* yacc.c:1646  */
+        case 2:
+#line 20 "compiler.y" /* yacc.c:1646  */
+    {
+		printAST((yyvsp[-1]).ptr);
+	}
+#line 1336 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 3:
+#line 24 "compiler.y" /* yacc.c:1646  */
+    {
+		printAST((yyvsp[0]).ptr);
+	}
+#line 1344 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 13:
+#line 55 "compiler.y" /* yacc.c:1646  */
     {
 		//$$.ptr = criarNoAST(AST_BLOCO, $2.ptr, $3.ptr);
 		(yyval).ptr = (yyvsp[-1]).ptr;
-		printAST((yyval).ptr);
 	}
-#line 1338 "compiler.tab.c" /* yacc.c:1646  */
+#line 1353 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 55 "compiler.y" /* yacc.c:1646  */
+#line 60 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = (yyvsp[-1]).ptr;
-		printAST((yyval).ptr);
 	}
-#line 1347 "compiler.tab.c" /* yacc.c:1646  */
+#line 1361 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 68 "compiler.y" /* yacc.c:1646  */
+#line 72 "compiler.y" /* yacc.c:1646  */
     {
 		insTabSim((yyvsp[-2]).tipo, (yyvsp[-1]).listaId);
 	}
-#line 1355 "compiler.tab.c" /* yacc.c:1646  */
+#line 1369 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 75 "compiler.y" /* yacc.c:1646  */
+#line 79 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).tipo = T_INT;
 	}
-#line 1363 "compiler.tab.c" /* yacc.c:1646  */
+#line 1377 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 79 "compiler.y" /* yacc.c:1646  */
+#line 83 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).tipo = T_STR;
 	}
-#line 1371 "compiler.tab.c" /* yacc.c:1646  */
+#line 1385 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 83 "compiler.y" /* yacc.c:1646  */
+#line 87 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).tipo = T_FLT;
 	}
-#line 1379 "compiler.tab.c" /* yacc.c:1646  */
+#line 1393 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 90 "compiler.y" /* yacc.c:1646  */
+#line 94 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).listaId = insLista(&(yyvsp[-2]), (yyvsp[0]).id);
 	}
-#line 1387 "compiler.tab.c" /* yacc.c:1646  */
+#line 1401 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 94 "compiler.y" /* yacc.c:1646  */
+#line 98 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).listaId = criarLista((yyvsp[0]).id);
 	}
-#line 1395 "compiler.tab.c" /* yacc.c:1646  */
+#line 1409 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 101 "compiler.y" /* yacc.c:1646  */
+#line 105 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = (yyvsp[-1]).ptr;
 	}
-#line 1403 "compiler.tab.c" /* yacc.c:1646  */
+#line 1417 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 108 "compiler.y" /* yacc.c:1646  */
+#line 112 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = criarNoAST(AST_LISTA, (yyvsp[-1]).ptr, (yyvsp[0]).ptr);
 	}
-#line 1411 "compiler.tab.c" /* yacc.c:1646  */
+#line 1425 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 112 "compiler.y" /* yacc.c:1646  */
+#line 116 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = criarNoAST(AST_LISTA, (yyvsp[0]).ptr, NULL);
 	}
-#line 1419 "compiler.tab.c" /* yacc.c:1646  */
+#line 1433 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 119 "compiler.y" /* yacc.c:1646  */
+#line 123 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = (yyvsp[0]).ptr;
 	}
-#line 1427 "compiler.tab.c" /* yacc.c:1646  */
+#line 1441 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 123 "compiler.y" /* yacc.c:1646  */
+#line 127 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = NULL;
 	}
-#line 1435 "compiler.tab.c" /* yacc.c:1646  */
+#line 1449 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 127 "compiler.y" /* yacc.c:1646  */
+#line 131 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = (yyvsp[0]).ptr;
 	}
-#line 1443 "compiler.tab.c" /* yacc.c:1646  */
+#line 1457 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 131 "compiler.y" /* yacc.c:1646  */
-    {
-		(yyval).ptr = NULL;
-	}
-#line 1451 "compiler.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 30:
 #line 135 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = NULL;
 	}
-#line 1459 "compiler.tab.c" /* yacc.c:1646  */
+#line 1465 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
-  case 31:
+  case 30:
 #line 139 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = NULL;
 	}
-#line 1467 "compiler.tab.c" /* yacc.c:1646  */
+#line 1473 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
-  case 32:
+  case 31:
 #line 143 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = NULL;
 	}
-#line 1475 "compiler.tab.c" /* yacc.c:1646  */
+#line 1481 "compiler.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 32:
+#line 147 "compiler.y" /* yacc.c:1646  */
+    {
+		(yyval).ptr = NULL;
+	}
+#line 1489 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 35:
-#line 155 "compiler.y" /* yacc.c:1646  */
+#line 159 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = criarNoIF((yyvsp[-2]).ptr, (yyvsp[0]).ptr, NULL);
 	}
-#line 1483 "compiler.tab.c" /* yacc.c:1646  */
+#line 1497 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 159 "compiler.y" /* yacc.c:1646  */
+#line 163 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = criarNoIF((yyvsp[-4]).ptr, (yyvsp[-2]).ptr, (yyvsp[0]).ptr);
 	}
-#line 1491 "compiler.tab.c" /* yacc.c:1646  */
+#line 1505 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 166 "compiler.y" /* yacc.c:1646  */
+#line 170 "compiler.y" /* yacc.c:1646  */
     {
 		//$$.ptr = criarNoWHILE($3.ptr, $5.ptr);
 	}
-#line 1499 "compiler.tab.c" /* yacc.c:1646  */
+#line 1513 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 173 "compiler.y" /* yacc.c:1646  */
+#line 177 "compiler.y" /* yacc.c:1646  */
     {
 		(yyvsp[-3]).ptr = criarFolhaID(AST_VAR, (yyvsp[-3]).id);
 		(yyvsp[-3]).tipo = consultaTipo((yyvsp[-3]).id);
@@ -1517,11 +1531,11 @@ yyreduce:
 			(yyval).tipo = (yyvsp[-3]).tipo;
 		}
 	}
-#line 1521 "compiler.tab.c" /* yacc.c:1646  */
+#line 1535 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 221 "compiler.y" /* yacc.c:1646  */
+#line 225 "compiler.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[-2]).tipo == T_STR || (yyvsp[0]).tipo == T_STR) {
 			addError(ERR_2, linha);
@@ -1543,11 +1557,11 @@ yyreduce:
 			(yyval).tipo = (yyvsp[-2]).tipo;
 		}
 	}
-#line 1547 "compiler.tab.c" /* yacc.c:1646  */
+#line 1561 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 243 "compiler.y" /* yacc.c:1646  */
+#line 247 "compiler.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[-2]).tipo == T_STR || (yyvsp[0]).tipo == T_STR) {
 			addError(ERR_2, linha);
@@ -1558,8 +1572,7 @@ yyreduce:
 			(yyval).tipo = T_FLT;
 			addError(ERR_0, linha);
 		}
-		else
-		if ((yyvsp[-2]).tipo == T_FLT && (yyvsp[0]).tipo == T_INT) {
+		else if ((yyvsp[-2]).tipo == T_FLT && (yyvsp[0]).tipo == T_INT) {
 			(yyval).ptr = criarNoRel(GT, (yyvsp[-2]).ptr, i2fAST((yyvsp[0]).ptr));
 			(yyval).tipo = T_FLT;
 			addError(ERR_0, linha);
@@ -1569,11 +1582,11 @@ yyreduce:
 			(yyval).tipo = (yyvsp[-2]).tipo;
 		}
 	}
-#line 1573 "compiler.tab.c" /* yacc.c:1646  */
+#line 1586 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 52:
-#line 265 "compiler.y" /* yacc.c:1646  */
+#line 268 "compiler.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[-2]).tipo == T_STR || (yyvsp[0]).tipo == T_STR) {
 			addError(ERR_2, linha);
@@ -1595,11 +1608,11 @@ yyreduce:
 			(yyval).tipo = (yyvsp[-2]).tipo;
 		}
 	}
-#line 1599 "compiler.tab.c" /* yacc.c:1646  */
+#line 1612 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 53:
-#line 287 "compiler.y" /* yacc.c:1646  */
+#line 290 "compiler.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[-2]).tipo == T_STR || (yyvsp[0]).tipo == T_STR) {
 			addError(ERR_2, linha);
@@ -1621,11 +1634,11 @@ yyreduce:
 			(yyval).tipo = (yyvsp[-2]).tipo;
 		}
 	}
-#line 1625 "compiler.tab.c" /* yacc.c:1646  */
+#line 1638 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 54:
-#line 309 "compiler.y" /* yacc.c:1646  */
+#line 312 "compiler.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[-2]).tipo == T_STR || (yyvsp[0]).tipo == T_STR) {
 			addError(ERR_2, linha);
@@ -1647,11 +1660,11 @@ yyreduce:
 			(yyval).tipo = (yyvsp[-2]).tipo;
 		}
 	}
-#line 1651 "compiler.tab.c" /* yacc.c:1646  */
+#line 1664 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 331 "compiler.y" /* yacc.c:1646  */
+#line 334 "compiler.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[-2]).tipo == T_STR || (yyvsp[0]).tipo == T_STR) {
 			addError(ERR_2, linha);
@@ -1673,59 +1686,59 @@ yyreduce:
 			(yyval).tipo = (yyvsp[-2]).tipo;
 		}
 	}
-#line 1677 "compiler.tab.c" /* yacc.c:1646  */
+#line 1690 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 56:
-#line 356 "compiler.y" /* yacc.c:1646  */
+#line 359 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = criarNoAST(AST_LOG_AND, (yyvsp[-2]).ptr, (yyvsp[0]).ptr);
 	}
-#line 1685 "compiler.tab.c" /* yacc.c:1646  */
+#line 1698 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 360 "compiler.y" /* yacc.c:1646  */
+#line 363 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = criarNoAST(AST_LOG_OR, (yyvsp[-2]).ptr, (yyvsp[0]).ptr);
 	}
-#line 1693 "compiler.tab.c" /* yacc.c:1646  */
+#line 1706 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 364 "compiler.y" /* yacc.c:1646  */
+#line 367 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = (yyvsp[0]).ptr;
 	}
-#line 1701 "compiler.tab.c" /* yacc.c:1646  */
+#line 1714 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 371 "compiler.y" /* yacc.c:1646  */
+#line 374 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = (yyvsp[-1]).ptr;
 	}
-#line 1709 "compiler.tab.c" /* yacc.c:1646  */
+#line 1722 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 60:
-#line 375 "compiler.y" /* yacc.c:1646  */
+#line 378 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = criarNoAST(AST_LOG_NOT, (yyvsp[0]).ptr, NULL);
 	}
-#line 1717 "compiler.tab.c" /* yacc.c:1646  */
+#line 1730 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 379 "compiler.y" /* yacc.c:1646  */
+#line 382 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = (yyvsp[0]).ptr;
 	}
-#line 1725 "compiler.tab.c" /* yacc.c:1646  */
+#line 1738 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 386 "compiler.y" /* yacc.c:1646  */
+#line 389 "compiler.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[-2]).tipo == T_STR || (yyvsp[0]).tipo == T_STR) {
 			addError(ERR_2, linha);
@@ -1747,11 +1760,11 @@ yyreduce:
 			(yyval).tipo = (yyvsp[-2]).tipo;
 		}
 	}
-#line 1751 "compiler.tab.c" /* yacc.c:1646  */
+#line 1764 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 63:
-#line 408 "compiler.y" /* yacc.c:1646  */
+#line 411 "compiler.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[-2]).tipo == T_STR || (yyvsp[0]).tipo == T_STR) {
 			addError(ERR_2, linha);
@@ -1773,19 +1786,19 @@ yyreduce:
 			(yyval).tipo = (yyvsp[-2]).tipo;
 		}
 	}
-#line 1777 "compiler.tab.c" /* yacc.c:1646  */
+#line 1790 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 64:
-#line 430 "compiler.y" /* yacc.c:1646  */
+#line 433 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = (yyvsp[0]).ptr;
 	}
-#line 1785 "compiler.tab.c" /* yacc.c:1646  */
+#line 1798 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 437 "compiler.y" /* yacc.c:1646  */
+#line 440 "compiler.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[-2]).tipo == T_STR || (yyvsp[0]).tipo == T_STR) {
 			addError(ERR_2, linha);
@@ -1806,11 +1819,11 @@ yyreduce:
 			(yyval).tipo = (yyvsp[-2]).tipo;
 		}
 	}
-#line 1810 "compiler.tab.c" /* yacc.c:1646  */
+#line 1823 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 66:
-#line 458 "compiler.y" /* yacc.c:1646  */
+#line 461 "compiler.y" /* yacc.c:1646  */
     {
 		if ((yyvsp[-2]).tipo == T_STR || (yyvsp[0]).tipo == T_STR) {
 			addError(ERR_2, linha);
@@ -1831,64 +1844,64 @@ yyreduce:
 			(yyval).tipo = (yyvsp[-2]).tipo;
 		}
 	}
-#line 1835 "compiler.tab.c" /* yacc.c:1646  */
+#line 1848 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 67:
-#line 479 "compiler.y" /* yacc.c:1646  */
+#line 482 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = (yyvsp[0]).ptr;
 		(yyval).tipo = (yyvsp[0]).tipo;
 	}
-#line 1844 "compiler.tab.c" /* yacc.c:1646  */
+#line 1857 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 487 "compiler.y" /* yacc.c:1646  */
+#line 490 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).tipo = (yyvsp[-1]).tipo;
 		(yyval).ptr = (yyvsp[-1]).ptr;
 	}
-#line 1853 "compiler.tab.c" /* yacc.c:1646  */
+#line 1866 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 492 "compiler.y" /* yacc.c:1646  */
+#line 495 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).tipo = (yyvsp[0]).tipo;
 		(yyval).ptr = criarNoAST(AST_NEG, (yyvsp[0]).ptr, NULL);
 	}
-#line 1862 "compiler.tab.c" /* yacc.c:1646  */
+#line 1875 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 497 "compiler.y" /* yacc.c:1646  */
+#line 500 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = criarFolhaID(AST_FUNCAO, (yyvsp[0]).id);
 	}
-#line 1870 "compiler.tab.c" /* yacc.c:1646  */
+#line 1883 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 501 "compiler.y" /* yacc.c:1646  */
+#line 504 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).tipo = T_INT;
 		(yyval).ptr = criarFolhaInt((yyvsp[0]).ival);
 	}
-#line 1879 "compiler.tab.c" /* yacc.c:1646  */
+#line 1892 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 506 "compiler.y" /* yacc.c:1646  */
+#line 509 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).tipo = T_FLT;
 		(yyval).ptr = criarFolhaFloat((yyvsp[0]).fval);
 	}
-#line 1888 "compiler.tab.c" /* yacc.c:1646  */
+#line 1901 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 511 "compiler.y" /* yacc.c:1646  */
+#line 514 "compiler.y" /* yacc.c:1646  */
     {
 		(yyval).ptr = criarFolhaID(AST_VAR, (yyvsp[0]).id);
 		(yyval).tipo = consultaTipo((yyvsp[0]).id);
@@ -1898,11 +1911,11 @@ yyreduce:
 			YYABORT;
 		}
 	}
-#line 1902 "compiler.tab.c" /* yacc.c:1646  */
+#line 1915 "compiler.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1906 "compiler.tab.c" /* yacc.c:1646  */
+#line 1919 "compiler.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2130,7 +2143,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 522 "compiler.y" /* yacc.c:1906  */
+#line 525 "compiler.y" /* yacc.c:1906  */
 
 
 #include "lex.yy.c"
