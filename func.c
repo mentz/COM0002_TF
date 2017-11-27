@@ -559,15 +559,15 @@ void printAST(AST * r)
 			labelNext = labelCounter++;
 
 			printLogRel(r->cond, labelTrue, labelNext);
-			printf("L%d:", labelTrue);
+			printf("L%d:\n", labelTrue);
 			printAST(r->pthen);
 			if (r->pelse != NULL)
 			{
 				printf("\tgoto L%d\n", labelNext);
-				printf("L%d:", labelFalse);
+				printf("L%d:\n", labelFalse);
 				printAST(r->pelse);
 			}
-			printf("L%d:", labelNext);
+			printf("L%d:\n", labelNext);
 			break;
 
 		case AST_WHILE:
@@ -575,12 +575,12 @@ void printAST(AST * r)
 			labelTrue = labelCounter++;
 			labelNext = labelCounter++;
 
-			printf("L%d:", labelAux);
+			printf("L%d:\n", labelAux);
 			printLogRel(r->cond, labelTrue, labelNext);
-			printf("L%d:", labelTrue);
+			printf("L%d:\n", labelTrue);
 			printAST(r->pthen);
 			printf("\tgoto %d\n", labelAux);
-			printf("L%d:", labelNext);
+			printf("L%d:\n", labelNext);
 			break;
 
 		default:
@@ -602,14 +602,14 @@ void printLogRel(AST * r, int labelTrue, int labelFalse)
 		case AST_LOG_AND:
 			labelAux = labelCounter++;
 			printLogRel(r->esq, labelAux, labelFalse);
-			printf("L%d:", labelAux);
+			printf("L%d:\n", labelAux);
 			printLogRel(r->dir, labelTrue, labelFalse);
 			break;
 
 		case AST_LOG_OR:
 			labelAux = labelCounter++;
 			printLogRel(r->esq, labelTrue, labelAux);
-			printf("L%d:", labelAux);
+			printf("L%d:\n", labelAux);
 			printLogRel(r->dir, labelTrue, labelFalse);
 			break;
 
