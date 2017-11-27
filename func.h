@@ -12,14 +12,13 @@ enum
 
 enum AST_TYPES
 {
-	AST_ARIT,
+	AST_ARIT_ADD, AST_ARIT_SUB, AST_ARIT_MUL, AST_ARIT_DIV,
 	AST_CONSTINT, AST_CONSTFLOAT, AST_VAR, AST_FUNCAO,
-	AST_LISTA, AST_ATRIB, AST_NEG, AST_I2F, AST_F2I, AST_IF,
-	AST_LOG_AND, AST_LOG_OR, AST_LOG_NOT, AST_REL
+	AST_LISTA, AST_ATRIB, AST_NEG, AST_I2F, AST_F2I,
+	AST_IF, AST_WHILE,
+	AST_LOG_AND, AST_LOG_OR, AST_LOG_NOT,
+	AST_REL_EQ, AST_REL_NE, AST_REL_LT, AST_REL_LE, AST_REL_GT, AST_REL_GE 
 };
-
-enum ARIT_TYPES { ADD, SUB, MUL, DIV };
-enum LOGREL_TYPES { EQ, NE, LT, LE, GT, GE };
 
 enum ERR_CODES
 {
@@ -64,16 +63,9 @@ typedef struct AST
 {
 	int cod;
 	int tipo;
-	int op;
 	char id[MAX_ID_LEN];
-	union {
-		struct {
-			struct AST *esq, *dir;
-		};
-		struct {
-			struct AST *cond, *pthen, *pelse;
-		};
-	};
+	struct AST *esq, *dir;
+	struct AST *cond, *pthen, *pelse;
 	int constInt;
 	float constFloat;
 } AST;
@@ -100,3 +92,4 @@ AST * criarNoRel(int op, AST * esq, AST * dir);
 AST * i2fAST(AST * iptr);
 AST * f2iAST(AST * iptr);
 AST * criarNoIF(AST * cond, AST * b1, AST * b2);
+AST * criarNoWhile(AST * cond, AST * b1);

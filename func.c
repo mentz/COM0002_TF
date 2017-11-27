@@ -367,8 +367,7 @@ AST * criarNoArit(int op, AST *esq, AST *dir)
 		exit(EXIT_FAILURE);
 	}
 
-	no->cod  = AST_ARIT;
-	no->op   = op;
+	no->cod  = op;
 	no->esq  = esq;
 	no->dir  = dir;
 	no->tipo = esq->tipo;
@@ -386,8 +385,7 @@ AST * criarNoRel(int op, AST * esq, AST * dir)
 		exit(EXIT_FAILURE);
 	}
 
-	no->cod  = AST_REL;
-	no->op   = op;
+	no->cod  = op;
 	no->esq  = esq;
 	no->dir  = dir;
 	no->tipo = esq->tipo;
@@ -413,39 +411,78 @@ AST * criarNoIF(AST * cond, AST * b1, AST * b2)
 	return no;
 }
 
+// Cria um nó WHILE, retorna seu endereço;
+AST * criarNoWhile(AST * cond, AST * b1)
+{
+	AST * no = malloc(sizeof(AST));
+	if (no == NULL)
+	{
+		perror("Erro: [criarNoWhile] - malloc(AST)");
+		exit(EXIT_FAILURE);
+	}
+
+	no->cod  = AST_WHILE;
+	no->cond = cond;
+	no->pthen  = b1;
+
+	return no;
+}
+
 // Impressão pós-ordem
 void printAST(AST * r)
 {
-	int labelTrue, labelFalse, labelNext;
+	int labelTrue, labelFalse, labelNext, labelAux;
 	switch (r->cod)
 	{
-		case AST_ARIT:
+		case AST_ARIT_ADD:
 			printAST(r->esq);
 			printAST(r->dir);
 			printf("\t");
-			if (r->tipo == T_INT)
+			switch (r->tipo)
 			{
-				switch (r->op)
-				{
-					case ADD: printf("iadd"); break;
-					case SUB: printf("isub"); break;
-					case MUL: printf("imul"); break;
-					case DIV: printf("idiv"); break;
-					default: printf("ERROR"); break;
-				}
+				case T_INT: printf("i"); break;
+				case T_FLT: printf("f"); break;
 			}
-			else if (r->tipo == T_FLT)
+			printf("add");
+			printf("\n");
+			break;
+
+		case AST_ARIT_SUB:
+			printAST(r->esq);
+			printAST(r->dir);
+			printf("\t");
+			switch (r->tipo)
 			{
-				switch (r->op)
-				{
-					case ADD: printf("fadd"); break;
-					case SUB: printf("fsub"); break;
-					case MUL: printf("fmul"); break;
-					case DIV: printf("fdiv"); break;
-					default: printf("ERROR"); break;
-				}
+				case T_INT: printf("i"); break;
+				case T_FLT: printf("f"); break;
 			}
-			else printf("<ARIT TYPE ERROR>");
+			printf("sub");
+			printf("\n");
+			break;
+			
+		case AST_ARIT_MUL:
+			printAST(r->esq);
+			printAST(r->dir);
+			printf("\t");
+			switch (r->tipo)
+			{
+				case T_INT: printf("i"); break;
+				case T_FLT: printf("f"); break;
+			}
+			printf("mul");
+			printf("\n");
+			break;
+			
+		case AST_ARIT_DIV:
+			printAST(r->esq);
+			printAST(r->dir);
+			printf("\t");
+			switch (r->tipo)
+			{
+				case T_INT: printf("i"); break;
+				case T_FLT: printf("f"); break;
+			}
+			printf("div");
 			printf("\n");
 			break;
 
@@ -533,8 +570,21 @@ void printAST(AST * r)
 			printf("L%d:", labelNext);
 			break;
 
+		case AST_WHILE:
+			labelAux  = labelCounter++;
+			labelTrue = labelCounter++;
+			labelNext = labelCounter++;
+
+			printf("L%d:", labelAux);
+			printLogRel(r->cond, labelTrue, labelNext);
+			printf("L%d:", labelTrue);
+			printAST(r->pthen);
+			printf("\tgoto %d\n", labelAux);
+			printf("L%d:", labelNext);
+			break;
+
 		default:
-			printf("unimplemented: %d, %d", r->cod, r->op);
+			printf("unimplemented: %d", r->cod);
 			printf("\n");
 			break;
 	}
@@ -567,28 +617,97 @@ void printLogRel(AST * r, int labelTrue, int labelFalse)
 			printLogRel(r->esq, labelFalse, labelTrue);
 			break;
 
-		case AST_REL:
+		case AST_REL_EQ:
 			printAST(r->esq);
 			printAST(r->dir);
-			printf("\t");
-			if (r->tipo == T_INT) printf("if_icmp");
-			else if (r->tipo == T_FLT) printf("if_fcmp");
-			else ;
-			switch (r->op)
+			switch (r->tipo)
 			{
-				case EQ: printf("eq"); break;
-				case NE: printf("ne"); break;
-				case LT: printf("lt"); break;
-				case LE: printf("le"); break;
-				case GT: printf("gt"); break;
-				case GE: printf("ge"); break;
-				default: printf("<ERROR %d>", r->op); break;
+				case T_INT: printf("\tif_icmp"); break;
+				case T_FLT: printf("\tif_fcmp"); break;
 			}
+			printf("eq");
 
 			printf(" L%d\n", labelTrue);
 			printf("\tgoto L%d", labelFalse);
 			printf("\n");
 			break;
+
+		case AST_REL_NE:
+			printAST(r->esq);
+			printAST(r->dir);
+			switch (r->tipo)
+			{
+				case T_INT: printf("\tif_icmp"); break;
+				case T_FLT: printf("\tif_fcmp"); break;
+			}
+			printf("ne");
+
+			printf(" L%d\n", labelTrue);
+			printf("\tgoto L%d", labelFalse);
+			printf("\n");
+			break;
+
+		case AST_REL_LT:
+			printAST(r->esq);
+			printAST(r->dir);
+			switch (r->tipo)
+			{
+				case T_INT: printf("\tif_icmp"); break;
+				case T_FLT: printf("\tif_fcmp"); break;
+			}
+			printf("lt");
+
+			printf(" L%d\n", labelTrue);
+			printf("\tgoto L%d", labelFalse);
+			printf("\n");
+			break;
+
+		case AST_REL_LE:
+			printAST(r->esq);
+			printAST(r->dir);
+			switch (r->tipo)
+			{
+				case T_INT: printf("\tif_icmp"); break;
+				case T_FLT: printf("\tif_fcmp"); break;
+			}
+			printf("le");
+
+			printf(" L%d\n", labelTrue);
+			printf("\tgoto L%d", labelFalse);
+			printf("\n");
+			break;
+
+		case AST_REL_GT:
+			printAST(r->esq);
+			printAST(r->dir);
+			switch (r->tipo)
+			{
+				case T_INT: printf("\tif_icmp"); break;
+				case T_FLT: printf("\tif_fcmp"); break;
+			}
+			printf("gt");
+
+			printf(" L%d\n", labelTrue);
+			printf("\tgoto L%d", labelFalse);
+			printf("\n");
+			break;
+
+		case AST_REL_GE:
+			printAST(r->esq);
+			printAST(r->dir);
+			switch (r->tipo)
+			{
+				case T_INT: printf("\tif_icmp"); break;
+				case T_FLT: printf("\tif_fcmp"); break;
+			}
+			printf("ge");
+
+			printf(" L%d\n", labelTrue);
+			printf("\tgoto L%d", labelFalse);
+			printf("\n");
+			break;
+
+			
 
 		default: printf("CAGEI\n"); break;
 	}
