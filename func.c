@@ -583,6 +583,34 @@ void printAST(AST * r)
 			printf("L%d:\n", labelNext);
 			break;
 
+		case AST_PRINT:
+			printf("\tinvokevirtual java/lang/System/out Ljava/io/PrintStream;\n");
+			printAST(r->esq);
+			printf("invokevirtual java/io/PrintStream/print(");
+			switch (r->tipo)
+			{
+				case T_INT: printf("i"); break;
+				case T_FLT: printf("f"); break;
+				case T_STR: printf("Ljava/lang/String"); break;
+				default: printf("ERRO <AST_PRINT>");
+			}
+			printf(";)V\n");
+			break;
+
+		case AST_PRINTLN:
+			printf("\tinvokevirtual java/lang/System/out Ljava/io/PrintStream;\n");
+			printAST(r->esq);
+			printf("invokevirtual java/io/PrintStream/println(");
+			switch (r->tipo)
+			{
+				case T_INT: printf("i"); break;
+				case T_FLT: printf("f"); break;
+				case T_STR: printf("Ljava/lang/String"); break;
+				default: printf("ERRO <AST_PRINT>");
+			}
+			printf(";)V\n");
+			break;
+
 		default:
 			printf("unimplemented: %d", r->cod);
 			printf("\n");

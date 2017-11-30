@@ -1,4 +1,5 @@
 {
+	/*afdahsfhdshJKAHSJKHJKDHAJSKHDJKJKAS  AAAAAAAAa*/
 	int a, x, b;
 	x = 11;
 	while (x < 100)
@@ -14,5 +15,6 @@
 			a = 1;
 		}
 	}
+
 	x = 5;
 }

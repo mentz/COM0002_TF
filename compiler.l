@@ -1,3 +1,4 @@
+comment		\/\*.*\*\/
 delim 		[ \t]
 ws 			{delim}+
 digito 		[0-9]
@@ -48,5 +49,6 @@ newline     \n
 {literal}	{return TLITERAL;}
 {newline}	{linha++;}
 {ws}		{}
+{comment}	{}
 
 .			{printf("Token não reconhecido: %s (linha %d)\n", yytext, linha);}
