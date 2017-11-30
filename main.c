@@ -2,6 +2,7 @@
 #include "func.h"
 
 extern FILE *yyin;
+extern FILE **yyout;
 
 struct CompErrors *err;
 struct Simbolo *tabSim = NULL;
@@ -19,9 +20,18 @@ int main(int argc, char * argv[])
 	yyin = fopen(argv[1], "r");
 	if (yyin == NULL)
 	{
-		perror("Erro: Verifique o arquivo");
+		perror("Erro: Verifique o arquivo de entrada");
 		return 1;
 	}
+
+	/*
+	yyout = fopen(argv[2], "w");
+	if (yyout == NULL)
+	{
+		perror("Erro: Verifique o caminho do arquivo de saída");
+		return 1;
+	}
+	*/
 
 	if (yyparse()) printf("FATAL YYPARSE ABORT\nVeja lista de erros.\n");
 
