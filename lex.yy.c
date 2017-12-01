@@ -940,7 +940,7 @@ YY_RULE_SETUP
 case 34:
 YY_RULE_SETUP
 #line 49 "compiler.l"
-{return TLITERAL;}
+{strncpy(yylval.text, yytext, MAX_TEXT_LEN - 1); return TLITERAL;}
 	YY_BREAK
 case 35:
 /* rule 35 can match eol */

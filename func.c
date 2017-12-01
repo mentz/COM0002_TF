@@ -4,6 +4,7 @@ extern CompErrors *err;
 extern Simbolo *tabSim;
 extern int frameNumber;
 extern int labelCounter;
+extern FILE *outfile;
 
 void addError(int error, int line)
 {
@@ -307,6 +308,23 @@ AST * criarFolhaFloat(float value)
 }
 
 // AST
+AST * criarFolhaLiteral(char *text)
+{
+	AST * folha = malloc(sizeof(AST));
+	if (folha == NULL)
+	{
+		perror("Erro: [criarFolhaFloat] - malloc(AST): ");
+		exit(EXIT_FAILURE);
+	}
+
+	folha->cod 	 = AST_LITERAL;
+	folha->tipo	 = T_STR;
+	strncpy(folha->text, text, MAX_TEXT_LEN);
+
+	return folha;
+}
+
+// AST
 AST * criarNoAST(int cod, AST * esq, AST * dir)
 {
 	AST * no = malloc(sizeof(AST));
@@ -428,6 +446,36 @@ AST * criarNoWhile(AST * cond, AST * b1)
 	return no;
 }
 
+AST * criarNoIncr(AST * var, AST * incr)
+{
+	AST * no = malloc(sizeof(AST));
+	if (no == NULL)
+	{
+		perror("Erro: [criarNoWhile] - malloc(AST)");
+		exit(EXIT_FAILURE);
+	}
+
+	no->cod = AST_INCR;
+	no->esq = var;
+	no->dir = incr;
+
+
+	return no;
+}
+
+// Imprime quantidade de variáveis
+void printLocalSize()
+{
+	fprintf(outfile, "%d\n", frameNumber);
+}
+
+// Imprime final da função principal
+void printFinalMain()
+{
+	fprintf(outfile, "\treturn\n"
+					 ".end method\n");
+}
+
 // Impressão pós-ordem
 void printAST(AST * r)
 {
@@ -437,82 +485,88 @@ void printAST(AST * r)
 		case AST_ARIT_ADD:
 			printAST(r->esq);
 			printAST(r->dir);
-			printf("\t");
+			fprintf(outfile, "\t");
 			switch (r->tipo)
 			{
-				case T_INT: printf("i"); break;
-				case T_FLT: printf("f"); break;
+				case T_INT: fprintf(outfile, "i"); break;
+				case T_FLT: fprintf(outfile, "f"); break;
 			}
-			printf("add");
-			printf("\n");
+			fprintf(outfile, "add");
+			fprintf(outfile, "\n");
 			break;
 
 		case AST_ARIT_SUB:
 			printAST(r->esq);
 			printAST(r->dir);
-			printf("\t");
+			fprintf(outfile, "\t");
 			switch (r->tipo)
 			{
-				case T_INT: printf("i"); break;
-				case T_FLT: printf("f"); break;
+				case T_INT: fprintf(outfile, "i"); break;
+				case T_FLT: fprintf(outfile, "f"); break;
 			}
-			printf("sub");
-			printf("\n");
+			fprintf(outfile, "sub");
+			fprintf(outfile, "\n");
 			break;
 			
 		case AST_ARIT_MUL:
 			printAST(r->esq);
 			printAST(r->dir);
-			printf("\t");
+			fprintf(outfile, "\t");
 			switch (r->tipo)
 			{
-				case T_INT: printf("i"); break;
-				case T_FLT: printf("f"); break;
+				case T_INT: fprintf(outfile, "i"); break;
+				case T_FLT: fprintf(outfile, "f"); break;
 			}
-			printf("mul");
-			printf("\n");
+			fprintf(outfile, "mul");
+			fprintf(outfile, "\n");
 			break;
 			
 		case AST_ARIT_DIV:
 			printAST(r->esq);
 			printAST(r->dir);
-			printf("\t");
+			fprintf(outfile, "\t");
 			switch (r->tipo)
 			{
-				case T_INT: printf("i"); break;
-				case T_FLT: printf("f"); break;
+				case T_INT: fprintf(outfile, "i"); break;
+				case T_FLT: fprintf(outfile, "f"); break;
 			}
-			printf("div");
-			printf("\n");
+			fprintf(outfile, "div");
+			fprintf(outfile, "\n");
 			break;
 
 		case AST_CONSTINT:
-			printf("\t");
-			if (r->constInt == -1) printf("iconst_m1");
-			else if (r->constInt > -1 && r->constInt <= 5) printf("iconst_%d", r->constInt);
-			else if (r->constInt > -128 && r->constInt < 128) printf("bipush %d", r->constInt);
-			else printf("ldc %d", r->constInt);
-			printf("\n");
+			fprintf(outfile, "\t");
+			if (r->constInt == -1) fprintf(outfile, "iconst_m1");
+			else if (r->constInt > -1 && r->constInt <= 5) fprintf(outfile, "iconst_%d", r->constInt);
+			else if (r->constInt > -128 && r->constInt < 128) fprintf(outfile, "bipush %d", r->constInt);
+			else fprintf(outfile, "ldc %d", r->constInt);
+			fprintf(outfile, "\n");
 			break;
 
 		case AST_CONSTFLOAT:
-			printf("\t");
-			printf("ldc %f", r->constFloat);
-			printf("\n");
+			fprintf(outfile, "\t");
+			fprintf(outfile, "ldc %f", r->constFloat);
+			fprintf(outfile, "\n");
+			break;
+
+		case AST_LITERAL:
+			fprintf(outfile, "\t");
+			fprintf(outfile, "ldc %s", r->text);
+			fprintf(outfile, "\n");
 			break;
 
 		case AST_VAR:
-			printf("\t");
-			if (r->tipo == T_INT) printf("iload %d", consultaFrame(r->id));
-			else if (r->tipo == T_FLT) printf("fload %d", consultaFrame(r->id));
-			else printf("<VAR>");
-			printf("\n");
+			fprintf(outfile, "\t");
+			if (r->tipo == T_INT) fprintf(outfile, "iload %d", consultaFrame(r->id));
+			else if (r->tipo == T_FLT) fprintf(outfile, "fload %d", consultaFrame(r->id));
+			else fprintf(outfile, "<VAR>");
+			fprintf(outfile, "\n");
 			break;
 
 		case AST_FUNCAO:
-			printf("\t");
-			printf("unimplemented: funcao", r->id);
-			printf("\n");
+			fprintf(outfile, "\t");
+			fprintf(outfile, "unimplemented: funcao", r->id);
+			fprintf(outfile, "\n");
 			break;
 
 		case AST_LISTA:
@@ -522,34 +576,34 @@ void printAST(AST * r)
 
 		case AST_ATRIB:
 			printAST(r->dir);
-			printf("\t");
-			if (r->tipo == T_INT) printf("istore %d", consultaFrame(r->esq->id));
-			else if (r->tipo == T_FLT) printf("fstore %d", consultaFrame(r->esq->id));
-			else printf("<ATRIB>");
-			printf("\n");
+			fprintf(outfile, "\t");
+			if (r->tipo == T_INT) fprintf(outfile, "istore %d", consultaFrame(r->esq->id));
+			else if (r->tipo == T_FLT) fprintf(outfile, "fstore %d", consultaFrame(r->esq->id));
+			else fprintf(outfile, "<ATRIB>");
+			fprintf(outfile, "\n");
 			break;
 
 		case AST_NEG:
 			printAST(r->esq);
-			printf("\t");
-			if (r->tipo == T_INT) printf("ineg");
-			else if (r->tipo == T_FLT) printf("fneg");
-			else printf("<NEG>");
-			printf("\n");
+			fprintf(outfile, "\t");
+			if (r->tipo == T_INT) fprintf(outfile, "ineg");
+			else if (r->tipo == T_FLT) fprintf(outfile, "fneg");
+			else fprintf(outfile, "<NEG>");
+			fprintf(outfile, "\n");
 			break;
 
 		case AST_I2F:
 			printAST(r->esq);
-			printf("\t");
-			printf("i2f");
-			printf("\n");
+			fprintf(outfile, "\t");
+			fprintf(outfile, "i2f");
+			fprintf(outfile, "\n");
 			break;
 
 		case AST_F2I:
 			printAST(r->esq);
-			printf("\t");
-			printf("f2i");
-			printf("\n");
+			fprintf(outfile, "\t");
+			fprintf(outfile, "f2i");
+			fprintf(outfile, "\n");
 			break;
 
 		case AST_IF:
@@ -559,15 +613,15 @@ void printAST(AST * r)
 			labelNext = labelCounter++;
 
 			printLogRel(r->cond, labelTrue, labelNext);
-			printf("L%d:\n", labelTrue);
+			fprintf(outfile, "  l%d:\n", labelTrue);
 			printAST(r->pthen);
 			if (r->pelse != NULL)
 			{
-				printf("\tgoto L%d\n", labelNext);
-				printf("L%d:\n", labelFalse);
+				fprintf(outfile, "\tgoto l%d\n", labelNext);
+				fprintf(outfile, "  l%d:\n", labelFalse);
 				printAST(r->pelse);
 			}
-			printf("L%d:\n", labelNext);
+			fprintf(outfile, "  l%d:\n", labelNext);
 			break;
 
 		case AST_WHILE:
@@ -575,45 +629,41 @@ void printAST(AST * r)
 			labelTrue = labelCounter++;
 			labelNext = labelCounter++;
 
-			printf("L%d:\n", labelAux);
+			fprintf(outfile, "  l%d:\n", labelAux);
 			printLogRel(r->cond, labelTrue, labelNext);
-			printf("L%d:\n", labelTrue);
+			fprintf(outfile, "  l%d:\n", labelTrue);
 			printAST(r->pthen);
-			printf("\tgoto %d\n", labelAux);
-			printf("L%d:\n", labelNext);
+			fprintf(outfile, "\tgoto l%d\n", labelAux);
+			fprintf(outfile, "  l%d:\n", labelNext);
 			break;
 
 		case AST_PRINT:
-			printf("\tinvokevirtual java/lang/System/out Ljava/io/PrintStream;\n");
+			fprintf(outfile, "\tgetstatic java/lang/System/out Ljava/io/PrintStream;\n");
 			printAST(r->esq);
-			printf("invokevirtual java/io/PrintStream/print(");
+			fprintf(outfile, "\tinvokevirtual java/io/PrintStream/println(");
 			switch (r->tipo)
 			{
-				case T_INT: printf("i"); break;
-				case T_FLT: printf("f"); break;
-				case T_STR: printf("Ljava/lang/String"); break;
-				default: printf("ERRO <AST_PRINT>");
+				case T_INT: fprintf(outfile, "I"); break;
+				case T_FLT: fprintf(outfile, "F"); break;
+				case T_STR: fprintf(outfile, "Ljava/lang/String;"); break;
+				default: fprintf(outfile, "ERRO <AST_PRINT>");
 			}
-			printf(";)V\n");
+			fprintf(outfile, ")V\n");
 			break;
 
-		case AST_PRINTLN:
-			printf("\tinvokevirtual java/lang/System/out Ljava/io/PrintStream;\n");
-			printAST(r->esq);
-			printf("invokevirtual java/io/PrintStream/println(");
+		case AST_DECR:
 			switch (r->tipo)
 			{
-				case T_INT: printf("i"); break;
-				case T_FLT: printf("f"); break;
-				case T_STR: printf("Ljava/lang/String"); break;
-				default: printf("ERRO <AST_PRINT>");
+				case T_INT: fprintf(outfile, "iinc %d", ); break;
+				case T_FLT: fprintf(outfile, "F"); break;
+				default: fprintf(outfile, "ERRO <AST_PRINT>");
 			}
-			printf(";)V\n");
+			fprintf(outfile, ")V\n");
 			break;
 
 		default:
-			printf("unimplemented: %d", r->cod);
-			printf("\n");
+			fprintf(outfile, "unimplemented: %d", r->cod);
+			fprintf(outfile, "\n");
 			break;
 	}
 
@@ -630,14 +680,14 @@ void printLogRel(AST * r, int labelTrue, int labelFalse)
 		case AST_LOG_AND:
 			labelAux = labelCounter++;
 			printLogRel(r->esq, labelAux, labelFalse);
-			printf("L%d:\n", labelAux);
+			fprintf(outfile, "  l%d:\n", labelAux);
 			printLogRel(r->dir, labelTrue, labelFalse);
 			break;
 
 		case AST_LOG_OR:
 			labelAux = labelCounter++;
 			printLogRel(r->esq, labelTrue, labelAux);
-			printf("L%d:\n", labelAux);
+			fprintf(outfile, "  l%d:\n", labelAux);
 			printLogRel(r->dir, labelTrue, labelFalse);
 			break;
 
@@ -650,14 +700,14 @@ void printLogRel(AST * r, int labelTrue, int labelFalse)
 			printAST(r->dir);
 			switch (r->tipo)
 			{
-				case T_INT: printf("\tif_icmp"); break;
-				case T_FLT: printf("\tif_fcmp"); break;
+				case T_INT: fprintf(outfile, "\tif_icmp"); break;
+				case T_FLT: fprintf(outfile, "\tif_fcmp"); break;
 			}
-			printf("eq");
+			fprintf(outfile, "eq");
 
-			printf(" L%d\n", labelTrue);
-			printf("\tgoto L%d", labelFalse);
-			printf("\n");
+			fprintf(outfile, " l%d\n", labelTrue);
+			fprintf(outfile, "\tgoto l%d", labelFalse);
+			fprintf(outfile, "\n");
 			break;
 
 		case AST_REL_NE:
@@ -665,14 +715,14 @@ void printLogRel(AST * r, int labelTrue, int labelFalse)
 			printAST(r->dir);
 			switch (r->tipo)
 			{
-				case T_INT: printf("\tif_icmp"); break;
-				case T_FLT: printf("\tif_fcmp"); break;
+				case T_INT: fprintf(outfile, "\tif_icmp"); break;
+				case T_FLT: fprintf(outfile, "\tif_fcmp"); break;
 			}
-			printf("ne");
+			fprintf(outfile, "ne");
 
-			printf(" L%d\n", labelTrue);
-			printf("\tgoto L%d", labelFalse);
-			printf("\n");
+			fprintf(outfile, " l%d\n", labelTrue);
+			fprintf(outfile, "\tgoto l%d", labelFalse);
+			fprintf(outfile, "\n");
 			break;
 
 		case AST_REL_LT:
@@ -680,14 +730,14 @@ void printLogRel(AST * r, int labelTrue, int labelFalse)
 			printAST(r->dir);
 			switch (r->tipo)
 			{
-				case T_INT: printf("\tif_icmp"); break;
-				case T_FLT: printf("\tif_fcmp"); break;
+				case T_INT: fprintf(outfile, "\tif_icmp"); break;
+				case T_FLT: fprintf(outfile, "\tif_fcmp"); break;
 			}
-			printf("lt");
+			fprintf(outfile, "lt");
 
-			printf(" L%d\n", labelTrue);
-			printf("\tgoto L%d", labelFalse);
-			printf("\n");
+			fprintf(outfile, " l%d\n", labelTrue);
+			fprintf(outfile, "\tgoto l%d", labelFalse);
+			fprintf(outfile, "\n");
 			break;
 
 		case AST_REL_LE:
@@ -695,14 +745,14 @@ void printLogRel(AST * r, int labelTrue, int labelFalse)
 			printAST(r->dir);
 			switch (r->tipo)
 			{
-				case T_INT: printf("\tif_icmp"); break;
-				case T_FLT: printf("\tif_fcmp"); break;
+				case T_INT: fprintf(outfile, "\tif_icmp"); break;
+				case T_FLT: fprintf(outfile, "\tif_fcmp"); break;
 			}
-			printf("le");
+			fprintf(outfile, "le");
 
-			printf(" L%d\n", labelTrue);
-			printf("\tgoto L%d", labelFalse);
-			printf("\n");
+			fprintf(outfile, " l%d\n", labelTrue);
+			fprintf(outfile, "\tgoto l%d", labelFalse);
+			fprintf(outfile, "\n");
 			break;
 
 		case AST_REL_GT:
@@ -710,14 +760,14 @@ void printLogRel(AST * r, int labelTrue, int labelFalse)
 			printAST(r->dir);
 			switch (r->tipo)
 			{
-				case T_INT: printf("\tif_icmp"); break;
-				case T_FLT: printf("\tif_fcmp"); break;
+				case T_INT: fprintf(outfile, "\tif_icmp"); break;
+				case T_FLT: fprintf(outfile, "\tif_fcmp"); break;
 			}
-			printf("gt");
+			fprintf(outfile, "gt");
 
-			printf(" L%d\n", labelTrue);
-			printf("\tgoto L%d", labelFalse);
-			printf("\n");
+			fprintf(outfile, " l%d\n", labelTrue);
+			fprintf(outfile, "\tgoto l%d", labelFalse);
+			fprintf(outfile, "\n");
 			break;
 
 		case AST_REL_GE:
@@ -725,19 +775,19 @@ void printLogRel(AST * r, int labelTrue, int labelFalse)
 			printAST(r->dir);
 			switch (r->tipo)
 			{
-				case T_INT: printf("\tif_icmp"); break;
-				case T_FLT: printf("\tif_fcmp"); break;
+				case T_INT: fprintf(outfile, "\tif_icmp"); break;
+				case T_FLT: fprintf(outfile, "\tif_fcmp"); break;
 			}
-			printf("ge");
+			fprintf(outfile, "ge");
 
-			printf(" L%d\n", labelTrue);
-			printf("\tgoto L%d", labelFalse);
-			printf("\n");
+			fprintf(outfile, " l%d\n", labelTrue);
+			fprintf(outfile, "\tgoto l%d", labelFalse);
+			fprintf(outfile, "\n");
 			break;
 
 			
 
-		default: printf("CAGEI\n"); break;
+		default: fprintf(outfile, "CAGEI\n"); break;
 	}
 
 	//printf("    \t%d\t", r->cod);

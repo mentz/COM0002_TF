@@ -2,11 +2,11 @@
 #include "func.h"
 
 extern FILE *yyin;
-extern FILE **yyout;
+FILE *outfile;
 
 struct CompErrors *err;
 struct Simbolo *tabSim = NULL;
-int frameNumber = 0;
+int frameNumber = 1;
 int labelCounter = 1;
 
 int main(int argc, char * argv[])
@@ -24,16 +24,35 @@ int main(int argc, char * argv[])
 		return 1;
 	}
 
-	/*
-	yyout = fopen(argv[2], "w");
-	if (yyout == NULL)
+	outfile = fopen("intermediario.j", "w");
+	if (outfile == NULL)
 	{
-		perror("Erro: Verifique o caminho do arquivo de saída");
+		perror("Erro: Erro ao abrir arquivo intermediario.j");
 		return 1;
 	}
-	*/
 
-	if (yyparse()) printf("FATAL YYPARSE ABORT\nVeja lista de erros.\n");
+	fprintf(outfile, ".class public FelizNatalCristiano\n"
+					 ".super java/lang/Object\n"
+
+					 "\n.method public <init>()V\n" 
+					 	"\taload_0\n" 
+					 	"\tinvokenonvirtual java/lang/Object/<init>()V\n" 
+					 	"\treturn\n"
+					 ".end method\n"
+
+					 "\n.method public static main([Ljava/lang/String;)V\n"
+					 	"\t.limit stack 10\n"
+						"\t.limit locals ");
+	
+	if (yyparse())
+	{
+		printf("FATAL YYPARSE ABORT\nVeja lista de erros.\n");
+		remove("intermediario.j");
+	}
+	else
+	{
+		rename("intermediario.j", "saida.j");
+	}
 
 	fclose(yyin);
 

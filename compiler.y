@@ -17,12 +17,11 @@ extern struct Simbolo *tabsim;
 
 Programa
 	: ListaFuncoes BlocoPrincipal
-	{
-		printAST($1.ptr);
-	}
 	| BlocoPrincipal
 	{
+		printLocalSize();
 		printAST($1.ptr);
+		printFinalMain();
 	}
 	;
 
@@ -133,7 +132,7 @@ Comando
 	}
 	| CmdEscrita
 	{
-		$$.ptr = NULL;
+		$$.ptr = $1.ptr;
 	}
 	| CmdLeitura
 	{
@@ -190,13 +189,27 @@ CmdAtrib
 			$$.tipo = $1.tipo;
 		}
 	}
-
 	| TID '=' TLITERAL ';'
+	| AutoDecremento ';'
+	{
+		$$.ptr = $1.ptr;
+	}
+	| AutoIncremento ';'
+	{
+		$$.ptr = $1.ptr;
+	}
 	;
 
 CmdEscrita
 	: TPRINT '(' ExpressaoAritmetica ')'';'
+	{
+		$$.ptr = criarNoAST(AST_PRINT, $3.ptr, NULL);
+	}
 	| TPRINT '(' TLITERAL ')'';'
+	{
+		$3.ptr = criarFolhaLiteral($3.text);
+		$$.ptr = criarNoAST(AST_PRINT, $3.ptr, NULL);
+	}
 	;
 
 CmdLeitura
@@ -517,6 +530,44 @@ FatorAritmetico
 			addError(ERR_3, linha);
 			YYABORT;
 		}
+	}
+	| AutoDecremento
+	{
+		$$.ptr = $1.ptr;
+	}
+	| AutoIncremento
+	{
+		$$.ptr = $1.ptr;
+	}
+	;
+
+AutoDecremento
+	: TID '-''-'
+	{
+		$1.ptr = criarFolhaID(AST_VAR, $1.id);
+		$$.tipo = consultaTipo($1.id);
+		$$.ptr = criarNoAST($1.ptr, criarFolhaInt(-1));
+	}
+	| TID '-''=' TINT
+	{
+		$1.ptr = criarFolhaID(AST_VAR, $1.id);
+		$$.tipo = consultaTipo($1.id);
+		$$.ptr = criarNoIncr($1.ptr, criarFolhaInt(0 - $3.ival));
+	}
+	;
+
+AutoIncremento
+	: TID '+''+'
+	{
+		$1.ptr = criarFolhaID(AST_VAR, $1.id);
+		$$.tipo = consultaTipo($1.id);
+		$$.ptr = criarNoAST($1.ptr, criarFolhaInt(1));
+	}
+	| TID '+''=' TINT
+	{
+		$1.ptr = criarFolhaID(AST_VAR, $1.id);
+		$$.tipo = consultaTipo($1.id);
+		$$.ptr = criarNoIncr($1.ptr, criarFolhaInt(0 - $3.ival));
 	}
 	;
 

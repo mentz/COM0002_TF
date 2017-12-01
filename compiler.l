@@ -46,7 +46,7 @@ newline     \n
 {id}		{strncpy(yylval.id, yytext, MAX_ID_LEN - 1); return TID;}
 {int}		{yylval.ival = atoi(yytext); return TINT;}
 {float}		{yylval.fval = atof(yytext); return TFLOAT;}
-{literal}	{return TLITERAL;}
+{literal}	{strncpy(yylval.text, yytext, MAX_TEXT_LEN - 1); return TLITERAL;}
 {newline}	{linha++;}
 {ws}		{}
 {comment}	{}
