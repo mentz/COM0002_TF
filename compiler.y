@@ -546,13 +546,25 @@ AutoDecremento
 	{
 		$1.ptr = criarFolhaID(AST_VAR, $1.id);
 		$$.tipo = consultaTipo($1.id);
-		$$.ptr = criarNoAST($1.ptr, criarFolhaInt(-1));
+		if ($$.tipo == T_FLT)
+			$$.ptr = criarNoIncr($1.ptr, i2fAST(criarFolhaInt(-1)));
+		else
+			$$.ptr = criarNoIncr($1.ptr, criarFolhaInt(-1));
 	}
 	| TID '-''=' TINT
 	{
 		$1.ptr = criarFolhaID(AST_VAR, $1.id);
 		$$.tipo = consultaTipo($1.id);
-		$$.ptr = criarNoIncr($1.ptr, criarFolhaInt(0 - $3.ival));
+		if ($$.tipo == T_FLT)
+			if ($4.tipo == T_INT)
+				$$.ptr = criarNoIncr($1.ptr, i2fAST(criarFolhaInt(0 - $3.ival)));
+			else
+				$$.ptr = criarNoIncr($1.ptr, criarFolhaInt(0 - $3.ival));
+		else
+			if ($4.tipo == T_INT)
+				$$.ptr = criarNoIncr($1.ptr, criarFolhaInt(0 - $3.ival));
+			else
+				$$.ptr = criarNoIncr($1.ptr, f2iAST(criarFolhaInt(0 - $3.ival)));
 	}
 	;
 
@@ -561,13 +573,19 @@ AutoIncremento
 	{
 		$1.ptr = criarFolhaID(AST_VAR, $1.id);
 		$$.tipo = consultaTipo($1.id);
-		$$.ptr = criarNoAST($1.ptr, criarFolhaInt(1));
+		if ($$.tipo == T_FLT)
+			$$.ptr = criarNoAST($1.ptr, i2fAST(criarFolhaInt(1)));
+		else
+			$$.ptr = criarNoAST($1.ptr, criarFolhaInt(1));
 	}
 	| TID '+''=' TINT
 	{
 		$1.ptr = criarFolhaID(AST_VAR, $1.id);
 		$$.tipo = consultaTipo($1.id);
-		$$.ptr = criarNoIncr($1.ptr, criarFolhaInt(0 - $3.ival));
+		if ($$.tipo == T_FLT)
+			$$.ptr = criarNoIncr($1.ptr, i2fAST(criarFolhaInt(0 - $3.ival)));
+		else
+			$$.ptr = criarNoIncr($1.ptr, criarFolhaInt(0 - $3.ival));
 	}
 	;
 
