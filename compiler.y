@@ -5,11 +5,11 @@
 #define YYSTYPE struct Atributo
 
 int linha = 1;
-extern struct Simbolo *tabsim;
+extern struct Simbolo *tabSim;
 
 %}
 
-%token TIF TINT TELSE TFLOAT TPRINT TREAD TRETURN TSTRING TVOID TWHILE
+%token TDO TIF TINT TELSE TFLOAT TPRINT TREAD TRETURN TSTRING TVOID TWHILE
 %token TMEIG TMAIG TEQ TDIF TAND TOR
 %token TID TLITERAL
 
@@ -19,7 +19,7 @@ Programa
 	: ListaFuncoes BlocoPrincipal
 	| BlocoPrincipal
 	{
-		printLocalSize();
+		printInicioArquivo();
 		printAST($1.ptr);
 		printFinalMain();
 	}
@@ -169,6 +169,10 @@ CmdEnquanto
 	{
 		$$.ptr = criarNoWhile($3.ptr, $5.ptr);
 	}
+	| TDO Bloco TWHILE '('ExpressaoLogica')' ';'
+	{
+		$$.ptr = criarNoDoWhile($5.ptr, $2.ptr);
+	}
 	;
 
 CmdAtrib
@@ -190,11 +194,18 @@ CmdAtrib
 		}
 	}
 	| TID '=' TLITERAL ';'
-	| AutoDecremento ';'
 	{
-		$$.ptr = $1.ptr;
+		$1.ptr = criarFolhaID(AST_VAR, $1.id);
+		$1.tipo = consultaTipo($1.id);
+		if ($1.tipo != T_STR)
+		{
+			addError(ERR_4, linha);
+			YYABORT;
+		}
+		$3.ptr = criarFolhaLiteral($3.text);
+		$$.ptr = criarNoAST(AST_ATRIB, $1.ptr, $3.ptr);
 	}
-	| AutoIncremento ';'
+	| AutoOperacao ';'
 	{
 		$$.ptr = $1.ptr;
 	}
@@ -531,61 +542,86 @@ FatorAritmetico
 			YYABORT;
 		}
 	}
-	| AutoDecremento
-	{
-		$$.ptr = $1.ptr;
-	}
-	| AutoIncremento
-	{
-		$$.ptr = $1.ptr;
-	}
 	;
 
-AutoDecremento
-	: TID '-''-'
-	{
-		$1.ptr = criarFolhaID(AST_VAR, $1.id);
-		$$.tipo = consultaTipo($1.id);
-		if ($$.tipo == T_FLT)
-			$$.ptr = criarNoIncr($1.ptr, i2fAST(criarFolhaInt(-1)));
-		else
-			$$.ptr = criarNoIncr($1.ptr, criarFolhaInt(-1));
-	}
-	| TID '-''=' TINT
-	{
-		$1.ptr = criarFolhaID(AST_VAR, $1.id);
-		$$.tipo = consultaTipo($1.id);
-		if ($$.tipo == T_FLT)
-			if ($4.tipo == T_INT)
-				$$.ptr = criarNoIncr($1.ptr, i2fAST(criarFolhaInt(0 - $3.ival)));
-			else
-				$$.ptr = criarNoIncr($1.ptr, criarFolhaInt(0 - $3.ival));
-		else
-			if ($4.tipo == T_INT)
-				$$.ptr = criarNoIncr($1.ptr, criarFolhaInt(0 - $3.ival));
-			else
-				$$.ptr = criarNoIncr($1.ptr, f2iAST(criarFolhaInt(0 - $3.ival)));
-	}
-	;
-
-AutoIncremento
+AutoOperacao
 	: TID '+''+'
 	{
 		$1.ptr = criarFolhaID(AST_VAR, $1.id);
 		$$.tipo = consultaTipo($1.id);
 		if ($$.tipo == T_FLT)
-			$$.ptr = criarNoAST($1.ptr, i2fAST(criarFolhaInt(1)));
+			$$.ptr = criarNoAuto(AST_AUTO_ADD, $1.ptr, i2fAST(criarFolhaInt(1)));
 		else
-			$$.ptr = criarNoAST($1.ptr, criarFolhaInt(1));
+			$$.ptr = criarNoAuto(AST_AUTO_ADD, $1.ptr, criarFolhaInt(1));
 	}
-	| TID '+''=' TINT
+	| TID '+''=' ExpressaoAritmetica
 	{
 		$1.ptr = criarFolhaID(AST_VAR, $1.id);
 		$$.tipo = consultaTipo($1.id);
 		if ($$.tipo == T_FLT)
-			$$.ptr = criarNoIncr($1.ptr, i2fAST(criarFolhaInt(0 - $3.ival)));
+			if ($4.tipo == T_INT)
+				$$.ptr = criarNoAuto(AST_AUTO_ADD, $1.ptr, i2fAST($4.ptr));
+			else
+				$$.ptr = criarNoAuto(AST_AUTO_ADD, $1.ptr, $4.ptr);
 		else
-			$$.ptr = criarNoIncr($1.ptr, criarFolhaInt(0 - $3.ival));
+			if ($4.tipo == T_INT)
+				$$.ptr = criarNoAuto(AST_AUTO_ADD, $1.ptr, $4.ptr);
+			else
+				$$.ptr = criarNoAuto(AST_AUTO_ADD, $1.ptr, f2iAST($4.ptr));
+	}
+	| TID '-''-'
+	{
+		$1.ptr = criarFolhaID(AST_VAR, $1.id);
+		$$.tipo = consultaTipo($1.id);
+		if ($$.tipo == T_FLT)
+			$$.ptr = criarNoAuto(AST_AUTO_SUB, $1.ptr, i2fAST(criarFolhaInt(1)));
+		else
+			$$.ptr = criarNoAuto(AST_AUTO_SUB, $1.ptr, criarFolhaInt(1));
+	}
+	| TID '-''=' ExpressaoAritmetica
+	{
+		$1.ptr = criarFolhaID(AST_VAR, $1.id);
+		$$.tipo = consultaTipo($1.id);
+		if ($$.tipo == T_FLT)
+			if ($4.tipo == T_INT)
+				$$.ptr = criarNoAuto(AST_AUTO_SUB, $1.ptr, i2fAST($4.ptr));
+			else
+				$$.ptr = criarNoAuto(AST_AUTO_SUB, $1.ptr, $4.ptr);
+		else
+			if ($4.tipo == T_INT)
+				$$.ptr = criarNoAuto(AST_AUTO_SUB, $1.ptr, $4.ptr);
+			else
+				$$.ptr = criarNoAuto(AST_AUTO_SUB, $1.ptr, f2iAST($4.ptr));
+	}
+	| TID '*''=' ExpressaoAritmetica
+	{
+		$1.ptr = criarFolhaID(AST_VAR, $1.id);
+		$$.tipo = consultaTipo($1.id);
+		if ($$.tipo == T_FLT)
+			if ($4.tipo == T_INT)
+				$$.ptr = criarNoAuto(AST_AUTO_MUL, $1.ptr, i2fAST($4.ptr));
+			else
+				$$.ptr = criarNoAuto(AST_AUTO_MUL, $1.ptr, $4.ptr);
+		else
+			if ($4.tipo == T_INT)
+				$$.ptr = criarNoAuto(AST_AUTO_MUL, $1.ptr, $4.ptr);
+			else
+				$$.ptr = criarNoAuto(AST_AUTO_MUL, $1.ptr, f2iAST($4.ptr));
+	}
+	| TID '/''=' ExpressaoAritmetica
+	{
+		$1.ptr = criarFolhaID(AST_VAR, $1.id);
+		$$.tipo = consultaTipo($1.id);
+		if ($$.tipo == T_FLT)
+			if ($4.tipo == T_INT)
+				$$.ptr = criarNoAuto(AST_AUTO_DIV, $1.ptr, i2fAST($4.ptr));
+			else
+				$$.ptr = criarNoAuto(AST_AUTO_DIV, $1.ptr, $4.ptr);
+		else
+			if ($4.tipo == T_INT)
+				$$.ptr = criarNoAuto(AST_AUTO_DIV, $1.ptr, $4.ptr);
+			else
+				$$.ptr = criarNoAuto(AST_AUTO_DIV, $1.ptr, f2iAST($4.ptr));
 	}
 	;
 

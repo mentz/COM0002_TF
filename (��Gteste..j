@@ -1,4 +1,4 @@
-.class public FelizNatalCristiano
+.class public 
 .super java/lang/Object
 
 .method public <init>()V

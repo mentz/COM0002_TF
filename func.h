@@ -16,10 +16,11 @@ enum AST_TYPES
 	AST_ARIT_ADD, AST_ARIT_SUB, AST_ARIT_MUL, AST_ARIT_DIV,
 	AST_CONSTINT, AST_CONSTFLOAT, AST_LITERAL, AST_VAR, AST_FUNCAO,
 	AST_LISTA, AST_ATRIB, AST_NEG, AST_I2F, AST_F2I,
-	AST_IF, AST_WHILE,
+	AST_IF, AST_WHILE, AST_DOWHILE,
 	AST_LOG_AND, AST_LOG_OR, AST_LOG_NOT,
 	AST_REL_EQ, AST_REL_NE, AST_REL_LT, AST_REL_LE, AST_REL_GT, AST_REL_GE,
-	AST_PRINT, AST_DECR, AST_INCR
+	AST_PRINT,
+	AST_AUTO_ADD, AST_AUTO_SUB, AST_AUTO_MUL, AST_AUTO_DIV
 };
 
 enum ERR_CODES
@@ -27,7 +28,8 @@ enum ERR_CODES
 	ERR_0, 		// Aritmética com tipos diferentes (1.5 + 1)
 	ERR_1, 		// Atribuição de tipo diferente (int a = 1.2;)
 	ERR_2,		// Aritmética com string (1.5 * 5 + a * "oi mundo")
-	ERR_3		// Variável inexistente com o ID informado
+	ERR_3,		// Variável inexistente com o ID informado
+	ERR_4		// Atribuindo valor inválido a tipo string
 };
 
 typedef struct CompErrors
@@ -96,7 +98,10 @@ AST * i2fAST(AST * iptr);
 AST * f2iAST(AST * iptr);
 AST * criarNoIF(AST * cond, AST * b1, AST * b2);
 AST * criarNoWhile(AST * cond, AST * b1);
-void printLocalSize();
+AST * criarNoDoWhile(AST * cond, AST * b1);
+AST * criarNoAuto(int tipo, AST * var, AST * incr);
+void printInicioArquivo();
+void printStrings();
 void printFinalMain();
 void printAST(AST *r);
 void printLogRel(AST *r, int labelTrue, int labelFalse);

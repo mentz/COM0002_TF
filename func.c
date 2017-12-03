@@ -5,6 +5,7 @@ extern Simbolo *tabSim;
 extern int frameNumber;
 extern int labelCounter;
 extern FILE *outfile;
+extern char classe[256];
 
 void addError(int error, int line)
 {
@@ -55,6 +56,10 @@ void printErrors()
 
 			case ERR_3:
 				printf("- Linha %d - Erro: variável inexistente (fatal).", aux->line);
+				break;
+
+			case ERR_4:
+				printf("- Linha %d - Erro: Atribuindo valor inválido a tipo string.", aux->line);
 				break;
 
 			default:
@@ -108,7 +113,7 @@ void insTabSim(int tipo, ListaId *lista)
 	Simbolo *noTabSim = tabSim, *novoSimbolo = NULL;
 
 	int direcao = -1;
-	ListaId *lista_aux = lista, *lista_aux2 = NULL;
+	ListaId *lista_aux = lista;
 	while (lista_aux != NULL)
 	{
 		noTabSim = tabSim;
@@ -176,7 +181,7 @@ void insTabSim(int tipo, ListaId *lista)
 /*-----------------------------------*/
 int consultaTipo(char *id)
 {
-	Simbolo * aux = tabSim, *aux2;
+	Simbolo * aux = tabSim;
 	// Encontrar tipo da variável na tabela de símbolos.
 	while (aux != NULL)
 	{
@@ -446,7 +451,24 @@ AST * criarNoWhile(AST * cond, AST * b1)
 	return no;
 }
 
-AST * criarNoIncr(AST * var, AST * incr)
+// Cria um nó DO-WHILE, retorna seu endereço;
+AST * criarNoDoWhile(AST * cond, AST * b1)
+{
+	AST * no = malloc(sizeof(AST));
+	if (no == NULL)
+	{
+		perror("Erro: [criarNoDoWhile] - malloc(AST)");
+		exit(EXIT_FAILURE);
+	}
+
+	no->cod  = AST_DOWHILE;
+	no->cond = cond;
+	no->pthen  = b1;
+
+	return no;
+}
+
+AST * criarNoAuto(int tipo, AST * var, AST * incr)
 {
 	AST * no = malloc(sizeof(AST));
 	if (no == NULL)
@@ -455,18 +477,43 @@ AST * criarNoIncr(AST * var, AST * incr)
 		exit(EXIT_FAILURE);
 	}
 
-	no->cod = AST_INCR;
-	no->esq = var;
-	no->dir = incr;
-
+	no->cod  = tipo;
+	no->esq  = var;
+	no->dir  = incr;
+	no->tipo = no->esq->tipo;
 
 	return no;
 }
 
 // Imprime quantidade de variáveis
-void printLocalSize()
+void printInicioArquivo()
 {
-	fprintf(outfile, "%d\n", frameNumber);
+	printStrings(tabSim);
+	fprintf(outfile, "\n.method public <init>()V\n" 
+					 	"\taload_0\n" 
+					 	"\tinvokenonvirtual java/lang/Object/<init>()V\n" 
+					 	"\treturn\n"
+					 ".end method\n"
+
+					 "\n.method public static main([Ljava/lang/String;)V\n"
+					 	"\t.limit stack 10\n"
+						"\t.limit locals %d\n", frameNumber);
+}
+
+// Imprime variáveis para guardar strings
+void printStrings(Simbolo *tabSim)
+{
+	if (tabSim != NULL)
+	{
+		printStrings(tabSim->dir);
+		printStrings(tabSim->esq);
+
+		switch(tabSim->tipo)
+		{
+			case T_STR: fprintf(outfile, ".field static private %s Ljava/lang/String;\n", tabSim->id); break;
+			default: break;
+		}
+	}
 }
 
 // Imprime final da função principal
@@ -479,7 +526,7 @@ void printFinalMain()
 // Impressão pós-ordem
 void printAST(AST * r)
 {
-	int labelTrue, labelFalse, labelNext, labelAux;
+	int labelTrue, labelFalse, labelNext, labelAux, aux;
 	switch (r->cod)
 	{
 		case AST_ARIT_ADD:
@@ -559,13 +606,14 @@ void printAST(AST * r)
 			fprintf(outfile, "\t");
 			if (r->tipo == T_INT) fprintf(outfile, "iload %d", consultaFrame(r->id));
 			else if (r->tipo == T_FLT) fprintf(outfile, "fload %d", consultaFrame(r->id));
+			else if (r->tipo == T_STR) fprintf(outfile, "getstatic %s/%s Ljava/lang/String;", classe, r->id);
 			else fprintf(outfile, "<VAR>");
 			fprintf(outfile, "\n");
 			break;
 
 		case AST_FUNCAO:
 			fprintf(outfile, "\t");
-			fprintf(outfile, "unimplemented: funcao", r->id);
+			fprintf(outfile, "unimplemented: funcao %s", r->id);
 			fprintf(outfile, "\n");
 			break;
 
@@ -579,6 +627,7 @@ void printAST(AST * r)
 			fprintf(outfile, "\t");
 			if (r->tipo == T_INT) fprintf(outfile, "istore %d", consultaFrame(r->esq->id));
 			else if (r->tipo == T_FLT) fprintf(outfile, "fstore %d", consultaFrame(r->esq->id));
+			else if (r->tipo == T_STR) fprintf(outfile, "putstatic %s/%s Ljava/lang/String;", classe, r->esq->id);
 			else fprintf(outfile, "<ATRIB>");
 			fprintf(outfile, "\n");
 			break;
@@ -637,6 +686,20 @@ void printAST(AST * r)
 			fprintf(outfile, "  l%d:\n", labelNext);
 			break;
 
+		case AST_DOWHILE:
+			labelAux  = labelCounter++;
+			labelTrue = labelCounter++;
+			labelNext = labelCounter++;
+
+			fprintf(outfile, "\tgoto l%d\n", labelTrue);
+			fprintf(outfile, "  l%d:\n", labelAux);
+			printLogRel(r->cond, labelTrue, labelNext);
+			fprintf(outfile, "  l%d:\n", labelTrue);
+			printAST(r->pthen);
+			fprintf(outfile, "\tgoto l%d\n", labelAux);
+			fprintf(outfile, "  l%d:\n", labelNext);
+			break;
+
 		case AST_PRINT:
 			fprintf(outfile, "\tgetstatic java/lang/System/out Ljava/io/PrintStream;\n");
 			printAST(r->esq);
@@ -651,14 +714,60 @@ void printAST(AST * r)
 			fprintf(outfile, ")V\n");
 			break;
 
-		case AST_DECR:
+		case AST_AUTO_ADD:
+			aux = consultaFrame(r->esq->id);
+			printAST(r->esq);
+			printAST(r->dir);
+			fprintf(outfile, "\t");
 			switch (r->tipo)
 			{
-				case T_INT: fprintf(outfile, "iinc %d", ); break;
-				case T_FLT: fprintf(outfile, "F"); break;
-				default: fprintf(outfile, "ERRO <AST_PRINT>");
+				case T_INT: fprintf(outfile, "iadd\n\tistore %d", aux); break;
+				case T_FLT: fprintf(outfile, "fadd\n\tfstore %d", aux); break;
+				default: fprintf(outfile, "ERRO <AST_AUTO_ADD>");
 			}
-			fprintf(outfile, ")V\n");
+			fprintf(outfile, "\n");
+			break;
+
+		case AST_AUTO_SUB:
+			aux = consultaFrame(r->esq->id);
+			printAST(r->esq);
+			printAST(r->dir);
+			fprintf(outfile, "\t");
+			switch (r->tipo)
+			{
+				case T_INT: fprintf(outfile, "isub\n\tistore %d", aux); break;
+				case T_FLT: fprintf(outfile, "fsub\n\tfstore %d", aux); break;
+				default: fprintf(outfile, "ERRO <AST_AUTO_SUB>");
+			}
+			fprintf(outfile, "\n");
+			break;
+
+		case AST_AUTO_MUL:
+			aux = consultaFrame(r->esq->id);
+			printAST(r->esq);
+			printAST(r->dir);
+			fprintf(outfile, "\t");
+			switch (r->tipo)
+			{
+				case T_INT: fprintf(outfile, "imul\n\tistore %d", aux); break;
+				case T_FLT: fprintf(outfile, "fmul\n\tfstore %d", aux); break;
+				default: fprintf(outfile, "ERRO <AST_AUTO_MUL>");
+			}
+			fprintf(outfile, "\n");
+			break;
+
+		case AST_AUTO_DIV:
+			aux = consultaFrame(r->esq->id);
+			printAST(r->esq);
+			printAST(r->dir);
+			fprintf(outfile, "\t");
+			switch (r->tipo)
+			{
+				case T_INT: fprintf(outfile, "idiv\n\tistore %d", aux); break;
+				case T_FLT: fprintf(outfile, "fdiv\n\tfstore %d", aux); break;
+				default: fprintf(outfile, "ERRO <AST_AUTO_DIV>");
+			}
+			fprintf(outfile, "\n");
 			break;
 
 		default:

@@ -1,13 +1,21 @@
 {
-	/*afdahsfhdshJKAHSJKHJKDHAJSKHDJKJKAS  AAAAAAAAa*/
-	int a, x;
-	a = 5;
-	x = 1;
-	while (a > 0)
+	/*comentário ignorado*/
+	int a, x, c;
+	float f;
+	string s;
+	s = "teste atribuição de string\n\t\tolamundo com 2 tabs";
+	a = 7;
+	x = 0;
+	c = 0;
+	f = 1.5;
+	while (c < a)
 	{
-		x = x * a;
-		a = a - 1;
+		x++;
+		c++;
+		f *= f;
 	}
 
 	print(x);
+	print(f);
+	print(s);
 }

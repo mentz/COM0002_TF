@@ -10,6 +10,7 @@ literal 	\".*\"
 newline     \n
 
 %%
+"do"		{return TDO;}
 "if"		{return TIF;}
 "int" 		{return TINT;}
 "else"		{return TELSE;}

@@ -8,6 +8,7 @@ struct CompErrors *err;
 struct Simbolo *tabSim = NULL;
 int frameNumber = 1;
 int labelCounter = 1;
+char classe[256];
 
 int main(int argc, char * argv[])
 {
@@ -31,19 +32,12 @@ int main(int argc, char * argv[])
 		return 1;
 	}
 
-	fprintf(outfile, ".class public FelizNatalCristiano\n"
-					 ".super java/lang/Object\n"
+	printf("classe = %s\n", argv[1]); fflush(stdout);
+	strncpy(classe, argv[1], (int) strlen(argv[1]) - 4);
 
-					 "\n.method public <init>()V\n" 
-					 	"\taload_0\n" 
-					 	"\tinvokenonvirtual java/lang/Object/<init>()V\n" 
-					 	"\treturn\n"
-					 ".end method\n"
+	fprintf(outfile, ".class public %s\n"
+					 ".super java/lang/Object\n\n", classe);
 
-					 "\n.method public static main([Ljava/lang/String;)V\n"
-					 	"\t.limit stack 10\n"
-						"\t.limit locals ");
-	
 	if (yyparse())
 	{
 		printf("FATAL YYPARSE ABORT\nVeja lista de erros.\n");
@@ -51,7 +45,10 @@ int main(int argc, char * argv[])
 	}
 	else
 	{
-		rename("intermediario.j", "saida.j");
+		char saida[256] = "";
+		strcat(saida, classe); strcat(saida, ".j\0");
+		printf("saida = %s\n", saida); fflush(stdout);
+		rename("intermediario.j", saida);
 	}
 
 	fclose(yyin);

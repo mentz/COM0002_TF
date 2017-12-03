@@ -54,157 +54,169 @@ Grammar
    35      | TIF '(' ExpressaoLogica ')' Bloco TELSE Bloco
 
    36 CmdEnquanto: TWHILE '(' ExpressaoLogica ')' Bloco
+   37            | TDO Bloco TWHILE '(' ExpressaoLogica ')' ';'
 
-   37 CmdAtrib: TID '=' ExpressaoAritmetica ';'
-   38         | TID '=' TLITERAL ';'
+   38 CmdAtrib: TID '=' ExpressaoAritmetica ';'
+   39         | TID '=' TLITERAL ';'
+   40         | AutoOperacao ';'
 
-   39 CmdEscrita: TPRINT '(' ExpressaoAritmetica ')' ';'
-   40           | TPRINT '(' TLITERAL ')' ';'
+   41 CmdEscrita: TPRINT '(' ExpressaoAritmetica ')' ';'
+   42           | TPRINT '(' TLITERAL ')' ';'
 
-   41 CmdLeitura: TREAD '(' TID ')' ';'
+   43 CmdLeitura: TREAD '(' TID ')' ';'
 
-   42 ChamadaProc: ChamadaFuncao ';'
+   44 ChamadaProc: ChamadaFuncao ';'
 
-   43 ChamadaFuncao: TID '(' ListaParametros ')'
-   44              | TID '(' ')'
+   45 ChamadaFuncao: TID '(' ListaParametros ')'
+   46              | TID '(' ')'
 
-   45 ListaParametros: ListaParametros ',' ExpressaoAritmetica
-   46                | ListaParametros ',' TLITERAL
-   47                | ExpressaoAritmetica
-   48                | TLITERAL
+   47 ListaParametros: ListaParametros ',' ExpressaoAritmetica
+   48                | ListaParametros ',' TLITERAL
+   49                | ExpressaoAritmetica
+   50                | TLITERAL
 
-   49 ExpressaoRelacional: ExpressaoAritmetica '<' ExpressaoAritmetica
-   50                    | ExpressaoAritmetica '>' ExpressaoAritmetica
-   51                    | ExpressaoAritmetica TMEIG ExpressaoAritmetica
-   52                    | ExpressaoAritmetica TMAIG ExpressaoAritmetica
-   53                    | ExpressaoAritmetica TEQ ExpressaoAritmetica
-   54                    | ExpressaoAritmetica TDIF ExpressaoAritmetica
+   51 ExpressaoRelacional: ExpressaoAritmetica '<' ExpressaoAritmetica
+   52                    | ExpressaoAritmetica '>' ExpressaoAritmetica
+   53                    | ExpressaoAritmetica TMEIG ExpressaoAritmetica
+   54                    | ExpressaoAritmetica TMAIG ExpressaoAritmetica
+   55                    | ExpressaoAritmetica TEQ ExpressaoAritmetica
+   56                    | ExpressaoAritmetica TDIF ExpressaoAritmetica
 
-   55 ExpressaoLogica: ExpressaoLogica TAND ArgumentoLogico
-   56                | ExpressaoLogica TOR ArgumentoLogico
-   57                | ArgumentoLogico
+   57 ExpressaoLogica: ExpressaoLogica TAND ArgumentoLogico
+   58                | ExpressaoLogica TOR ArgumentoLogico
+   59                | ArgumentoLogico
 
-   58 ArgumentoLogico: '(' ExpressaoLogica ')'
-   59                | '!' ArgumentoLogico
-   60                | ExpressaoRelacional
+   60 ArgumentoLogico: '(' ExpressaoLogica ')'
+   61                | '!' ArgumentoLogico
+   62                | ExpressaoRelacional
 
-   61 ExpressaoAritmetica: ExpressaoAritmetica '+' TermoAritmetico
-   62                    | ExpressaoAritmetica '-' TermoAritmetico
-   63                    | TermoAritmetico
+   63 ExpressaoAritmetica: ExpressaoAritmetica '+' TermoAritmetico
+   64                    | ExpressaoAritmetica '-' TermoAritmetico
+   65                    | TermoAritmetico
 
-   64 TermoAritmetico: TermoAritmetico '*' FatorAritmetico
-   65                | TermoAritmetico '/' FatorAritmetico
-   66                | FatorAritmetico
+   66 TermoAritmetico: TermoAritmetico '*' FatorAritmetico
+   67                | TermoAritmetico '/' FatorAritmetico
+   68                | FatorAritmetico
 
-   67 FatorAritmetico: '(' ExpressaoAritmetica ')'
-   68                | '-' FatorAritmetico
-   69                | ChamadaFuncao
-   70                | TINT
-   71                | TFLOAT
-   72                | TID
+   69 FatorAritmetico: '(' ExpressaoAritmetica ')'
+   70                | '-' FatorAritmetico
+   71                | ChamadaFuncao
+   72                | TINT
+   73                | TFLOAT
+   74                | TID
+
+   75 AutoOperacao: TID '+' '+'
+   76             | TID '+' '=' ExpressaoAritmetica
+   77             | TID '-' '-'
+   78             | TID '-' '=' ExpressaoAritmetica
+   79             | TID '*' '=' ExpressaoAritmetica
+   80             | TID '/' '=' ExpressaoAritmetica
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
-'!' (33) 59
-'(' (40) 5 6 34 35 36 39 40 41 43 44 58 67
-')' (41) 5 6 34 35 36 39 40 41 43 44 58 67
-'*' (42) 64
-'+' (43) 61
-',' (44) 9 20 45 46
-'-' (45) 62 68
-'/' (47) 65
-';' (59) 16 32 33 37 38 39 40 41 42
-'<' (60) 49
-'=' (61) 37 38
-'>' (62) 50
+'!' (33) 61
+'(' (40) 5 6 34 35 36 37 41 42 43 45 46 60 69
+')' (41) 5 6 34 35 36 37 41 42 43 45 46 60 69
+'*' (42) 66 79
+'+' (43) 63 75 76
+',' (44) 9 20 47 48
+'-' (45) 64 70 77 78
+'/' (47) 67 80
+';' (59) 16 32 33 37 38 39 40 41 42 43 44
+'<' (60) 51
+'=' (61) 38 39 76 78 79 80
+'>' (62) 52
 '{' (123) 12 13 22
 '}' (125) 12 13 22
 error (256)
-TIF (258) 34 35
-TINT (259) 17 70
-TELSE (260) 35
-TFLOAT (261) 19 71
-TPRINT (262) 39 40
-TREAD (263) 41
-TRETURN (264) 32 33
-TSTRING (265) 18
-TVOID (266) 8
-TWHILE (267) 36
-TMEIG (268) 51
-TMAIG (269) 52
-TEQ (270) 53
-TDIF (271) 54
-TAND (272) 55
-TOR (273) 56
-TID (274) 5 6 11 20 21 37 38 41 43 44 72
-TLITERAL (275) 33 38 40 46 48
+TDO (258) 37
+TIF (259) 34 35
+TINT (260) 17 72
+TELSE (261) 35
+TFLOAT (262) 19 73
+TPRINT (263) 41 42
+TREAD (264) 43
+TRETURN (265) 32 33
+TSTRING (266) 18
+TVOID (267) 8
+TWHILE (268) 36 37
+TMEIG (269) 53
+TMAIG (270) 54
+TEQ (271) 55
+TDIF (272) 56
+TAND (273) 57
+TOR (274) 58
+TID (275) 5 6 11 20 21 38 39 43 45 46 74 75 76 77 78 79 80
+TLITERAL (276) 33 39 42 48 50
 
 
 Nonterminals, with rules where they appear
 
-$accept (35)
+$accept (36)
     on left: 0
-Programa (36)
+Programa (37)
     on left: 1 2, on right: 0
-ListaFuncoes (37)
+ListaFuncoes (38)
     on left: 3 4, on right: 1 3
-Funcao (38)
+Funcao (39)
     on left: 5 6, on right: 3 4
-TipoRetorno (39)
+TipoRetorno (40)
     on left: 7 8, on right: 5 6
-DeclParametros (40)
+DeclParametros (41)
     on left: 9 10, on right: 5 9
-Parametro (41)
+Parametro (42)
     on left: 11, on right: 9 10
-BlocoPrincipal (42)
+BlocoPrincipal (43)
     on left: 12 13, on right: 1 2 5 6
-Declaracoes (43)
+Declaracoes (44)
     on left: 14 15, on right: 12 14
-Declaracao (44)
+Declaracao (45)
     on left: 16, on right: 14 15
-Tipo (45)
+Tipo (46)
     on left: 17 18 19, on right: 7 11 16
-ListaId (46)
+ListaId (47)
     on left: 20 21, on right: 16 20
-Bloco (47)
-    on left: 22, on right: 34 35 36
-ListaCmd (48)
+Bloco (48)
+    on left: 22, on right: 34 35 36 37
+ListaCmd (49)
     on left: 23 24, on right: 12 13 22 23
-Comando (49)
+Comando (50)
     on left: 25 26 27 28 29 30 31, on right: 23 24
-Retorno (50)
+Retorno (51)
     on left: 32 33, on right: 31
-CmdSe (51)
+CmdSe (52)
     on left: 34 35, on right: 25
-CmdEnquanto (52)
-    on left: 36, on right: 26
-CmdAtrib (53)
-    on left: 37 38, on right: 27
-CmdEscrita (54)
-    on left: 39 40, on right: 28
-CmdLeitura (55)
-    on left: 41, on right: 29
-ChamadaProc (56)
-    on left: 42, on right: 30
-ChamadaFuncao (57)
-    on left: 43 44, on right: 42 69
-ListaParametros (58)
-    on left: 45 46 47 48, on right: 43 45 46
-ExpressaoRelacional (59)
-    on left: 49 50 51 52 53 54, on right: 60
-ExpressaoLogica (60)
-    on left: 55 56 57, on right: 34 35 36 55 56 58
-ArgumentoLogico (61)
-    on left: 58 59 60, on right: 55 56 57 59
-ExpressaoAritmetica (62)
-    on left: 61 62 63, on right: 32 37 39 45 47 49 50 51 52 53 54 61
-    62 67
-TermoAritmetico (63)
-    on left: 64 65 66, on right: 61 62 63 64 65
-FatorAritmetico (64)
-    on left: 67 68 69 70 71 72, on right: 64 65 66 68
+CmdEnquanto (53)
+    on left: 36 37, on right: 26
+CmdAtrib (54)
+    on left: 38 39 40, on right: 27
+CmdEscrita (55)
+    on left: 41 42, on right: 28
+CmdLeitura (56)
+    on left: 43, on right: 29
+ChamadaProc (57)
+    on left: 44, on right: 30
+ChamadaFuncao (58)
+    on left: 45 46, on right: 44 71
+ListaParametros (59)
+    on left: 47 48 49 50, on right: 45 47 48
+ExpressaoRelacional (60)
+    on left: 51 52 53 54 55 56, on right: 62
+ExpressaoLogica (61)
+    on left: 57 58 59, on right: 34 35 36 37 57 58 60
+ArgumentoLogico (62)
+    on left: 60 61 62, on right: 57 58 59 61
+ExpressaoAritmetica (63)
+    on left: 63 64 65, on right: 32 38 41 47 49 51 52 53 54 55 56 63
+    64 69 76 78 79 80
+TermoAritmetico (64)
+    on left: 66 67 68, on right: 63 64 65 66 67
+FatorAritmetico (65)
+    on left: 69 70 71 72 73 74, on right: 66 67 68 70
+AutoOperacao (66)
+    on left: 75 76 77 78 79 80, on right: 40
 
 
 State 0
@@ -258,36 +270,38 @@ State 5
    12 BlocoPrincipal: '{' . Declaracoes ListaCmd '}'
    13               | '{' . ListaCmd '}'
 
-    TIF      shift, and go to state 12
+    TDO      shift, and go to state 12
+    TIF      shift, and go to state 13
     TINT     shift, and go to state 1
     TFLOAT   shift, and go to state 2
-    TPRINT   shift, and go to state 13
-    TREAD    shift, and go to state 14
-    TRETURN  shift, and go to state 15
+    TPRINT   shift, and go to state 14
+    TREAD    shift, and go to state 15
+    TRETURN  shift, and go to state 16
     TSTRING  shift, and go to state 3
-    TWHILE   shift, and go to state 16
-    TID      shift, and go to state 17
+    TWHILE   shift, and go to state 17
+    TID      shift, and go to state 18
 
-    Declaracoes    go to state 18
-    Declaracao     go to state 19
-    Tipo           go to state 20
-    ListaCmd       go to state 21
-    Comando        go to state 22
-    Retorno        go to state 23
-    CmdSe          go to state 24
-    CmdEnquanto    go to state 25
-    CmdAtrib       go to state 26
-    CmdEscrita     go to state 27
-    CmdLeitura     go to state 28
-    ChamadaProc    go to state 29
-    ChamadaFuncao  go to state 30
+    Declaracoes    go to state 19
+    Declaracao     go to state 20
+    Tipo           go to state 21
+    ListaCmd       go to state 22
+    Comando        go to state 23
+    Retorno        go to state 24
+    CmdSe          go to state 25
+    CmdEnquanto    go to state 26
+    CmdAtrib       go to state 27
+    CmdEscrita     go to state 28
+    CmdLeitura     go to state 29
+    ChamadaProc    go to state 30
+    ChamadaFuncao  go to state 31
+    AutoOperacao   go to state 32
 
 
 State 6
 
     0 $accept: Programa . $end
 
-    $end  shift, and go to state 31
+    $end  shift, and go to state 33
 
 
 State 7
@@ -301,9 +315,9 @@ State 7
     TVOID    shift, and go to state 4
     '{'      shift, and go to state 5
 
-    Funcao          go to state 32
+    Funcao          go to state 34
     TipoRetorno     go to state 9
-    BlocoPrincipal  go to state 33
+    BlocoPrincipal  go to state 35
     Tipo            go to state 11
 
 
@@ -319,7 +333,7 @@ State 9
     5 Funcao: TipoRetorno . TID '(' DeclParametros ')' BlocoPrincipal
     6       | TipoRetorno . TID '(' ')' BlocoPrincipal
 
-    TID  shift, and go to state 34
+    TID  shift, and go to state 36
 
 
 State 10
@@ -338,496 +352,599 @@ State 11
 
 State 12
 
-   34 CmdSe: TIF . '(' ExpressaoLogica ')' Bloco
-   35      | TIF . '(' ExpressaoLogica ')' Bloco TELSE Bloco
+   37 CmdEnquanto: TDO . Bloco TWHILE '(' ExpressaoLogica ')' ';'
 
-    '('  shift, and go to state 35
+    '{'  shift, and go to state 37
+
+    Bloco  go to state 38
 
 
 State 13
 
-   39 CmdEscrita: TPRINT . '(' ExpressaoAritmetica ')' ';'
-   40           | TPRINT . '(' TLITERAL ')' ';'
+   34 CmdSe: TIF . '(' ExpressaoLogica ')' Bloco
+   35      | TIF . '(' ExpressaoLogica ')' Bloco TELSE Bloco
 
-    '('  shift, and go to state 36
+    '('  shift, and go to state 39
 
 
 State 14
 
-   41 CmdLeitura: TREAD . '(' TID ')' ';'
+   41 CmdEscrita: TPRINT . '(' ExpressaoAritmetica ')' ';'
+   42           | TPRINT . '(' TLITERAL ')' ';'
 
-    '('  shift, and go to state 37
+    '('  shift, and go to state 40
 
 
 State 15
 
-   32 Retorno: TRETURN . ExpressaoAritmetica ';'
-   33        | TRETURN . TLITERAL ';'
+   43 CmdLeitura: TREAD . '(' TID ')' ';'
 
-    TINT      shift, and go to state 38
-    TFLOAT    shift, and go to state 39
-    TID       shift, and go to state 40
-    TLITERAL  shift, and go to state 41
-    '('       shift, and go to state 42
-    '-'       shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ExpressaoAritmetica  go to state 45
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
+    '('  shift, and go to state 41
 
 
 State 16
 
-   36 CmdEnquanto: TWHILE . '(' ExpressaoLogica ')' Bloco
+   32 Retorno: TRETURN . ExpressaoAritmetica ';'
+   33        | TRETURN . TLITERAL ';'
 
-    '('  shift, and go to state 48
+    TINT      shift, and go to state 42
+    TFLOAT    shift, and go to state 43
+    TID       shift, and go to state 44
+    TLITERAL  shift, and go to state 45
+    '('       shift, and go to state 46
+    '-'       shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoAritmetica  go to state 49
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
 
 
 State 17
 
-   37 CmdAtrib: TID . '=' ExpressaoAritmetica ';'
-   38         | TID . '=' TLITERAL ';'
-   43 ChamadaFuncao: TID . '(' ListaParametros ')'
-   44              | TID . '(' ')'
+   36 CmdEnquanto: TWHILE . '(' ExpressaoLogica ')' Bloco
 
-    '('  shift, and go to state 49
-    '='  shift, and go to state 50
+    '('  shift, and go to state 52
 
 
 State 18
 
-   12 BlocoPrincipal: '{' Declaracoes . ListaCmd '}'
-   14 Declaracoes: Declaracoes . Declaracao
+   38 CmdAtrib: TID . '=' ExpressaoAritmetica ';'
+   39         | TID . '=' TLITERAL ';'
+   45 ChamadaFuncao: TID . '(' ListaParametros ')'
+   46              | TID . '(' ')'
+   75 AutoOperacao: TID . '+' '+'
+   76             | TID . '+' '=' ExpressaoAritmetica
+   77             | TID . '-' '-'
+   78             | TID . '-' '=' ExpressaoAritmetica
+   79             | TID . '*' '=' ExpressaoAritmetica
+   80             | TID . '/' '=' ExpressaoAritmetica
 
-    TIF      shift, and go to state 12
-    TINT     shift, and go to state 1
-    TFLOAT   shift, and go to state 2
-    TPRINT   shift, and go to state 13
-    TREAD    shift, and go to state 14
-    TRETURN  shift, and go to state 15
-    TSTRING  shift, and go to state 3
-    TWHILE   shift, and go to state 16
-    TID      shift, and go to state 17
-
-    Declaracao     go to state 51
-    Tipo           go to state 20
-    ListaCmd       go to state 52
-    Comando        go to state 22
-    Retorno        go to state 23
-    CmdSe          go to state 24
-    CmdEnquanto    go to state 25
-    CmdAtrib       go to state 26
-    CmdEscrita     go to state 27
-    CmdLeitura     go to state 28
-    ChamadaProc    go to state 29
-    ChamadaFuncao  go to state 30
+    '('  shift, and go to state 53
+    '='  shift, and go to state 54
+    '+'  shift, and go to state 55
+    '-'  shift, and go to state 56
+    '*'  shift, and go to state 57
+    '/'  shift, and go to state 58
 
 
 State 19
+
+   12 BlocoPrincipal: '{' Declaracoes . ListaCmd '}'
+   14 Declaracoes: Declaracoes . Declaracao
+
+    TDO      shift, and go to state 12
+    TIF      shift, and go to state 13
+    TINT     shift, and go to state 1
+    TFLOAT   shift, and go to state 2
+    TPRINT   shift, and go to state 14
+    TREAD    shift, and go to state 15
+    TRETURN  shift, and go to state 16
+    TSTRING  shift, and go to state 3
+    TWHILE   shift, and go to state 17
+    TID      shift, and go to state 18
+
+    Declaracao     go to state 59
+    Tipo           go to state 21
+    ListaCmd       go to state 60
+    Comando        go to state 23
+    Retorno        go to state 24
+    CmdSe          go to state 25
+    CmdEnquanto    go to state 26
+    CmdAtrib       go to state 27
+    CmdEscrita     go to state 28
+    CmdLeitura     go to state 29
+    ChamadaProc    go to state 30
+    ChamadaFuncao  go to state 31
+    AutoOperacao   go to state 32
+
+
+State 20
 
    15 Declaracoes: Declaracao .
 
     $default  reduce using rule 15 (Declaracoes)
 
 
-State 20
+State 21
 
    16 Declaracao: Tipo . ListaId ';'
 
-    TID  shift, and go to state 53
+    TID  shift, and go to state 61
 
-    ListaId  go to state 54
+    ListaId  go to state 62
 
 
-State 21
+State 22
 
    13 BlocoPrincipal: '{' ListaCmd . '}'
    23 ListaCmd: ListaCmd . Comando
 
-    TIF      shift, and go to state 12
-    TPRINT   shift, and go to state 13
-    TREAD    shift, and go to state 14
-    TRETURN  shift, and go to state 15
-    TWHILE   shift, and go to state 16
-    TID      shift, and go to state 17
-    '}'      shift, and go to state 55
+    TDO      shift, and go to state 12
+    TIF      shift, and go to state 13
+    TPRINT   shift, and go to state 14
+    TREAD    shift, and go to state 15
+    TRETURN  shift, and go to state 16
+    TWHILE   shift, and go to state 17
+    TID      shift, and go to state 18
+    '}'      shift, and go to state 63
 
-    Comando        go to state 56
-    Retorno        go to state 23
-    CmdSe          go to state 24
-    CmdEnquanto    go to state 25
-    CmdAtrib       go to state 26
-    CmdEscrita     go to state 27
-    CmdLeitura     go to state 28
-    ChamadaProc    go to state 29
-    ChamadaFuncao  go to state 30
+    Comando        go to state 64
+    Retorno        go to state 24
+    CmdSe          go to state 25
+    CmdEnquanto    go to state 26
+    CmdAtrib       go to state 27
+    CmdEscrita     go to state 28
+    CmdLeitura     go to state 29
+    ChamadaProc    go to state 30
+    ChamadaFuncao  go to state 31
+    AutoOperacao   go to state 32
 
 
-State 22
+State 23
 
    24 ListaCmd: Comando .
 
     $default  reduce using rule 24 (ListaCmd)
 
 
-State 23
+State 24
 
    31 Comando: Retorno .
 
     $default  reduce using rule 31 (Comando)
 
 
-State 24
+State 25
 
    25 Comando: CmdSe .
 
     $default  reduce using rule 25 (Comando)
 
 
-State 25
+State 26
 
    26 Comando: CmdEnquanto .
 
     $default  reduce using rule 26 (Comando)
 
 
-State 26
+State 27
 
    27 Comando: CmdAtrib .
 
     $default  reduce using rule 27 (Comando)
 
 
-State 27
+State 28
 
    28 Comando: CmdEscrita .
 
     $default  reduce using rule 28 (Comando)
 
 
-State 28
+State 29
 
    29 Comando: CmdLeitura .
 
     $default  reduce using rule 29 (Comando)
 
 
-State 29
+State 30
 
    30 Comando: ChamadaProc .
 
     $default  reduce using rule 30 (Comando)
 
 
-State 30
-
-   42 ChamadaProc: ChamadaFuncao . ';'
-
-    ';'  shift, and go to state 57
-
-
 State 31
+
+   44 ChamadaProc: ChamadaFuncao . ';'
+
+    ';'  shift, and go to state 65
+
+
+State 32
+
+   40 CmdAtrib: AutoOperacao . ';'
+
+    ';'  shift, and go to state 66
+
+
+State 33
 
     0 $accept: Programa $end .
 
     $default  accept
 
 
-State 32
+State 34
 
     3 ListaFuncoes: ListaFuncoes Funcao .
 
     $default  reduce using rule 3 (ListaFuncoes)
 
 
-State 33
+State 35
 
     1 Programa: ListaFuncoes BlocoPrincipal .
 
     $default  reduce using rule 1 (Programa)
 
 
-State 34
+State 36
 
     5 Funcao: TipoRetorno TID . '(' DeclParametros ')' BlocoPrincipal
     6       | TipoRetorno TID . '(' ')' BlocoPrincipal
 
-    '('  shift, and go to state 58
-
-
-State 35
-
-   34 CmdSe: TIF '(' . ExpressaoLogica ')' Bloco
-   35      | TIF '(' . ExpressaoLogica ')' Bloco TELSE Bloco
-
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 59
-    '!'     shift, and go to state 60
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ExpressaoRelacional  go to state 61
-    ExpressaoLogica      go to state 62
-    ArgumentoLogico      go to state 63
-    ExpressaoAritmetica  go to state 64
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
-
-
-State 36
-
-   39 CmdEscrita: TPRINT '(' . ExpressaoAritmetica ')' ';'
-   40           | TPRINT '(' . TLITERAL ')' ';'
-
-    TINT      shift, and go to state 38
-    TFLOAT    shift, and go to state 39
-    TID       shift, and go to state 40
-    TLITERAL  shift, and go to state 65
-    '('       shift, and go to state 42
-    '-'       shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ExpressaoAritmetica  go to state 66
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
+    '('  shift, and go to state 67
 
 
 State 37
 
-   41 CmdLeitura: TREAD '(' . TID ')' ';'
+   22 Bloco: '{' . ListaCmd '}'
 
-    TID  shift, and go to state 67
+    TDO      shift, and go to state 12
+    TIF      shift, and go to state 13
+    TPRINT   shift, and go to state 14
+    TREAD    shift, and go to state 15
+    TRETURN  shift, and go to state 16
+    TWHILE   shift, and go to state 17
+    TID      shift, and go to state 18
+
+    ListaCmd       go to state 68
+    Comando        go to state 23
+    Retorno        go to state 24
+    CmdSe          go to state 25
+    CmdEnquanto    go to state 26
+    CmdAtrib       go to state 27
+    CmdEscrita     go to state 28
+    CmdLeitura     go to state 29
+    ChamadaProc    go to state 30
+    ChamadaFuncao  go to state 31
+    AutoOperacao   go to state 32
 
 
 State 38
 
-   70 FatorAritmetico: TINT .
+   37 CmdEnquanto: TDO Bloco . TWHILE '(' ExpressaoLogica ')' ';'
 
-    $default  reduce using rule 70 (FatorAritmetico)
+    TWHILE  shift, and go to state 69
 
 
 State 39
 
-   71 FatorAritmetico: TFLOAT .
+   34 CmdSe: TIF '(' . ExpressaoLogica ')' Bloco
+   35      | TIF '(' . ExpressaoLogica ')' Bloco TELSE Bloco
 
-    $default  reduce using rule 71 (FatorAritmetico)
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 70
+    '!'     shift, and go to state 71
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoRelacional  go to state 72
+    ExpressaoLogica      go to state 73
+    ArgumentoLogico      go to state 74
+    ExpressaoAritmetica  go to state 75
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
 
 
 State 40
 
-   43 ChamadaFuncao: TID . '(' ListaParametros ')'
-   44              | TID . '(' ')'
-   72 FatorAritmetico: TID .
+   41 CmdEscrita: TPRINT '(' . ExpressaoAritmetica ')' ';'
+   42           | TPRINT '(' . TLITERAL ')' ';'
 
-    '('  shift, and go to state 49
+    TINT      shift, and go to state 42
+    TFLOAT    shift, and go to state 43
+    TID       shift, and go to state 44
+    TLITERAL  shift, and go to state 76
+    '('       shift, and go to state 46
+    '-'       shift, and go to state 47
 
-    $default  reduce using rule 72 (FatorAritmetico)
+    ChamadaFuncao        go to state 48
+    ExpressaoAritmetica  go to state 77
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
 
 
 State 41
 
-   33 Retorno: TRETURN TLITERAL . ';'
+   43 CmdLeitura: TREAD '(' . TID ')' ';'
 
-    ';'  shift, and go to state 68
+    TID  shift, and go to state 78
 
 
 State 42
 
-   67 FatorAritmetico: '(' . ExpressaoAritmetica ')'
+   72 FatorAritmetico: TINT .
 
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 42
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ExpressaoAritmetica  go to state 69
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
+    $default  reduce using rule 72 (FatorAritmetico)
 
 
 State 43
 
-   68 FatorAritmetico: '-' . FatorAritmetico
+   73 FatorAritmetico: TFLOAT .
 
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 42
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao    go to state 44
-    FatorAritmetico  go to state 70
+    $default  reduce using rule 73 (FatorAritmetico)
 
 
 State 44
 
-   69 FatorAritmetico: ChamadaFuncao .
+   45 ChamadaFuncao: TID . '(' ListaParametros ')'
+   46              | TID . '(' ')'
+   74 FatorAritmetico: TID .
 
-    $default  reduce using rule 69 (FatorAritmetico)
+    '('  shift, and go to state 53
+
+    $default  reduce using rule 74 (FatorAritmetico)
 
 
 State 45
 
-   32 Retorno: TRETURN ExpressaoAritmetica . ';'
-   61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
-   62                    | ExpressaoAritmetica . '-' TermoAritmetico
+   33 Retorno: TRETURN TLITERAL . ';'
 
-    ';'  shift, and go to state 71
-    '+'  shift, and go to state 72
-    '-'  shift, and go to state 73
+    ';'  shift, and go to state 79
 
 
 State 46
 
-   63 ExpressaoAritmetica: TermoAritmetico .
-   64 TermoAritmetico: TermoAritmetico . '*' FatorAritmetico
-   65                | TermoAritmetico . '/' FatorAritmetico
+   69 FatorAritmetico: '(' . ExpressaoAritmetica ')'
 
-    '*'  shift, and go to state 74
-    '/'  shift, and go to state 75
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
 
-    $default  reduce using rule 63 (ExpressaoAritmetica)
+    ChamadaFuncao        go to state 48
+    ExpressaoAritmetica  go to state 80
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
 
 
 State 47
 
-   66 TermoAritmetico: FatorAritmetico .
+   70 FatorAritmetico: '-' . FatorAritmetico
 
-    $default  reduce using rule 66 (TermoAritmetico)
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao    go to state 48
+    FatorAritmetico  go to state 81
 
 
 State 48
 
-   36 CmdEnquanto: TWHILE '(' . ExpressaoLogica ')' Bloco
+   71 FatorAritmetico: ChamadaFuncao .
 
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 59
-    '!'     shift, and go to state 60
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ExpressaoRelacional  go to state 61
-    ExpressaoLogica      go to state 76
-    ArgumentoLogico      go to state 63
-    ExpressaoAritmetica  go to state 64
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
+    $default  reduce using rule 71 (FatorAritmetico)
 
 
 State 49
 
-   43 ChamadaFuncao: TID '(' . ListaParametros ')'
-   44              | TID '(' . ')'
+   32 Retorno: TRETURN ExpressaoAritmetica . ';'
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    TINT      shift, and go to state 38
-    TFLOAT    shift, and go to state 39
-    TID       shift, and go to state 40
-    TLITERAL  shift, and go to state 77
-    '('       shift, and go to state 42
-    ')'       shift, and go to state 78
-    '-'       shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ListaParametros      go to state 79
-    ExpressaoAritmetica  go to state 80
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
+    ';'  shift, and go to state 82
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
 
 
 State 50
 
-   37 CmdAtrib: TID '=' . ExpressaoAritmetica ';'
-   38         | TID '=' . TLITERAL ';'
+   65 ExpressaoAritmetica: TermoAritmetico .
+   66 TermoAritmetico: TermoAritmetico . '*' FatorAritmetico
+   67                | TermoAritmetico . '/' FatorAritmetico
 
-    TINT      shift, and go to state 38
-    TFLOAT    shift, and go to state 39
-    TID       shift, and go to state 40
-    TLITERAL  shift, and go to state 81
-    '('       shift, and go to state 42
-    '-'       shift, and go to state 43
+    '*'  shift, and go to state 85
+    '/'  shift, and go to state 86
 
-    ChamadaFuncao        go to state 44
-    ExpressaoAritmetica  go to state 82
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
+    $default  reduce using rule 65 (ExpressaoAritmetica)
 
 
 State 51
+
+   68 TermoAritmetico: FatorAritmetico .
+
+    $default  reduce using rule 68 (TermoAritmetico)
+
+
+State 52
+
+   36 CmdEnquanto: TWHILE '(' . ExpressaoLogica ')' Bloco
+
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 70
+    '!'     shift, and go to state 71
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoRelacional  go to state 72
+    ExpressaoLogica      go to state 87
+    ArgumentoLogico      go to state 74
+    ExpressaoAritmetica  go to state 75
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 53
+
+   45 ChamadaFuncao: TID '(' . ListaParametros ')'
+   46              | TID '(' . ')'
+
+    TINT      shift, and go to state 42
+    TFLOAT    shift, and go to state 43
+    TID       shift, and go to state 44
+    TLITERAL  shift, and go to state 88
+    '('       shift, and go to state 46
+    ')'       shift, and go to state 89
+    '-'       shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ListaParametros      go to state 90
+    ExpressaoAritmetica  go to state 91
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 54
+
+   38 CmdAtrib: TID '=' . ExpressaoAritmetica ';'
+   39         | TID '=' . TLITERAL ';'
+
+    TINT      shift, and go to state 42
+    TFLOAT    shift, and go to state 43
+    TID       shift, and go to state 44
+    TLITERAL  shift, and go to state 92
+    '('       shift, and go to state 46
+    '-'       shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoAritmetica  go to state 93
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 55
+
+   75 AutoOperacao: TID '+' . '+'
+   76             | TID '+' . '=' ExpressaoAritmetica
+
+    '='  shift, and go to state 94
+    '+'  shift, and go to state 95
+
+
+State 56
+
+   77 AutoOperacao: TID '-' . '-'
+   78             | TID '-' . '=' ExpressaoAritmetica
+
+    '='  shift, and go to state 96
+    '-'  shift, and go to state 97
+
+
+State 57
+
+   79 AutoOperacao: TID '*' . '=' ExpressaoAritmetica
+
+    '='  shift, and go to state 98
+
+
+State 58
+
+   80 AutoOperacao: TID '/' . '=' ExpressaoAritmetica
+
+    '='  shift, and go to state 99
+
+
+State 59
 
    14 Declaracoes: Declaracoes Declaracao .
 
     $default  reduce using rule 14 (Declaracoes)
 
 
-State 52
+State 60
 
    12 BlocoPrincipal: '{' Declaracoes ListaCmd . '}'
    23 ListaCmd: ListaCmd . Comando
 
-    TIF      shift, and go to state 12
-    TPRINT   shift, and go to state 13
-    TREAD    shift, and go to state 14
-    TRETURN  shift, and go to state 15
-    TWHILE   shift, and go to state 16
-    TID      shift, and go to state 17
-    '}'      shift, and go to state 83
+    TDO      shift, and go to state 12
+    TIF      shift, and go to state 13
+    TPRINT   shift, and go to state 14
+    TREAD    shift, and go to state 15
+    TRETURN  shift, and go to state 16
+    TWHILE   shift, and go to state 17
+    TID      shift, and go to state 18
+    '}'      shift, and go to state 100
 
-    Comando        go to state 56
-    Retorno        go to state 23
-    CmdSe          go to state 24
-    CmdEnquanto    go to state 25
-    CmdAtrib       go to state 26
-    CmdEscrita     go to state 27
-    CmdLeitura     go to state 28
-    ChamadaProc    go to state 29
-    ChamadaFuncao  go to state 30
+    Comando        go to state 64
+    Retorno        go to state 24
+    CmdSe          go to state 25
+    CmdEnquanto    go to state 26
+    CmdAtrib       go to state 27
+    CmdEscrita     go to state 28
+    CmdLeitura     go to state 29
+    ChamadaProc    go to state 30
+    ChamadaFuncao  go to state 31
+    AutoOperacao   go to state 32
 
 
-State 53
+State 61
 
    21 ListaId: TID .
 
     $default  reduce using rule 21 (ListaId)
 
 
-State 54
+State 62
 
    16 Declaracao: Tipo ListaId . ';'
    20 ListaId: ListaId . ',' TID
 
-    ','  shift, and go to state 84
-    ';'  shift, and go to state 85
+    ','  shift, and go to state 101
+    ';'  shift, and go to state 102
 
 
-State 55
+State 63
 
    13 BlocoPrincipal: '{' ListaCmd '}' .
 
     $default  reduce using rule 13 (BlocoPrincipal)
 
 
-State 56
+State 64
 
    23 ListaCmd: ListaCmd Comando .
 
     $default  reduce using rule 23 (ListaCmd)
 
 
-State 57
+State 65
 
-   42 ChamadaProc: ChamadaFuncao ';' .
+   44 ChamadaProc: ChamadaFuncao ';' .
 
-    $default  reduce using rule 42 (ChamadaProc)
+    $default  reduce using rule 44 (ChamadaProc)
 
 
-State 58
+State 66
+
+   40 CmdAtrib: AutoOperacao ';' .
+
+    $default  reduce using rule 40 (CmdAtrib)
+
+
+State 67
 
     5 Funcao: TipoRetorno TID '(' . DeclParametros ')' BlocoPrincipal
     6       | TipoRetorno TID '(' . ')' BlocoPrincipal
@@ -835,656 +952,842 @@ State 58
     TINT     shift, and go to state 1
     TFLOAT   shift, and go to state 2
     TSTRING  shift, and go to state 3
-    ')'      shift, and go to state 86
+    ')'      shift, and go to state 103
 
-    DeclParametros  go to state 87
-    Parametro       go to state 88
-    Tipo            go to state 89
-
-
-State 59
-
-   58 ArgumentoLogico: '(' . ExpressaoLogica ')'
-   67 FatorAritmetico: '(' . ExpressaoAritmetica ')'
-
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 59
-    '!'     shift, and go to state 60
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ExpressaoRelacional  go to state 61
-    ExpressaoLogica      go to state 90
-    ArgumentoLogico      go to state 63
-    ExpressaoAritmetica  go to state 91
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
-
-
-State 60
-
-   59 ArgumentoLogico: '!' . ArgumentoLogico
-
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 59
-    '!'     shift, and go to state 60
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ExpressaoRelacional  go to state 61
-    ArgumentoLogico      go to state 92
-    ExpressaoAritmetica  go to state 64
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
-
-
-State 61
-
-   60 ArgumentoLogico: ExpressaoRelacional .
-
-    $default  reduce using rule 60 (ArgumentoLogico)
-
-
-State 62
-
-   34 CmdSe: TIF '(' ExpressaoLogica . ')' Bloco
-   35      | TIF '(' ExpressaoLogica . ')' Bloco TELSE Bloco
-   55 ExpressaoLogica: ExpressaoLogica . TAND ArgumentoLogico
-   56                | ExpressaoLogica . TOR ArgumentoLogico
-
-    TAND  shift, and go to state 93
-    TOR   shift, and go to state 94
-    ')'   shift, and go to state 95
-
-
-State 63
-
-   57 ExpressaoLogica: ArgumentoLogico .
-
-    $default  reduce using rule 57 (ExpressaoLogica)
-
-
-State 64
-
-   49 ExpressaoRelacional: ExpressaoAritmetica . '<' ExpressaoAritmetica
-   50                    | ExpressaoAritmetica . '>' ExpressaoAritmetica
-   51                    | ExpressaoAritmetica . TMEIG ExpressaoAritmetica
-   52                    | ExpressaoAritmetica . TMAIG ExpressaoAritmetica
-   53                    | ExpressaoAritmetica . TEQ ExpressaoAritmetica
-   54                    | ExpressaoAritmetica . TDIF ExpressaoAritmetica
-   61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
-   62                    | ExpressaoAritmetica . '-' TermoAritmetico
-
-    TMEIG  shift, and go to state 96
-    TMAIG  shift, and go to state 97
-    TEQ    shift, and go to state 98
-    TDIF   shift, and go to state 99
-    '<'    shift, and go to state 100
-    '>'    shift, and go to state 101
-    '+'    shift, and go to state 72
-    '-'    shift, and go to state 73
-
-
-State 65
-
-   40 CmdEscrita: TPRINT '(' TLITERAL . ')' ';'
-
-    ')'  shift, and go to state 102
-
-
-State 66
-
-   39 CmdEscrita: TPRINT '(' ExpressaoAritmetica . ')' ';'
-   61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
-   62                    | ExpressaoAritmetica . '-' TermoAritmetico
-
-    ')'  shift, and go to state 103
-    '+'  shift, and go to state 72
-    '-'  shift, and go to state 73
-
-
-State 67
-
-   41 CmdLeitura: TREAD '(' TID . ')' ';'
-
-    ')'  shift, and go to state 104
+    DeclParametros  go to state 104
+    Parametro       go to state 105
+    Tipo            go to state 106
 
 
 State 68
+
+   22 Bloco: '{' ListaCmd . '}'
+   23 ListaCmd: ListaCmd . Comando
+
+    TDO      shift, and go to state 12
+    TIF      shift, and go to state 13
+    TPRINT   shift, and go to state 14
+    TREAD    shift, and go to state 15
+    TRETURN  shift, and go to state 16
+    TWHILE   shift, and go to state 17
+    TID      shift, and go to state 18
+    '}'      shift, and go to state 107
+
+    Comando        go to state 64
+    Retorno        go to state 24
+    CmdSe          go to state 25
+    CmdEnquanto    go to state 26
+    CmdAtrib       go to state 27
+    CmdEscrita     go to state 28
+    CmdLeitura     go to state 29
+    ChamadaProc    go to state 30
+    ChamadaFuncao  go to state 31
+    AutoOperacao   go to state 32
+
+
+State 69
+
+   37 CmdEnquanto: TDO Bloco TWHILE . '(' ExpressaoLogica ')' ';'
+
+    '('  shift, and go to state 108
+
+
+State 70
+
+   60 ArgumentoLogico: '(' . ExpressaoLogica ')'
+   69 FatorAritmetico: '(' . ExpressaoAritmetica ')'
+
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 70
+    '!'     shift, and go to state 71
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoRelacional  go to state 72
+    ExpressaoLogica      go to state 109
+    ArgumentoLogico      go to state 74
+    ExpressaoAritmetica  go to state 110
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 71
+
+   61 ArgumentoLogico: '!' . ArgumentoLogico
+
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 70
+    '!'     shift, and go to state 71
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoRelacional  go to state 72
+    ArgumentoLogico      go to state 111
+    ExpressaoAritmetica  go to state 75
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 72
+
+   62 ArgumentoLogico: ExpressaoRelacional .
+
+    $default  reduce using rule 62 (ArgumentoLogico)
+
+
+State 73
+
+   34 CmdSe: TIF '(' ExpressaoLogica . ')' Bloco
+   35      | TIF '(' ExpressaoLogica . ')' Bloco TELSE Bloco
+   57 ExpressaoLogica: ExpressaoLogica . TAND ArgumentoLogico
+   58                | ExpressaoLogica . TOR ArgumentoLogico
+
+    TAND  shift, and go to state 112
+    TOR   shift, and go to state 113
+    ')'   shift, and go to state 114
+
+
+State 74
+
+   59 ExpressaoLogica: ArgumentoLogico .
+
+    $default  reduce using rule 59 (ExpressaoLogica)
+
+
+State 75
+
+   51 ExpressaoRelacional: ExpressaoAritmetica . '<' ExpressaoAritmetica
+   52                    | ExpressaoAritmetica . '>' ExpressaoAritmetica
+   53                    | ExpressaoAritmetica . TMEIG ExpressaoAritmetica
+   54                    | ExpressaoAritmetica . TMAIG ExpressaoAritmetica
+   55                    | ExpressaoAritmetica . TEQ ExpressaoAritmetica
+   56                    | ExpressaoAritmetica . TDIF ExpressaoAritmetica
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
+
+    TMEIG  shift, and go to state 115
+    TMAIG  shift, and go to state 116
+    TEQ    shift, and go to state 117
+    TDIF   shift, and go to state 118
+    '<'    shift, and go to state 119
+    '>'    shift, and go to state 120
+    '+'    shift, and go to state 83
+    '-'    shift, and go to state 84
+
+
+State 76
+
+   42 CmdEscrita: TPRINT '(' TLITERAL . ')' ';'
+
+    ')'  shift, and go to state 121
+
+
+State 77
+
+   41 CmdEscrita: TPRINT '(' ExpressaoAritmetica . ')' ';'
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
+
+    ')'  shift, and go to state 122
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
+
+
+State 78
+
+   43 CmdLeitura: TREAD '(' TID . ')' ';'
+
+    ')'  shift, and go to state 123
+
+
+State 79
 
    33 Retorno: TRETURN TLITERAL ';' .
 
     $default  reduce using rule 33 (Retorno)
 
 
-State 69
+State 80
 
-   61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
-   62                    | ExpressaoAritmetica . '-' TermoAritmetico
-   67 FatorAritmetico: '(' ExpressaoAritmetica . ')'
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
+   69 FatorAritmetico: '(' ExpressaoAritmetica . ')'
 
-    ')'  shift, and go to state 105
-    '+'  shift, and go to state 72
-    '-'  shift, and go to state 73
-
-
-State 70
-
-   68 FatorAritmetico: '-' FatorAritmetico .
-
-    $default  reduce using rule 68 (FatorAritmetico)
+    ')'  shift, and go to state 124
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
 
 
-State 71
+State 81
+
+   70 FatorAritmetico: '-' FatorAritmetico .
+
+    $default  reduce using rule 70 (FatorAritmetico)
+
+
+State 82
 
    32 Retorno: TRETURN ExpressaoAritmetica ';' .
 
     $default  reduce using rule 32 (Retorno)
 
 
-State 72
+State 83
 
-   61 ExpressaoAritmetica: ExpressaoAritmetica '+' . TermoAritmetico
+   63 ExpressaoAritmetica: ExpressaoAritmetica '+' . TermoAritmetico
 
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 42
-    '-'     shift, and go to state 43
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
 
-    ChamadaFuncao    go to state 44
-    TermoAritmetico  go to state 106
-    FatorAritmetico  go to state 47
-
-
-State 73
-
-   62 ExpressaoAritmetica: ExpressaoAritmetica '-' . TermoAritmetico
-
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 42
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao    go to state 44
-    TermoAritmetico  go to state 107
-    FatorAritmetico  go to state 47
+    ChamadaFuncao    go to state 48
+    TermoAritmetico  go to state 125
+    FatorAritmetico  go to state 51
 
 
-State 74
+State 84
 
-   64 TermoAritmetico: TermoAritmetico '*' . FatorAritmetico
+   64 ExpressaoAritmetica: ExpressaoAritmetica '-' . TermoAritmetico
 
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 42
-    '-'     shift, and go to state 43
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
 
-    ChamadaFuncao    go to state 44
-    FatorAritmetico  go to state 108
-
-
-State 75
-
-   65 TermoAritmetico: TermoAritmetico '/' . FatorAritmetico
-
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 42
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao    go to state 44
-    FatorAritmetico  go to state 109
+    ChamadaFuncao    go to state 48
+    TermoAritmetico  go to state 126
+    FatorAritmetico  go to state 51
 
 
-State 76
+State 85
+
+   66 TermoAritmetico: TermoAritmetico '*' . FatorAritmetico
+
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao    go to state 48
+    FatorAritmetico  go to state 127
+
+
+State 86
+
+   67 TermoAritmetico: TermoAritmetico '/' . FatorAritmetico
+
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao    go to state 48
+    FatorAritmetico  go to state 128
+
+
+State 87
 
    36 CmdEnquanto: TWHILE '(' ExpressaoLogica . ')' Bloco
-   55 ExpressaoLogica: ExpressaoLogica . TAND ArgumentoLogico
-   56                | ExpressaoLogica . TOR ArgumentoLogico
+   57 ExpressaoLogica: ExpressaoLogica . TAND ArgumentoLogico
+   58                | ExpressaoLogica . TOR ArgumentoLogico
 
-    TAND  shift, and go to state 93
-    TOR   shift, and go to state 94
-    ')'   shift, and go to state 110
-
-
-State 77
-
-   48 ListaParametros: TLITERAL .
-
-    $default  reduce using rule 48 (ListaParametros)
+    TAND  shift, and go to state 112
+    TOR   shift, and go to state 113
+    ')'   shift, and go to state 129
 
 
-State 78
+State 88
 
-   44 ChamadaFuncao: TID '(' ')' .
+   50 ListaParametros: TLITERAL .
 
-    $default  reduce using rule 44 (ChamadaFuncao)
-
-
-State 79
-
-   43 ChamadaFuncao: TID '(' ListaParametros . ')'
-   45 ListaParametros: ListaParametros . ',' ExpressaoAritmetica
-   46                | ListaParametros . ',' TLITERAL
-
-    ')'  shift, and go to state 111
-    ','  shift, and go to state 112
+    $default  reduce using rule 50 (ListaParametros)
 
 
-State 80
+State 89
 
-   47 ListaParametros: ExpressaoAritmetica .
-   61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
-   62                    | ExpressaoAritmetica . '-' TermoAritmetico
+   46 ChamadaFuncao: TID '(' ')' .
 
-    '+'  shift, and go to state 72
-    '-'  shift, and go to state 73
-
-    $default  reduce using rule 47 (ListaParametros)
+    $default  reduce using rule 46 (ChamadaFuncao)
 
 
-State 81
+State 90
 
-   38 CmdAtrib: TID '=' TLITERAL . ';'
+   45 ChamadaFuncao: TID '(' ListaParametros . ')'
+   47 ListaParametros: ListaParametros . ',' ExpressaoAritmetica
+   48                | ListaParametros . ',' TLITERAL
 
-    ';'  shift, and go to state 113
-
-
-State 82
-
-   37 CmdAtrib: TID '=' ExpressaoAritmetica . ';'
-   61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
-   62                    | ExpressaoAritmetica . '-' TermoAritmetico
-
-    ';'  shift, and go to state 114
-    '+'  shift, and go to state 72
-    '-'  shift, and go to state 73
+    ')'  shift, and go to state 130
+    ','  shift, and go to state 131
 
 
-State 83
+State 91
+
+   49 ListaParametros: ExpressaoAritmetica .
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
+
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
+
+    $default  reduce using rule 49 (ListaParametros)
+
+
+State 92
+
+   39 CmdAtrib: TID '=' TLITERAL . ';'
+
+    ';'  shift, and go to state 132
+
+
+State 93
+
+   38 CmdAtrib: TID '=' ExpressaoAritmetica . ';'
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
+
+    ';'  shift, and go to state 133
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
+
+
+State 94
+
+   76 AutoOperacao: TID '+' '=' . ExpressaoAritmetica
+
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoAritmetica  go to state 134
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 95
+
+   75 AutoOperacao: TID '+' '+' .
+
+    $default  reduce using rule 75 (AutoOperacao)
+
+
+State 96
+
+   78 AutoOperacao: TID '-' '=' . ExpressaoAritmetica
+
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoAritmetica  go to state 135
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 97
+
+   77 AutoOperacao: TID '-' '-' .
+
+    $default  reduce using rule 77 (AutoOperacao)
+
+
+State 98
+
+   79 AutoOperacao: TID '*' '=' . ExpressaoAritmetica
+
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoAritmetica  go to state 136
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 99
+
+   80 AutoOperacao: TID '/' '=' . ExpressaoAritmetica
+
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoAritmetica  go to state 137
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 100
 
    12 BlocoPrincipal: '{' Declaracoes ListaCmd '}' .
 
     $default  reduce using rule 12 (BlocoPrincipal)
 
 
-State 84
+State 101
 
    20 ListaId: ListaId ',' . TID
 
-    TID  shift, and go to state 115
+    TID  shift, and go to state 138
 
 
-State 85
+State 102
 
    16 Declaracao: Tipo ListaId ';' .
 
     $default  reduce using rule 16 (Declaracao)
 
 
-State 86
+State 103
 
     6 Funcao: TipoRetorno TID '(' ')' . BlocoPrincipal
 
     '{'  shift, and go to state 5
 
-    BlocoPrincipal  go to state 116
+    BlocoPrincipal  go to state 139
 
 
-State 87
+State 104
 
     5 Funcao: TipoRetorno TID '(' DeclParametros . ')' BlocoPrincipal
     9 DeclParametros: DeclParametros . ',' Parametro
 
-    ')'  shift, and go to state 117
-    ','  shift, and go to state 118
+    ')'  shift, and go to state 140
+    ','  shift, and go to state 141
 
 
-State 88
+State 105
 
    10 DeclParametros: Parametro .
 
     $default  reduce using rule 10 (DeclParametros)
 
 
-State 89
+State 106
 
    11 Parametro: Tipo . TID
 
-    TID  shift, and go to state 119
-
-
-State 90
-
-   55 ExpressaoLogica: ExpressaoLogica . TAND ArgumentoLogico
-   56                | ExpressaoLogica . TOR ArgumentoLogico
-   58 ArgumentoLogico: '(' ExpressaoLogica . ')'
-
-    TAND  shift, and go to state 93
-    TOR   shift, and go to state 94
-    ')'   shift, and go to state 120
-
-
-State 91
-
-   49 ExpressaoRelacional: ExpressaoAritmetica . '<' ExpressaoAritmetica
-   50                    | ExpressaoAritmetica . '>' ExpressaoAritmetica
-   51                    | ExpressaoAritmetica . TMEIG ExpressaoAritmetica
-   52                    | ExpressaoAritmetica . TMAIG ExpressaoAritmetica
-   53                    | ExpressaoAritmetica . TEQ ExpressaoAritmetica
-   54                    | ExpressaoAritmetica . TDIF ExpressaoAritmetica
-   61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
-   62                    | ExpressaoAritmetica . '-' TermoAritmetico
-   67 FatorAritmetico: '(' ExpressaoAritmetica . ')'
-
-    TMEIG  shift, and go to state 96
-    TMAIG  shift, and go to state 97
-    TEQ    shift, and go to state 98
-    TDIF   shift, and go to state 99
-    ')'    shift, and go to state 105
-    '<'    shift, and go to state 100
-    '>'    shift, and go to state 101
-    '+'    shift, and go to state 72
-    '-'    shift, and go to state 73
-
-
-State 92
-
-   59 ArgumentoLogico: '!' ArgumentoLogico .
-
-    $default  reduce using rule 59 (ArgumentoLogico)
-
-
-State 93
-
-   55 ExpressaoLogica: ExpressaoLogica TAND . ArgumentoLogico
-
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 59
-    '!'     shift, and go to state 60
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ExpressaoRelacional  go to state 61
-    ArgumentoLogico      go to state 121
-    ExpressaoAritmetica  go to state 64
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
-
-
-State 94
-
-   56 ExpressaoLogica: ExpressaoLogica TOR . ArgumentoLogico
-
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 59
-    '!'     shift, and go to state 60
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ExpressaoRelacional  go to state 61
-    ArgumentoLogico      go to state 122
-    ExpressaoAritmetica  go to state 64
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
-
-
-State 95
-
-   34 CmdSe: TIF '(' ExpressaoLogica ')' . Bloco
-   35      | TIF '(' ExpressaoLogica ')' . Bloco TELSE Bloco
-
-    '{'  shift, and go to state 123
-
-    Bloco  go to state 124
-
-
-State 96
-
-   51 ExpressaoRelacional: ExpressaoAritmetica TMEIG . ExpressaoAritmetica
-
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 42
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ExpressaoAritmetica  go to state 125
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
-
-
-State 97
-
-   52 ExpressaoRelacional: ExpressaoAritmetica TMAIG . ExpressaoAritmetica
-
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 42
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ExpressaoAritmetica  go to state 126
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
-
-
-State 98
-
-   53 ExpressaoRelacional: ExpressaoAritmetica TEQ . ExpressaoAritmetica
-
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 42
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ExpressaoAritmetica  go to state 127
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
-
-
-State 99
-
-   54 ExpressaoRelacional: ExpressaoAritmetica TDIF . ExpressaoAritmetica
-
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 42
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ExpressaoAritmetica  go to state 128
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
-
-
-State 100
-
-   49 ExpressaoRelacional: ExpressaoAritmetica '<' . ExpressaoAritmetica
-
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 42
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ExpressaoAritmetica  go to state 129
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
-
-
-State 101
-
-   50 ExpressaoRelacional: ExpressaoAritmetica '>' . ExpressaoAritmetica
-
-    TINT    shift, and go to state 38
-    TFLOAT  shift, and go to state 39
-    TID     shift, and go to state 40
-    '('     shift, and go to state 42
-    '-'     shift, and go to state 43
-
-    ChamadaFuncao        go to state 44
-    ExpressaoAritmetica  go to state 130
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
-
-
-State 102
-
-   40 CmdEscrita: TPRINT '(' TLITERAL ')' . ';'
-
-    ';'  shift, and go to state 131
-
-
-State 103
-
-   39 CmdEscrita: TPRINT '(' ExpressaoAritmetica ')' . ';'
-
-    ';'  shift, and go to state 132
-
-
-State 104
-
-   41 CmdLeitura: TREAD '(' TID ')' . ';'
-
-    ';'  shift, and go to state 133
-
-
-State 105
-
-   67 FatorAritmetico: '(' ExpressaoAritmetica ')' .
-
-    $default  reduce using rule 67 (FatorAritmetico)
-
-
-State 106
-
-   61 ExpressaoAritmetica: ExpressaoAritmetica '+' TermoAritmetico .
-   64 TermoAritmetico: TermoAritmetico . '*' FatorAritmetico
-   65                | TermoAritmetico . '/' FatorAritmetico
-
-    '*'  shift, and go to state 74
-    '/'  shift, and go to state 75
-
-    $default  reduce using rule 61 (ExpressaoAritmetica)
+    TID  shift, and go to state 142
 
 
 State 107
 
-   62 ExpressaoAritmetica: ExpressaoAritmetica '-' TermoAritmetico .
-   64 TermoAritmetico: TermoAritmetico . '*' FatorAritmetico
-   65                | TermoAritmetico . '/' FatorAritmetico
+   22 Bloco: '{' ListaCmd '}' .
 
-    '*'  shift, and go to state 74
-    '/'  shift, and go to state 75
-
-    $default  reduce using rule 62 (ExpressaoAritmetica)
+    $default  reduce using rule 22 (Bloco)
 
 
 State 108
 
-   64 TermoAritmetico: TermoAritmetico '*' FatorAritmetico .
+   37 CmdEnquanto: TDO Bloco TWHILE '(' . ExpressaoLogica ')' ';'
 
-    $default  reduce using rule 64 (TermoAritmetico)
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 70
+    '!'     shift, and go to state 71
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoRelacional  go to state 72
+    ExpressaoLogica      go to state 143
+    ArgumentoLogico      go to state 74
+    ExpressaoAritmetica  go to state 75
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
 
 
 State 109
 
-   65 TermoAritmetico: TermoAritmetico '/' FatorAritmetico .
+   57 ExpressaoLogica: ExpressaoLogica . TAND ArgumentoLogico
+   58                | ExpressaoLogica . TOR ArgumentoLogico
+   60 ArgumentoLogico: '(' ExpressaoLogica . ')'
 
-    $default  reduce using rule 65 (TermoAritmetico)
+    TAND  shift, and go to state 112
+    TOR   shift, and go to state 113
+    ')'   shift, and go to state 144
 
 
 State 110
 
-   36 CmdEnquanto: TWHILE '(' ExpressaoLogica ')' . Bloco
+   51 ExpressaoRelacional: ExpressaoAritmetica . '<' ExpressaoAritmetica
+   52                    | ExpressaoAritmetica . '>' ExpressaoAritmetica
+   53                    | ExpressaoAritmetica . TMEIG ExpressaoAritmetica
+   54                    | ExpressaoAritmetica . TMAIG ExpressaoAritmetica
+   55                    | ExpressaoAritmetica . TEQ ExpressaoAritmetica
+   56                    | ExpressaoAritmetica . TDIF ExpressaoAritmetica
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
+   69 FatorAritmetico: '(' ExpressaoAritmetica . ')'
 
-    '{'  shift, and go to state 123
-
-    Bloco  go to state 134
+    TMEIG  shift, and go to state 115
+    TMAIG  shift, and go to state 116
+    TEQ    shift, and go to state 117
+    TDIF   shift, and go to state 118
+    ')'    shift, and go to state 124
+    '<'    shift, and go to state 119
+    '>'    shift, and go to state 120
+    '+'    shift, and go to state 83
+    '-'    shift, and go to state 84
 
 
 State 111
 
-   43 ChamadaFuncao: TID '(' ListaParametros ')' .
+   61 ArgumentoLogico: '!' ArgumentoLogico .
 
-    $default  reduce using rule 43 (ChamadaFuncao)
+    $default  reduce using rule 61 (ArgumentoLogico)
 
 
 State 112
 
-   45 ListaParametros: ListaParametros ',' . ExpressaoAritmetica
-   46                | ListaParametros ',' . TLITERAL
+   57 ExpressaoLogica: ExpressaoLogica TAND . ArgumentoLogico
 
-    TINT      shift, and go to state 38
-    TFLOAT    shift, and go to state 39
-    TID       shift, and go to state 40
-    TLITERAL  shift, and go to state 135
-    '('       shift, and go to state 42
-    '-'       shift, and go to state 43
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 70
+    '!'     shift, and go to state 71
+    '-'     shift, and go to state 47
 
-    ChamadaFuncao        go to state 44
-    ExpressaoAritmetica  go to state 136
-    TermoAritmetico      go to state 46
-    FatorAritmetico      go to state 47
+    ChamadaFuncao        go to state 48
+    ExpressaoRelacional  go to state 72
+    ArgumentoLogico      go to state 145
+    ExpressaoAritmetica  go to state 75
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
 
 
 State 113
 
-   38 CmdAtrib: TID '=' TLITERAL ';' .
+   58 ExpressaoLogica: ExpressaoLogica TOR . ArgumentoLogico
 
-    $default  reduce using rule 38 (CmdAtrib)
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 70
+    '!'     shift, and go to state 71
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoRelacional  go to state 72
+    ArgumentoLogico      go to state 146
+    ExpressaoAritmetica  go to state 75
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
 
 
 State 114
 
-   37 CmdAtrib: TID '=' ExpressaoAritmetica ';' .
+   34 CmdSe: TIF '(' ExpressaoLogica ')' . Bloco
+   35      | TIF '(' ExpressaoLogica ')' . Bloco TELSE Bloco
 
-    $default  reduce using rule 37 (CmdAtrib)
+    '{'  shift, and go to state 37
+
+    Bloco  go to state 147
 
 
 State 115
+
+   53 ExpressaoRelacional: ExpressaoAritmetica TMEIG . ExpressaoAritmetica
+
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoAritmetica  go to state 148
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 116
+
+   54 ExpressaoRelacional: ExpressaoAritmetica TMAIG . ExpressaoAritmetica
+
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoAritmetica  go to state 149
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 117
+
+   55 ExpressaoRelacional: ExpressaoAritmetica TEQ . ExpressaoAritmetica
+
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoAritmetica  go to state 150
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 118
+
+   56 ExpressaoRelacional: ExpressaoAritmetica TDIF . ExpressaoAritmetica
+
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoAritmetica  go to state 151
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 119
+
+   51 ExpressaoRelacional: ExpressaoAritmetica '<' . ExpressaoAritmetica
+
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoAritmetica  go to state 152
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 120
+
+   52 ExpressaoRelacional: ExpressaoAritmetica '>' . ExpressaoAritmetica
+
+    TINT    shift, and go to state 42
+    TFLOAT  shift, and go to state 43
+    TID     shift, and go to state 44
+    '('     shift, and go to state 46
+    '-'     shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoAritmetica  go to state 153
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 121
+
+   42 CmdEscrita: TPRINT '(' TLITERAL ')' . ';'
+
+    ';'  shift, and go to state 154
+
+
+State 122
+
+   41 CmdEscrita: TPRINT '(' ExpressaoAritmetica ')' . ';'
+
+    ';'  shift, and go to state 155
+
+
+State 123
+
+   43 CmdLeitura: TREAD '(' TID ')' . ';'
+
+    ';'  shift, and go to state 156
+
+
+State 124
+
+   69 FatorAritmetico: '(' ExpressaoAritmetica ')' .
+
+    $default  reduce using rule 69 (FatorAritmetico)
+
+
+State 125
+
+   63 ExpressaoAritmetica: ExpressaoAritmetica '+' TermoAritmetico .
+   66 TermoAritmetico: TermoAritmetico . '*' FatorAritmetico
+   67                | TermoAritmetico . '/' FatorAritmetico
+
+    '*'  shift, and go to state 85
+    '/'  shift, and go to state 86
+
+    $default  reduce using rule 63 (ExpressaoAritmetica)
+
+
+State 126
+
+   64 ExpressaoAritmetica: ExpressaoAritmetica '-' TermoAritmetico .
+   66 TermoAritmetico: TermoAritmetico . '*' FatorAritmetico
+   67                | TermoAritmetico . '/' FatorAritmetico
+
+    '*'  shift, and go to state 85
+    '/'  shift, and go to state 86
+
+    $default  reduce using rule 64 (ExpressaoAritmetica)
+
+
+State 127
+
+   66 TermoAritmetico: TermoAritmetico '*' FatorAritmetico .
+
+    $default  reduce using rule 66 (TermoAritmetico)
+
+
+State 128
+
+   67 TermoAritmetico: TermoAritmetico '/' FatorAritmetico .
+
+    $default  reduce using rule 67 (TermoAritmetico)
+
+
+State 129
+
+   36 CmdEnquanto: TWHILE '(' ExpressaoLogica ')' . Bloco
+
+    '{'  shift, and go to state 37
+
+    Bloco  go to state 157
+
+
+State 130
+
+   45 ChamadaFuncao: TID '(' ListaParametros ')' .
+
+    $default  reduce using rule 45 (ChamadaFuncao)
+
+
+State 131
+
+   47 ListaParametros: ListaParametros ',' . ExpressaoAritmetica
+   48                | ListaParametros ',' . TLITERAL
+
+    TINT      shift, and go to state 42
+    TFLOAT    shift, and go to state 43
+    TID       shift, and go to state 44
+    TLITERAL  shift, and go to state 158
+    '('       shift, and go to state 46
+    '-'       shift, and go to state 47
+
+    ChamadaFuncao        go to state 48
+    ExpressaoAritmetica  go to state 159
+    TermoAritmetico      go to state 50
+    FatorAritmetico      go to state 51
+
+
+State 132
+
+   39 CmdAtrib: TID '=' TLITERAL ';' .
+
+    $default  reduce using rule 39 (CmdAtrib)
+
+
+State 133
+
+   38 CmdAtrib: TID '=' ExpressaoAritmetica ';' .
+
+    $default  reduce using rule 38 (CmdAtrib)
+
+
+State 134
+
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
+   76 AutoOperacao: TID '+' '=' ExpressaoAritmetica .
+
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
+
+    $default  reduce using rule 76 (AutoOperacao)
+
+
+State 135
+
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
+   78 AutoOperacao: TID '-' '=' ExpressaoAritmetica .
+
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
+
+    $default  reduce using rule 78 (AutoOperacao)
+
+
+State 136
+
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
+   79 AutoOperacao: TID '*' '=' ExpressaoAritmetica .
+
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
+
+    $default  reduce using rule 79 (AutoOperacao)
+
+
+State 137
+
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
+   80 AutoOperacao: TID '/' '=' ExpressaoAritmetica .
+
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
+
+    $default  reduce using rule 80 (AutoOperacao)
+
+
+State 138
 
    20 ListaId: ListaId ',' TID .
 
     $default  reduce using rule 20 (ListaId)
 
 
-State 116
+State 139
 
     6 Funcao: TipoRetorno TID '(' ')' BlocoPrincipal .
 
     $default  reduce using rule 6 (Funcao)
 
 
-State 117
+State 140
 
     5 Funcao: TipoRetorno TID '(' DeclParametros ')' . BlocoPrincipal
 
     '{'  shift, and go to state 5
 
-    BlocoPrincipal  go to state 137
+    BlocoPrincipal  go to state 160
 
 
-State 118
+State 141
 
     9 DeclParametros: DeclParametros ',' . Parametro
 
@@ -1492,245 +1795,216 @@ State 118
     TFLOAT   shift, and go to state 2
     TSTRING  shift, and go to state 3
 
-    Parametro  go to state 138
-    Tipo       go to state 89
+    Parametro  go to state 161
+    Tipo       go to state 106
 
 
-State 119
+State 142
 
    11 Parametro: Tipo TID .
 
     $default  reduce using rule 11 (Parametro)
 
 
-State 120
+State 143
 
-   58 ArgumentoLogico: '(' ExpressaoLogica ')' .
+   37 CmdEnquanto: TDO Bloco TWHILE '(' ExpressaoLogica . ')' ';'
+   57 ExpressaoLogica: ExpressaoLogica . TAND ArgumentoLogico
+   58                | ExpressaoLogica . TOR ArgumentoLogico
 
-    $default  reduce using rule 58 (ArgumentoLogico)
-
-
-State 121
-
-   55 ExpressaoLogica: ExpressaoLogica TAND ArgumentoLogico .
-
-    $default  reduce using rule 55 (ExpressaoLogica)
+    TAND  shift, and go to state 112
+    TOR   shift, and go to state 113
+    ')'   shift, and go to state 162
 
 
-State 122
+State 144
 
-   56 ExpressaoLogica: ExpressaoLogica TOR ArgumentoLogico .
+   60 ArgumentoLogico: '(' ExpressaoLogica ')' .
 
-    $default  reduce using rule 56 (ExpressaoLogica)
-
-
-State 123
-
-   22 Bloco: '{' . ListaCmd '}'
-
-    TIF      shift, and go to state 12
-    TPRINT   shift, and go to state 13
-    TREAD    shift, and go to state 14
-    TRETURN  shift, and go to state 15
-    TWHILE   shift, and go to state 16
-    TID      shift, and go to state 17
-
-    ListaCmd       go to state 139
-    Comando        go to state 22
-    Retorno        go to state 23
-    CmdSe          go to state 24
-    CmdEnquanto    go to state 25
-    CmdAtrib       go to state 26
-    CmdEscrita     go to state 27
-    CmdLeitura     go to state 28
-    ChamadaProc    go to state 29
-    ChamadaFuncao  go to state 30
+    $default  reduce using rule 60 (ArgumentoLogico)
 
 
-State 124
+State 145
+
+   57 ExpressaoLogica: ExpressaoLogica TAND ArgumentoLogico .
+
+    $default  reduce using rule 57 (ExpressaoLogica)
+
+
+State 146
+
+   58 ExpressaoLogica: ExpressaoLogica TOR ArgumentoLogico .
+
+    $default  reduce using rule 58 (ExpressaoLogica)
+
+
+State 147
 
    34 CmdSe: TIF '(' ExpressaoLogica ')' Bloco .
    35      | TIF '(' ExpressaoLogica ')' Bloco . TELSE Bloco
 
-    TELSE  shift, and go to state 140
+    TELSE  shift, and go to state 163
 
     $default  reduce using rule 34 (CmdSe)
 
 
-State 125
+State 148
 
-   51 ExpressaoRelacional: ExpressaoAritmetica TMEIG ExpressaoAritmetica .
-   61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
-   62                    | ExpressaoAritmetica . '-' TermoAritmetico
+   53 ExpressaoRelacional: ExpressaoAritmetica TMEIG ExpressaoAritmetica .
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    '+'  shift, and go to state 72
-    '-'  shift, and go to state 73
-
-    $default  reduce using rule 51 (ExpressaoRelacional)
-
-
-State 126
-
-   52 ExpressaoRelacional: ExpressaoAritmetica TMAIG ExpressaoAritmetica .
-   61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
-   62                    | ExpressaoAritmetica . '-' TermoAritmetico
-
-    '+'  shift, and go to state 72
-    '-'  shift, and go to state 73
-
-    $default  reduce using rule 52 (ExpressaoRelacional)
-
-
-State 127
-
-   53 ExpressaoRelacional: ExpressaoAritmetica TEQ ExpressaoAritmetica .
-   61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
-   62                    | ExpressaoAritmetica . '-' TermoAritmetico
-
-    '+'  shift, and go to state 72
-    '-'  shift, and go to state 73
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
 
     $default  reduce using rule 53 (ExpressaoRelacional)
 
 
-State 128
+State 149
 
-   54 ExpressaoRelacional: ExpressaoAritmetica TDIF ExpressaoAritmetica .
-   61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
-   62                    | ExpressaoAritmetica . '-' TermoAritmetico
+   54 ExpressaoRelacional: ExpressaoAritmetica TMAIG ExpressaoAritmetica .
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    '+'  shift, and go to state 72
-    '-'  shift, and go to state 73
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
 
     $default  reduce using rule 54 (ExpressaoRelacional)
 
 
-State 129
+State 150
 
-   49 ExpressaoRelacional: ExpressaoAritmetica '<' ExpressaoAritmetica .
-   61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
-   62                    | ExpressaoAritmetica . '-' TermoAritmetico
+   55 ExpressaoRelacional: ExpressaoAritmetica TEQ ExpressaoAritmetica .
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    '+'  shift, and go to state 72
-    '-'  shift, and go to state 73
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
 
-    $default  reduce using rule 49 (ExpressaoRelacional)
-
-
-State 130
-
-   50 ExpressaoRelacional: ExpressaoAritmetica '>' ExpressaoAritmetica .
-   61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
-   62                    | ExpressaoAritmetica . '-' TermoAritmetico
-
-    '+'  shift, and go to state 72
-    '-'  shift, and go to state 73
-
-    $default  reduce using rule 50 (ExpressaoRelacional)
+    $default  reduce using rule 55 (ExpressaoRelacional)
 
 
-State 131
+State 151
 
-   40 CmdEscrita: TPRINT '(' TLITERAL ')' ';' .
+   56 ExpressaoRelacional: ExpressaoAritmetica TDIF ExpressaoAritmetica .
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    $default  reduce using rule 40 (CmdEscrita)
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
 
-
-State 132
-
-   39 CmdEscrita: TPRINT '(' ExpressaoAritmetica ')' ';' .
-
-    $default  reduce using rule 39 (CmdEscrita)
+    $default  reduce using rule 56 (ExpressaoRelacional)
 
 
-State 133
+State 152
 
-   41 CmdLeitura: TREAD '(' TID ')' ';' .
+   51 ExpressaoRelacional: ExpressaoAritmetica '<' ExpressaoAritmetica .
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
 
-    $default  reduce using rule 41 (CmdLeitura)
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
+
+    $default  reduce using rule 51 (ExpressaoRelacional)
 
 
-State 134
+State 153
+
+   52 ExpressaoRelacional: ExpressaoAritmetica '>' ExpressaoAritmetica .
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
+
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
+
+    $default  reduce using rule 52 (ExpressaoRelacional)
+
+
+State 154
+
+   42 CmdEscrita: TPRINT '(' TLITERAL ')' ';' .
+
+    $default  reduce using rule 42 (CmdEscrita)
+
+
+State 155
+
+   41 CmdEscrita: TPRINT '(' ExpressaoAritmetica ')' ';' .
+
+    $default  reduce using rule 41 (CmdEscrita)
+
+
+State 156
+
+   43 CmdLeitura: TREAD '(' TID ')' ';' .
+
+    $default  reduce using rule 43 (CmdLeitura)
+
+
+State 157
 
    36 CmdEnquanto: TWHILE '(' ExpressaoLogica ')' Bloco .
 
     $default  reduce using rule 36 (CmdEnquanto)
 
 
-State 135
+State 158
 
-   46 ListaParametros: ListaParametros ',' TLITERAL .
+   48 ListaParametros: ListaParametros ',' TLITERAL .
 
-    $default  reduce using rule 46 (ListaParametros)
-
-
-State 136
-
-   45 ListaParametros: ListaParametros ',' ExpressaoAritmetica .
-   61 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
-   62                    | ExpressaoAritmetica . '-' TermoAritmetico
-
-    '+'  shift, and go to state 72
-    '-'  shift, and go to state 73
-
-    $default  reduce using rule 45 (ListaParametros)
+    $default  reduce using rule 48 (ListaParametros)
 
 
-State 137
+State 159
+
+   47 ListaParametros: ListaParametros ',' ExpressaoAritmetica .
+   63 ExpressaoAritmetica: ExpressaoAritmetica . '+' TermoAritmetico
+   64                    | ExpressaoAritmetica . '-' TermoAritmetico
+
+    '+'  shift, and go to state 83
+    '-'  shift, and go to state 84
+
+    $default  reduce using rule 47 (ListaParametros)
+
+
+State 160
 
     5 Funcao: TipoRetorno TID '(' DeclParametros ')' BlocoPrincipal .
 
     $default  reduce using rule 5 (Funcao)
 
 
-State 138
+State 161
 
     9 DeclParametros: DeclParametros ',' Parametro .
 
     $default  reduce using rule 9 (DeclParametros)
 
 
-State 139
+State 162
 
-   22 Bloco: '{' ListaCmd . '}'
-   23 ListaCmd: ListaCmd . Comando
+   37 CmdEnquanto: TDO Bloco TWHILE '(' ExpressaoLogica ')' . ';'
 
-    TIF      shift, and go to state 12
-    TPRINT   shift, and go to state 13
-    TREAD    shift, and go to state 14
-    TRETURN  shift, and go to state 15
-    TWHILE   shift, and go to state 16
-    TID      shift, and go to state 17
-    '}'      shift, and go to state 141
-
-    Comando        go to state 56
-    Retorno        go to state 23
-    CmdSe          go to state 24
-    CmdEnquanto    go to state 25
-    CmdAtrib       go to state 26
-    CmdEscrita     go to state 27
-    CmdLeitura     go to state 28
-    ChamadaProc    go to state 29
-    ChamadaFuncao  go to state 30
+    ';'  shift, and go to state 164
 
 
-State 140
+State 163
 
    35 CmdSe: TIF '(' ExpressaoLogica ')' Bloco TELSE . Bloco
 
-    '{'  shift, and go to state 123
+    '{'  shift, and go to state 37
 
-    Bloco  go to state 142
-
-
-State 141
-
-   22 Bloco: '{' ListaCmd '}' .
-
-    $default  reduce using rule 22 (Bloco)
+    Bloco  go to state 165
 
 
-State 142
+State 164
+
+   37 CmdEnquanto: TDO Bloco TWHILE '(' ExpressaoLogica ')' ';' .
+
+    $default  reduce using rule 37 (CmdEnquanto)
+
+
+State 165
 
    35 CmdSe: TIF '(' ExpressaoLogica ')' Bloco TELSE Bloco .
 
