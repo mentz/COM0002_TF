@@ -2,3 +2,5 @@
 *.yy.c
 compiler.c
 compiler
+*.class
+*.j
