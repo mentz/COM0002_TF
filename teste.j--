@@ -3,7 +3,7 @@
 	int a, x, c;
 	float f;
 	string s;
-	s = "teste atribuição de string\n\t\tolamundo com 2 tabs";
+	s = "Teste: Olá, mundo!";
 	a = 7;
 	x = 0;
 	c = 0;
