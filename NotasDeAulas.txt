@@ -83,3 +83,8 @@ A conversão explícita de um tipo para outro a fim de permitir operações arit
 
 Fazer toda a coerção e imprimir o assembly Jasmin correspondente.
 Para dia 14.11;
+
+------------------------------
+Aula de 30/11/2017
+
+Como implementar funções?

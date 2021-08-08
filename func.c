@@ -703,7 +703,7 @@ void printAST(AST * r)
 		case AST_PRINT:
 			fprintf(outfile, "\tgetstatic java/lang/System/out Ljava/io/PrintStream;\n");
 			printAST(r->esq);
-			fprintf(outfile, "\tinvokevirtual java/io/PrintStream/println(");
+			fprintf(outfile, "\tinvokevirtual java/io/PrintStream/print(");
 			switch (r->tipo)
 			{
 				case T_INT: fprintf(outfile, "I"); break;

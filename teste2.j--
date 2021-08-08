@@ -1,0 +1,16 @@
+{
+	int a, i, j;
+	a = 5;
+	i = 1;
+	j = 1;
+	while (a > 0 && i > 0)
+	{
+		j *= a;
+		a--;
+	}
+	print(a);
+	print("! = ");
+	print(j);
+	print("\n");
+	print("FIM\n");
+}
